@@ -1,0 +1,83 @@
+<div class="mt-4">
+    <h5 class="text-primary">Nueva Direccion</h5>
+    <form [formGroup]="forma">
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <mat-form-field class="w-100">
+                    <input matInput placeholder="Nombre" formControlName="nombre">
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field class="w-100">
+                    <input matInput placeholder="Compania" formControlName="compania">
+                </mat-form-field>
+            </div>
+            <div class="col-md-2">
+                <mat-form-field class="w-100">
+                    <input type="number" placeholder="Telefono" matInput formControlName="telefono">
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field class="w-100">
+                    <input matInput placeholder="Calle y numero" formControlName="calle">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <mat-form-field class="w-100">
+                    <input type="number" matInput placeholder="Codigo Postal" formControlName="cp">
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field class="w-100">
+                    <mat-label>Colonia</mat-label>
+                    <mat-select formControlName="colonia">
+                        <!-- <mat-option *ngFor="let col of coloniasRemitente" [value]="col.colonia">
+                            {{col.colonia}}
+                        </mat-option> -->
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field class="w-100">
+                    <input type="text" matInput placeholder="Ciudad" formControlName="ciudad">
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field class="w-100">
+                    <mat-label>Estado</mat-label>
+                    <mat-select formControlName="estado">
+                        <mat-option [value]="elemento.aestado" *ngFor="let elemento of estados">
+                            {{elemento.estado}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row" *ngIf="extraDhl">
+            <div class="col-md-3">
+                <mat-form-field class="w-100">
+                    <input matInput placeholder="Correo" formControlName="correo">
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field class="w-100">
+                    <input matInput placeholder="Referencia 1" formControlName="referencia1">
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field class="w-100">
+                    <input matInput placeholder="Referencia 2" formControlName="referencia2">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-3">
+            <div class="col-md-3">
+                <button class="btn btn-outline-success btn-block">Guardar</button>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-outline-info btn-block">Limpiar</button>
+            </div>
+        </div>
+    </form>
+</div>

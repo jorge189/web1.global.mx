@@ -1,0 +1,593 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <div class="contenedor animated fadeIn" *ngIf="carga;else spin">
+        <h3>Generar Nuevo Envio</h3>
+        <hr />
+
+        <div class="d-flex justify-content-center mb-4" *ngIf="alertGuias">
+            <div class="card w-75 border" style="box-shadow: 0px 0px 5px 5px #85a4c1;
+            border-color: #fbd7942e;">
+                <div class="card-header" style="background-color: #01193147">
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <div style="width: 40px">
+                                <img class="img img-fluid" width="30" src="./assets/img/warning.png" alt="">
+                            </div>
+                            <h5>Aviso Guias Por Agotarse</h5>
+                        </div>
+                        <div>
+                            <button (click)="alertGuias = !alertGuias" class="btn btn-light" style="background-color: #f8f9fa00">
+                                <span class="text-danger icon-cancel-circled h5"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li *ngFor="let item of avisos">
+                            <small>{{item.descripcion}} PESO {{item.peso}} KG ESTA POR AGOTARCE</small> &nbsp;&nbsp;
+                            <span class="badge badge-danger">{{item.disponibles}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <form [formGroup]="forma" (ngSubmit)="generarGuia()">
+            <mat-vertical-stepper [linear]="isLinear" #stepper (terminar)="stepper.reset()">
+                <mat-step [stepControl]="forma.get('datos')">
+                    <form formGroupName="datos">
+                        <ng-template matStepLabel><span class="text-primary">Selecciona un servicio</span></ng-template>
+
+                        <div class="d-flex justify-content-start flex-wrap mt-2 grupo">
+                            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'fedex'}" (click)="cambiarPaqueteria('fedex')">Fedex</button>
+                            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'dhl'}" (click)="cambiarPaqueteria('dhl')">DHL</button>
+                            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'estafeta'}" (click)="cambiarPaqueteria('estafeta')">Estafeta</button>
+                            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'redpack'}" (click)="cambiarPaqueteria('redpack')">Redpack</button>
+                            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'paquetexpress'}" (click)="cambiarPaqueteria('paquetexpress')">Paquetexpress</button>
+                            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'globalpaq'}" (click)="cambiarPaqueteria('globalpaq')">Globalpaq</button>
+                        </div>
+                        <br>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Tipo de Servicio</mat-label>
+                                    <mat-select formControlName="tipoguia">
+                                        <mat-option value="1">Dia Siguiente</mat-option>
+                                        <mat-option value="2">Terrestre</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-7">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Guias Disponibles</mat-label>
+                                    <mat-select formControlName="pesoguia">
+                                        <mat-option *ngFor="let dispo of disponibles" [disabled]="!dispo.activo || dispo.disponibles <= 0" [value]="dispo.tipo + '-' + dispo.peso">{{dispo.descripcion}} {{dispo.peso}} KG (Disponibles: {{dispo.disponibles}} ) {{(!dispo.activo) ? 'No Activo': ''}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <br>
+                        <div>
+                            <button type="button" class="btn btn-outline-primary btn-sm" matStepperNext [disabled]="forma.controls.datos.status === 'INVALID'" (click)="verForm()">Siguiente</button>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step [stepControl]="forma.get('remitente')">
+                    <div formGroupName="remitente">
+                        <ng-template matStepLabel><span class="text-primary">Datos de Remitente</span></ng-template>
+                        <div *ngIf="idusuario == 128 || idusuario == 136 || idusuario == 238 || idusuario == 239;">
+                            <div class="my-3 d-md-flex justify-content-start">
+                                <div class="mr-md-3 mb-2">
+                                    <button type="button" class="btn btn-outline-primary btn-sm btn-block" (click)="openDialogDireccion('remitente')">
+                                        <span class="icon-search"></span>
+                                        Buscar
+                                    </button>
+                                </div>
+                                <div class="mr-md-3 mb-2">
+                                    <button type="button" class="btn btn-outline-danger btn-sm btn-block" (click)="eliminarPred('remitente')">
+                                        <span class="icon-cancel-circled"></span>
+                                        Eliminar Predeterminado
+                                    </button>
+                                </div>
+                                <div class="mr-md-3 mb-2">
+                                    <button type="button" class="btn btn-outline-info btn-sm btn-block" (click)="limpiarDatos('remitente')">
+                                        <span class="icon-spin3"></span>
+                                        Limpiar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="loadingRems">
+                            <mat-form-field class="w-100">
+                                <mat-label>Remitentes</mat-label>
+                                <mat-select #remitente (selectionChange)="setRemitente(remitente.value)">
+                                    <mat-option value="0">
+                                        -- Selecciona
+                                    </mat-option>
+                                    <mat-option *ngFor="let rem of remitentes" [value]="rem.iddireccion">
+                                        Nombre: {{rem.nombre}}, Compañia: {{rem.compania}}, Codigo Postal: {{rem.cp}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <input class="text-uppercase" matInput placeholder="Nombre" formControlName="nombre">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <input class="text-uppercase" matInput placeholder="Compania" formControlName="compania">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-2">
+                                <mat-form-field class="w-100">
+                                    <input type="number" placeholder="Telefono" matInput formControlName="telefono">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field class="w-100">
+                                    <input class="text-uppercase" matInput placeholder="Calle y numero" formControlName="calle">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <mat-form-field class="w-100">
+                                    <input type="number" matInput placeholder="Codigo Postal" formControlName="cp" #cpR (keyup)="getCobertura('54435', cpR.value);this.getZonaGlobalpaq(cpR.value, cpD.value);">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Colonia</mat-label>
+                                    <mat-select formControlName="colonia">
+                                        <mat-option *ngFor="let col of coloniasRemitente" [value]="col.colonia">
+                                            {{col.colonia}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <input class="text-uppercase" type="text" matInput placeholder="Ciudad" formControlName="ciudad">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Estado</mat-label>
+                                    <mat-select formControlName="estado">
+                                        <mat-option [value]="elemento.aestado" *ngFor="let elemento of estados">
+                                            {{elemento.estado}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="extraDhl">
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <input matInput placeholder="Correo" formControlName="correo">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <input class="text-uppercase" matInput placeholder="Referencia 1" formControlName="referencia1">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <input class="text-uppercase" matInput placeholder="Referencia 2" formControlName="referencia2">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="extraRedpack">
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <input matInput placeholder="Numero Exterior" formControlName="numero">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="extraPaquetexpress">
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <input matInput placeholder="Correo" formControlName="correo">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="extraGlobalpaq">
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <input class="text-uppercase" matInput placeholder="Referencia" formControlName="referencia1">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <br>
+                        <div>
+                            <button type="button" class="btn btn-outline-secondary btn-sm mr-2" matStepperPrevious (click)="verForm()">Regresar</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" matStepperNext [disabled]="forma.controls.remitente.status === 'INVALID'" (click)="verForm()">Siguiente</button>
+                        </div>
+                    </div>
+                </mat-step>
+                <mat-step [stepControl]="forma.get('destinatario')">
+                    <div formGroupName="destinatario">
+                        <ng-template matStepLabel><span class="text-primary">Datos de Destinatario</span></ng-template>
+                        <div class="my-3 d-md-flex justify-content-start">
+                            <div class="mr-md-3 mb-2">
+                                <button type="button" class="btn btn-outline-primary btn-sm btn-block" (click)="openDialogDireccion('destinatario')">
+                                    <span class="icon-search"></span>
+                                    Buscar
+                                </button>
+                            </div>
+                            <div class="mr-md-3 mb-2">
+                                <button type="button" class="btn btn-outline-danger btn-sm btn-block" (click)="eliminarPred('destinatario')">
+                                    <span class="icon-cancel-circled"></span>
+                                    Eliminar Predeterminado
+                                </button>
+                            </div>
+                            <div class="mr-md-3 mb-2">
+                                <button type="button" class="btn btn-outline-info btn-sm btn-block" (click)="limpiarDatos('destinatario')">
+                                    <span class="icon-spin3"></span>
+                                    Limpiar
+                                </button>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <input class="text-uppercase" matInput placeholder="Nombre" formControlName="nombre">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <input class="text-uppercase" matInput placeholder="Compania" formControlName="compania">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-2">
+                                <mat-form-field class="w-100">
+                                    <input type="number" placeholder="Telefono" matInput formControlName="telefono">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field class="w-100">
+                                    <input class="text-uppercase" matInput placeholder="Calle y numero" formControlName="calle">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <mat-form-field class="w-100">
+                                    <input type="number" matInput placeholder="Codigo Postal" formControlName="cp" #cpD (keyup)="getCobertura(cpR.value, cpD.value);this.getZonaGlobalpaq(cpR.value, cpD.value);">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Colonia</mat-label>
+                                    <mat-select formControlName="colonia">
+                                        <mat-option *ngFor="let col of coloniasDestinatario" [value]="col.colonia">
+                                            {{col.colonia}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <input class="text-uppercase" type="text" matInput placeholder="Ciudad" formControlName="ciudad">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Estado</mat-label>
+                                    <mat-select formControlName="estado">
+                                        <mat-option [value]="elemento.aestado" *ngFor="let elemento of estados;">
+                                            {{elemento.estado}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="extraDhl">
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <input matInput placeholder="Correo" formControlName="correo">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <input class="text-uppercase" matInput placeholder="Referencia 1" formControlName="referencia1">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <input class="text-uppercase" matInput placeholder="Referencia 2" formControlName="referencia2">
+                                </mat-form-field>
+                            </div>
+
+                        </div>
+                        <div class="row" *ngIf="extraRedpack">
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <input matInput placeholder="Numero Exterior" formControlName="numero">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="extraPaquetexpress">
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <input matInput placeholder="Correo" formControlName="correo">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="extraGlobalpaq">
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <input class="text-uppercase" matInput placeholder="Referencia" formControlName="referencia1">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <br>
+                        <div>
+                            <button type="button" class="btn btn-outline-secondary btn-sm mr-2" matStepperPrevious>Regresar</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" matStepperNext [disabled]="forma.controls.destinatario.status === 'INVALID'">Siguiente</button>
+                        </div>
+                    </div>
+                </mat-step>
+                <mat-step [stepControl]="forma.get('paquete')">
+                    <ng-template matStepLabel><span class="text-primary">Datos de Paquete</span></ng-template>
+                    <div formGroupName="paquete">
+                        <br>
+                        <div>
+
+                            <div class="row border rounded py-1 mb-2 align-items-center">
+                                <div class="col-md-1">
+                                    <mat-form-field class="w-100">
+                                        <input type="number" matInput placeholder="Largo" formControlName="largo">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-1">
+                                    <mat-form-field class="w-100">
+                                        <input type="number" matInput placeholder="Alto" formControlName="alto">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-1">
+                                    <mat-form-field class="w-100">
+                                        <input type="number" matInput placeholder="Ancho" formControlName="ancho">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field class="w-100">
+                                        <input type="number" matInput placeholder="Peso" formControlName="peso">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field class="w-100">
+                                        <input type="number" matInput placeholder="Peso Volumetrico" formControlName="pesov">
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <mat-form-field class="w-100" *ngIf="viewSeguro">
+                                        <input class="text-uppercase" #seguroF type="number" matInput placeholder="Seguro" formControlName="seguro" (keyup)="getSeguro(seguroF.value, 0, 'first')">
+                                        <mat-hint class="text-secondary" *ngIf="montoFirst != 0">Monto Necesario: MXN ${{montoFirst}}
+                                        </mat-hint>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-1">
+                                    <button *ngIf="paquetes.controls.length < 6 && extraFedex && permisos?.fedex?.multiguia == 1" type="button" mat-mini-fab class="bg-primary text-light" aria-label="Agregar paquete" matTooltip="Agregar paquete" (click)="addPaquete()">
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div *ngFor="let paq of paquetes.controls;index as i">
+                            <div class="row border rounded py-1 mb-2 align-items-center" [formGroup]="paq">
+                                <div class="col-md-1">
+                                    <mat-form-field class="w-100">
+                                        <input type="number" matInput placeholder="Largo" formControlName="largo">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-1">
+                                    <mat-form-field class="w-100">
+                                        <input type="number" matInput placeholder="Alto" formControlName="alto">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-1">
+                                    <mat-form-field class="w-100">
+                                        <input type="number" matInput placeholder="Ancho" formControlName="ancho">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field class="w-100">
+                                        <input type="number" matInput placeholder="Peso" formControlName="peso">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field class="w-100">
+                                        <input type="number" matInput placeholder="Peso Volumetrico" formControlName="pesov">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field class="w-100" *ngIf="viewSeguro">
+                                        <input class="text-uppercase" #seguroInp (keyup)="getSeguro(seguroInp.value, i, '')" type="number" matInput placeholder="Seguro" formControlName="seguro">
+                                        <mat-hint class="text-secondary" *ngIf="montoSeguro[i]">Monto Necesario: MXN ${{montoSeguro[i]}}
+                                        </mat-hint>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="button" mat-mini-fab class="bg-danger text-light" aria-label="Eliminar guia" (click)="deletePaquete(i)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6" *ngIf="!extraFedex">
+                                <mat-form-field class="w-100">
+                                    <input class="text-uppercase" type="text" matInput placeholder="Contenido" formControlName="contenido">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-6" *ngIf="extraFedex">
+                                <mat-form-field class="w-100">
+                                    <input class="text-uppercase" type="text" matInput placeholder="Comentario" formControlName="comentario">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button type="button" class="btn btn-outline-secondary btn-sm mr-2" matStepperPrevious>Regresar</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm" matStepperNext [disabled]="forma.controls.paquete.status === 'INVALID' || forma.controls.paquetes.status === 'INVALID'">Siguiente</button>
+                    </div>
+                </mat-step>
+                <mat-step [stepControl]="forma.get('adicional')">
+                    <ng-template matStepLabel><span class="text-primary">Configuracion Adicional</span></ng-template>
+                    <div formGroupName="adicional" class="mt-3">
+                        <ul class="list-group" style="list-style: none;" *ngIf="extraFedex">
+                            <li>
+                                <mat-checkbox formControlName="checkConfirmacion" (change)="sendCorreo(forma.value.adicional.checkConfirmacion)">
+                                    Enviar confirmación a {{correoAsociado}}
+                                </mat-checkbox>
+
+                            </li>
+                            <li>
+                                <mat-checkbox formControlName="checkAdicional">Enviar confirmación adicional a otro correo
+                                </mat-checkbox>
+                                <mat-form-field class="w-100" *ngIf="forma.value.adicional.checkAdicional">
+                                    <input type="text" matInput placeholder="Correo Electronico" formControlName="adicional">
+                                </mat-form-field>
+                            </li>
+                            <li>
+                                <mat-checkbox formControlName="checkSeg" (change)="sendSeguimiento(forma.value.adicional.checkSeg)">Enviar notificaciones de seguimiento del envío a {{correoAsociado}}</mat-checkbox>
+                            </li>
+                            <li>
+                                <mat-checkbox formControlName="checkAdicionalSeg">Enviar notificaciones de seguimiento del envío a un correo adicional</mat-checkbox>
+                                <mat-form-field class="w-100" *ngIf="forma.value.adicional.checkAdicionalSeg">
+                                    <input type="text" matInput placeholder="Correo Electronico" formControlName="seguimientoAdicional">
+                                </mat-form-field>
+                            </li>
+                        </ul>
+                        <br>
+                        <mat-form-field class="w-100" *ngIf="extraFedex">
+                            <mat-label>Tipo de Papel</mat-label>
+                            <mat-select formControlName="papel">
+                                <mat-option value="2">Normal</mat-option>
+                                <mat-option value="1">Termico</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field class="w-100">
+                            <mat-label>Recoleccion / Oficina</mat-label>
+                            <mat-select formControlName="recoleccion">
+                                <mat-option value="0">Dejar paquete en oficina</mat-option>
+                                <mat-option value="1" *ngIf="recoleccion == 1">Programar Recoleccion</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <br>
+                    <div>
+                        <button type="button" class="btn btn-outline-primary btn-sm mr-2" matStepperPrevious>Regresar</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm" matStepperNext>Siguiente</button>
+                    </div>
+                </mat-step>
+                <mat-step [stepControl]="forma.get('recoleccion')" *ngIf="dataRecoleccion">
+                    <ng-template matStepLabel><span class="text-primary">Datos de Recolección</span></ng-template>
+                    <div formGroupName="recoleccion" class="mt-3">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Fecha de Recolección</mat-label>
+                                    <input matInput [matDatepickerFilter]="noWeekends" [matDatepicker]="picker" formControlName="fecha">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4" *ngIf="!extraGlobalpaq">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Hora de entrega</mat-label>
+                                    <mat-select formControlName="horaBefore">
+                                        <mat-option value="08:00:00">8:00 a.m.</mat-option>
+                                        <mat-option value="08:30:00">8:30 a.m.</mat-option>
+                                        <mat-option value="09:00:00">9:00 a.m.</mat-option>
+                                        <mat-option value="09:30:00">9:30 a.m.</mat-option>
+                                        <mat-option value="10:00:00">10:00 a.m.</mat-option>
+                                        <mat-option value="10:30:00">10:30 a.m.</mat-option>
+                                        <mat-option value="11:00:00">11:00 a.m.</mat-option>
+                                        <mat-option value="11:30:00">11:30 a.m.</mat-option>
+                                        <mat-option value="12:00:00">12:00 p.m.</mat-option>
+                                        <mat-option value="12:30:00">12:30 p.m.</mat-option>
+                                        <mat-option value="13:00:00">1:00 p.m.</mat-option>
+                                        <mat-option value="13:30:00">1:30 p.m.</mat-option>
+                                        <mat-option value="14:00:00">2:00 p.m.</mat-option>
+                                        <mat-option value="14:30:00">2:30 p.m.</mat-option>
+                                        <mat-option value="15:00:00">3:00 p.m.</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4" *ngIf="!extraGlobalpaq">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Ultima hora disponible</mat-label>
+                                    <mat-select formControlName="horaAfter">
+                                        <mat-option value="12:00:00">12:00 p.m.</mat-option>
+                                        <mat-option value="12:30:00">12:30 p.m.</mat-option>
+                                        <mat-option value="13:00:00">1:00 p.m.</mat-option>
+                                        <mat-option value="13:30:00">1:30 p.m.</mat-option>
+                                        <mat-option value="14:00:00">2:00 p.m.</mat-option>
+                                        <mat-option value="14:30:00">2:30 p.m.</mat-option>
+                                        <mat-option value="15:00:00">3:00 p.m.</mat-option>
+                                        <mat-option value="15:30:00">3:30 p.m.</mat-option>
+                                        <mat-option value="16:00:00">4:00 p.m.</mat-option>
+                                        <mat-option value="16:30:00">4:30 p.m.</mat-option>
+                                        <mat-option value="17:00:00">5:00 p.m.</mat-option>
+                                        <mat-option value="17:30:00">5:30 p.m.</mat-option>
+                                        <mat-option value="18:00:00">6:00 p.m.</mat-option>
+                                        <mat-option value="18:30:00">6:30 p.m.</mat-option>
+                                        <mat-option value="19:00:00">7:00 p.m.</mat-option>
+                                        <mat-option value="19:30:00">7:30 p.m.</mat-option>
+                                        <mat-option value="20:00:00">8:00 p.m.</mat-option>
+                                        <mat-option value="20:30:00">8:30 p.m.</mat-option>
+                                        <mat-option value="21:00:00">9:00 p.m.</mat-option>
+                                        <mat-option value="21:30:00">9:30 p.m.</mat-option>
+                                        <mat-option value="22:00:00">10:00 p.m.</mat-option>
+                                        <mat-option value="22:30:00">10:30 p.m.</mat-option>
+                                        <mat-option value="23:00:00">11:00 p.m.</mat-option>
+                                        <mat-option value="23:30:00">11:30 p.m.</mat-option>
+                                        <mat-option value="24:00:00">12:00 a.m.</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-8">
+                                <mat-form-field class="w-100">
+                                    <input type="text" matInput placeholder="Indicaciones especiales" formControlName="indicaciones">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-outline-primary btn-sm mr-2" matStepperPrevious>Regresar</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" matStepperNext [disabled]="forma.controls.recoleccion.status === 'INVALID'">Siguiente</button>
+                        </div>
+                    </div>
+                </mat-step>
+                <mat-step>
+                    <ng-template matStepLabel><span class="text-primary">Generar</span></ng-template>
+
+                    <div class="mt-3">
+                        <button class="btn btn-outline-primary btn-sm mr-2" type="button" matStepperPrevious>Regresar</button>
+                        <button class="btn btn-outline-success btn-sm" [disabled]="forma.invalid || loadingGeneracion" type="submit">
+                            <span class="icon-spin3 animate-spin" *ngIf="loadingG"></span>
+                            Generar Etiqueta
+                        </button>
+                    </div>
+                </mat-step>
+            </mat-vertical-stepper>
+        </form>
+    </div>
+</div>
+
+<ng-template #spin>
+    <div class="text-center h1">
+        <span class="icon-spin3 animate-spin"></span>
+    </div>
+</ng-template>

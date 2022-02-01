@@ -1,0 +1,57 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <div class="contenedor">
+        <h1 class="text-center text-primary">¡Pedido Creado!</h1>
+        <p class="text-md-center mx-md-5 px-md-5">Para brindarte un mejor y más rápido servicio, te recordamos que todo tramite relacionado a tus envíos, debe ser gestionado directamente con nosotros a través de nuestra sección de “RECLAMOS” disponible en tu usuario</p>
+        <p class="text-center text-md-center mx-md-5 px-md-5"><b>PARA EL ENVIO DE MATERIAL CONTACTAR AL AREA DE SERVICIO AL CLIENTE</b></p>
+        
+        <p class="h4 text-secondary mt-5 text-center mb-4">No. Pedido: <small><b>{{idventa}}</b></small></p>
+        <div class="row d-flex justify-content-center mt-5 mb-5">
+                <div class="col-md-12 text-center">
+                    <h2>Total: ${{total | number}} MXN</h2>
+                    <hr />
+                </div>
+                <div class="col-md-12">
+                    <div class="row justify-content-center">
+                        <!-- <div class="col-6 text-md-right">  -->
+                            <!-- <button class="btn btn-outline-success">Confirmar Pago
+                            </button> -->
+                        <!-- </div> -->
+                        <div class="col-6 text-center">
+                            <button class="btn btn-outline-info" [routerLink]="['../../pedidos']">Ver
+                                Pedidos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <ul class="border shadow-sm">
+            <li class="bg-white w-100" *ngFor="let articulo of articulos">
+                <div class="row d-flex justify-content-center align-items-center" style="min-height: 50px;">
+                    <div class="col-5 col-md-1 p-4 d-flex align-items-center p-md-0 d-md-block h-25">
+                        <img [src]="articulo.articulo | img" alt="" class="img-fluid">
+                    </div>
+                    <div class="col-md-4 text-center text-sm-left">
+                        <p><small class="font-weight-bold">{{articulo.articulo}}</small></p>
+                    </div>
+                    <div class="col-3 col-md-1 mt-1 text-center text-sm-left">
+                        <label for="">Precio</label><br>
+                        <label for=""><b>${{articulo.precio}}</b></label>
+                    </div>
+                    <div class="col-3 col-md-2 mt-1 text-center text-sm-left">
+                        <label for="">Cantidad</label><br>
+                        <label for=""><b>{{articulo.cantidad}}</b></label>
+                    </div>
+                    <div class="col-3 col-md-2 mt-1 text-center text-md-left">
+                        <label for="">Subtotal</label>
+                        <p class="h4">${{articulo.cantidad * articulo.precio | number}}</p>
+                    </div>
+                    <!-- <div class="col-md-1 text-center my-2">
+                        <span class="icon-cancel-circled h5" (click)="borrarArticulo(articulo.id)"></span>
+                    </div> -->
+                </div>
+            </li>
+        </ul>
+
+        
+    </div>
+</div>

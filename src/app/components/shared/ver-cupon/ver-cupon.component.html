@@ -1,0 +1,60 @@
+<div class="container">
+    <div class="row justify-content-end">
+        <mat-form-field class="col-md-4 ">
+            <mat-label >Buscar</mat-label>
+            <input matInput type="text" #buscars (keyup)="buscar(buscars.value)" >
+          </mat-form-field>
+    </div>
+    <table class="table opc-tabla shadow-sm">
+        <thead class="bg-light shadow-sm">
+            <tr>
+                <td>Creado</td>
+                <td>Codigo</td>
+                <td>Descripcion</td>
+                <td>PesoGuia</td>
+                <td>Seguro</td>
+                <td>Zona Extendida</td>
+                <td>Sobrepeso</td>
+                <td>Status</td>
+                <td>No. Guia</td>
+                <td>Cancelar</td>
+                <td>No. Cliente</td>
+            </tr>
+        </thead>
+        <tbody>
+             <tr *ngFor="let cupon of cupones">
+                        <td data-label="Fecha">{{cupon.created_at}}</td>
+                        <td data-label="No.Pedido">{{cupon.codigo}}</td>
+                        <td data-label="Total">{{cupon.descripcion}}</td>
+                        <td data-label="Status">{{cupon.pesoguia}}</td>
+                        <td data-label="Status">{{cupon.seguro}}</td>
+                        <td data-label="Status">{{cupon.zona_extendida}}</td>
+                        <td data-label="Status">{{cupon.sobrepeso}}</td>
+                        <td [ngSwitch]="cupon.usado">
+                            <label *ngSwitchCase="0">Generado</label>
+                            <label *ngSwitchCase="1">Utilizado</label>
+                            <label *ngSwitchCase="2">Cancelado</label>
+                        </td>
+
+                        <td data-label="Status">{{cupon.guia}}</td>
+                        <td data-label="Status"><button class="btn btn-light" (click)="btnEliminar(cupon.id)"><span class="icon-cancel-circled h5 text-danger"></span></button></td>
+                        <td data-label="Status">{{cupon.numCliente}}</td>
+                       
+          </tr>
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-center mt-4 " style="z-index: 100000;">
+        <div class="btn-group mr-2 text-right" role="group" aria-label="First group" style="z-index: 4;">
+        <button type="button" class="btn btn-outline-secondary" *ngIf="paginaActiva > 1 "
+        (click)="verPagina(paginaActiva - 1)">
+        <mat-icon style="font-size:15px;width: auto !important;height: auto !important">navigate_before</mat-icon>
+        </button>
+        <button type="button" class="btn btn-outline-secondary" *ngFor="let pagina of paginas"
+        [ngClass]="(paginaActiva == pagina) ? 'active' : ''" (click)="verPagina(pagina)">{{pagina}}</button>
+        <button type="button" class="btn btn-outline-secondary" *ngIf="paginaActiva < paginas[paginas.length - 1] "
+        (click)="verPagina(paginaActiva + 1)">
+        <mat-icon style="font-size:15px;width: auto !important;height: auto !important">navigate_next</mat-icon>
+        </button>
+        </div>
+        </div>
+</div>

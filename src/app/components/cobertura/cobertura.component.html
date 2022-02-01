@@ -1,0 +1,248 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <div class="contenedor animated fadeIn" *ngIf="carga;else spin">
+        <h3>Cobertura</h3>
+        <hr />
+
+        <div class="card mt-4 shadow-sm">
+            <div class="card-body">
+                <form [formGroup]="forma" (ngSubmit)="getCobertura()">
+                    <div class="row justify-content-center">
+                        <div class="col-md-4">
+                            <mat-form-field class="d-block">
+                                <span matPrefix class="text-primary icon-location-outline">&nbsp;</span>
+                                <input appNumbersOnly type="text" matInput placeholder="Origen"
+                                    formControlName="origen">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field class="d-block">
+                                <span matPrefix class="text-primary icon-location-outline">&nbsp;</span>
+                                <input type="text" appNumbersOnly matInput placeholder="Destino"
+                                    formControlName="destino">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2 mt-3">
+                            <button class="btn btn-primary btn-sm" type="submit" [disabled]="!forma.valid"><span
+                                    class="icon-spin3 animate-spin" *ngIf="loading"></span>&nbsp;Consultar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row justify-content-center" *ngIf="view">
+            <div class="col-sm-6 d-flex justify-content-center">
+                <div class="card mb-2 mt-5 shadow-sm" style="max-width: 500px;">
+                    <div class="row no-gutters">
+                        <div [ngClass]="(!errorFedex)? 'col-md-4 d-flex align-content-center p-4  h-50' : 'col-md-4 pt-2 pl-4 pr-4 d-flex align-content-center mt-2  h-50'"
+                            style="min-height: 50px;max-height: 180px;">
+                            <img src="../../../assets/img/fedex-economy.png" class="card-img" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title" *ngIf="!errorFedex"
+                                    [innerHTML]="(cobFedex?.message == 'Cobertura Normal') ? '<b class=text-success>NO</b> ES ZONA EXTENDIDA' : '<b class=text-danger>SI</b> ES ZONA EXTENDIDA'">
+                                </h5>
+                                <h5 *ngIf="errorFedex"><b class=text-danger>No hay servicios Disponibles</b></h5>
+                                <table class="table border text-center" *ngIf="!errorFedex">
+                                    <thead>
+                                        <tr>
+                                            <td class="border">Terrestre</td>
+                                            <td>Dia Sig</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border"><span class="icon-ok-circled text-success"></span></td>
+                                            <td><span
+                                                    [ngClass]="{'icon-ok-circled text-success': cobFedex.services.length > 1 , 'icon-cancel-circled text-danger': cobFedex.services.length <= 1}"></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 d-flex justify-content-center">
+                <div class="card mb-2 mt-5 shadow-sm" style="max-width: 500px;">
+                    <div class="row no-gutters">
+                        <div [ngClass]="(!errorDhl)?'col-md-4 d-flex align-content-center p-4': 'col-md-4 d-flex align-content-center h-100 p-4'"
+                            style="min-height: 45px;max-height: 180px;height: 40%;">
+                            <img src="../../../assets/img/dhl-icon-17.png" class="card-img" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title" *ngIf="!errorDhl"
+                                    [innerHTML]="(cobDhl?.message == 'Cobertura Normal') ? '<b class=text-success>NO</b> ES ZONA EXTENDIDA' : '<b class=text-danger>SI</b> ES ZONA EXTENDIDA'">
+                                </h5>
+                                <h5 *ngIf="errorDhl"><b class=text-danger>No hay servicios Disponibles</b></h5>
+                                <table class="table border text-center" *ngIf="!errorDhl">
+                                    <thead>
+                                        <tr>
+                                            <td class="border">Terrestre</td>
+                                            <td>Dia Sig</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border"><span class="icon-ok-circled text-success"></span></td>
+                                            <td><span class="icon-ok-circled text-success"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 d-flex justify-content-center">
+                <div class="card mb-2 mt-2 shadow-sm" style="max-width: 500px;">
+                    <div class="row no-gutters">
+                        <div [ngClass]="(!errorEstafeta)? 'col-md-4 d-flex align-content-center p-4 h-25' : 'col-md-4 d-flex align-content-center p-4 h-25'"
+                            style="min-height: 70px;max-height: 180px;">
+                            <img src="../../../assets/img/estafeta.png" class="card-img" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <div class="d-flex flex-wrap">
+                                    <h5 class="card-title" *ngIf="!errorEstafeta"
+                                        [innerHTML]="(cobEstafeta?.message == 'cobertura normal Estafeta') ? '<b class=text-success>NO</b> ES ZONA EXTENDIDA' : '<b class=text-danger>SI</b> ES ZONA EXTENDIDA'">
+                                    </h5>
+                                    <h5 class="card-title" *ngIf="!errorEstafeta"
+                                        [innerHTML]="'Ocurre: '+ '<b>' + cobEstafeta.ocurre + '</b>'"></h5>
+                                </div>
+
+                                <h5 *ngIf="errorEstafeta"><b class=text-danger>No hay servicios Disponibles</b></h5>
+                                <table class="table border text-center" *ngIf="!errorEstafeta">
+                                    <thead>
+                                        <tr>
+                                            <td class="border">Terrestre</td>
+                                            <td>Dia Sig</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border"><span class="icon-ok-circled text-success"></span></td>
+                                            <td><span class="icon-ok-circled text-success"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 d-flex justify-content-center">
+                <div class="card mb-2 mt-2 shadow-sm" style="max-width: 500px;">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 d-flex align-content-center p-3 h-25"
+                            style="min-height: 70px;max-height: 180px;">
+                            <img src="../../../assets/img/globalpaq-express.png" class="card-img" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <div class="d-flex flex-wrap">
+                                    <h5 class="card-title" *ngIf="!errorGlobalpaq"
+                                        [innerHTML]="(cobGlobalpaq?.message == 'Cobertura Normal') ? '<b class=text-success>NO</b> ES ZONA EXTENDIDA' : '<b class=text-danger>SI</b> ES ZONA EXTENDIDA'">
+                                    </h5>
+                                    <h5 *ngIf="errorGlobalpaq"><b class=text-danger>No hay servicios Disponibles</b>
+                                    </h5>
+                                </div>
+
+                                <table class="table border text-center" *ngIf="!errorGlobalpaq">
+                                    <thead>
+                                        <tr>
+                                            <td class="border">Terrestre</td>
+                                            <td>Dia Sig</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><span class="icon-cancel-circled text-danger"></span></td>
+                                            <td><span class="icon-ok-circled text-success"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 d-flex justify-content-center">
+                <div class="card mb-2 mt-2 shadow-sm" style="max-width: 500px;">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 d-flex align-content-center p-2 h-25"
+                            style="min-height: 80px;max-height: 180px;">
+                            <img src="../../../assets/img/paquetexpress.png" class="card-img" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <div class="d-flex flex-wrap">
+                                    <h5 class="card-title" *ngIf="!errorPaquetexpress"
+                                        [innerHTML]="(cobPaquetexpress?.message == 'Cobertura Normal') ? '<b class=text-success>NO</b> ES ZONA EXTENDIDA' : '<b class=text-danger>SI</b> ES ZONA EXTENDIDA'">
+                                    </h5>
+                                </div>
+                                <h5 *ngIf="errorPaquetexpress"><b class=text-danger>No hay servicios Disponibles</b>
+                                </h5>
+                                <table class="table border text-center" *ngIf="!errorPaquetexpress">
+                                    <thead>
+                                        <tr>
+                                            <td class="border">Terrestre</td>
+                                            <td>Dia Sig</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border"><span class="icon-ok-circled text-success"></span></td>
+                                            <td><span class="icon-cancel-circled text-danger"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 d-flex justify-content-center">
+                <div class="card mb-2 mt-2 shadow-sm" style="max-width: 500px;">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 d-flex align-content-center p-4 h-25"
+                            style="min-height: 80px;max-height: 180px;">
+                            <img src="../../../assets/img/Redpack.png" class="card-img" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <div class="d-flex flex-wrap">
+                                    <h5 class="card-title" *ngIf="!errorRedpack"
+                                        [innerHTML]="(cobRedpack?.message == 'Cobertura Normal') ? '<b class=text-success>NO</b> ES ZONA EXTENDIDA' : '<b class=text-danger>SI</b> ES ZONA EXTENDIDA'">
+                                    </h5>
+                                </div>
+                                <h5 *ngIf="errorRedpack"><b class=text-danger>No hay servicios Disponibles</b></h5>
+                                <table class="table border text-center" *ngIf="!errorRedpack">
+                                    <thead>
+                                        <tr>
+                                            <td class="border">Terrestre</td>
+                                            <td>Dia Sig</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border"><span class="icon-ok-circled text-success"></span></td>
+                                            <td><span class="icon-cancel-circled text-danger"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #spin>
+    <div class="text-center h1">
+        <span class="icon-spin3 animate-spin"></span>
+    </div>
+</ng-template>

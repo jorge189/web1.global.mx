@@ -1,0 +1,65 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <div class="contenedor animated fadeIn" *ngIf="carga;else spin">
+        <h3>Usuarios Adicionales</h3>
+        <hr />
+
+        <button class="btn btn-outline-primary btn-sm" (click)="nuevoUsuario()"><span class="icon-plus-circled"></span> Agregar Usuario</button>
+
+        <table class="table opc-tabla shadow-sm mt-5">
+            <thead class="bg-light shadow-sm">
+                <tr>
+                    <td>Usuario</td>
+                    <td>Nombre</td>
+                    <td>correo</td>
+                    <td>Estatus</td>
+                    <td>Acciones</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of usuarios">
+                    <td data-label="Usuaurio">{{data.usuario}}</td>
+                    <td data-label="Nombre">{{data.nombre}}</td>
+                    <td data-label="Correo">{{data.correo}}</td>
+                    <td data-label="Estatus" class="font-weight-bold" [ngClass]="(data.activo == 1) ? 'text-success' : 'text-danger'">
+                        {{(data.activo == 1) ? 'Activo' : 'Inactivo'}}</td>
+                    <td data-label="Acciones" class="text-right">
+                        <div class="row text-right justify-content-end justify-content-md-center" *ngIf="data.statusenvio != 5">
+                            <div class="col-md-6 mb-1">
+                                <button [routerLink]="['/usuarios-adicionales', data.idusuario]" class="btn btn-light text-secondary" title="Ver Usuario"><span class="icon-eye"></span></button>
+                            </div>
+                            <div class="col-md-6 mb-1">
+                                <button class="btn btn-light" [title]="(data.activo == 1) ? 'Desactivar' : 'Activar'" (click)="changeStatus(data.idusuario, (data.activo == 1) ? 0 : 1)">
+                                    <span [ngClass]="(data.activo == 1) ? 'icon-minus-circled text-danger' : 'icon-plus-circled text-success'"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-center mt-4 " style="z-index: 100000;">
+            <div class="btn-group mr-2 text-right" role="group" aria-label="First group" style="z-index: 4;">
+                <button type="button" class="btn btn-outline-secondary" *ngIf="paginaActiva > 1 "
+                    (click)="verPagina(paginaActiva - 1)">
+                    <mat-icon style="font-size:15px;width: auto !important;height: auto !important">navigate_before
+                    </mat-icon>
+                </button>
+                <button type="button" class="btn btn-outline-secondary" *ngFor="let pagina of paginas"
+                    [ngClass]="(paginaActiva == pagina) ? 'active' : ''" (click)="verPagina(pagina)">{{pagina}}</button>
+                <button type="button" class="btn btn-outline-secondary"
+                    *ngIf="paginaActiva < paginas[paginas.length - 1] " (click)="verPagina(paginaActiva + 1)">
+                    <mat-icon style="font-size:15px;width: auto !important;height: auto !important">navigate_next
+                    </mat-icon>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<ng-template #spin>
+    <div class="text-center h1">
+        <span class="icon-spin3 animate-spin"></span>
+    </div>
+</ng-template>

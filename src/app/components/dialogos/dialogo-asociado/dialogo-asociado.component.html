@@ -1,0 +1,205 @@
+<form [formGroup]="forma">
+    <div *ngIf="data.tipoVista == 'nombre'">
+        <h1 mat-dialog-title class="text-primary text-center">Cambiar Nombre</h1>
+        <div mat-dialog-content>
+            <p>{{data.info.nombre}}</p>
+            <mat-form-field class="d-block">
+                <input matInput placeholder="Nuevo Nombre" value="" formControlName="nombre">
+            </mat-form-field>
+        </div>
+        <div mat-dialog-actions class="d-flex justify-content-center flex-wrap">
+            <button class="btn btn-outline-danger btn-sm mx-4 " mat-button [mat-dialog-close]="0">Cancelar</button>
+            <button type="submit" [disabled]="!forma.controls.nombre.valid" class="btn btn-outline-success btn-sm mx-4 mt-3 mt-md-0" mat-button (click)="enviarDatos('nombre')">
+                <span class="icon-switch" *ngIf="!loading"></span>
+                <span class="icon-spin3 animate-spin" *ngIf="loading"></span> Cambiar</button>
+        </div>
+    </div>
+
+    <div *ngIf="data.tipoVista == 'correoC'">
+        <h1 mat-dialog-title class="text-primary text-center">Cambiar Email</h1>
+        <div mat-dialog-content>
+            <p>{{data.info.correoC}}</p>
+            <mat-form-field class="d-block">
+                <input matInput placeholder="Nuevo Email" value="" formControlName="correoC">
+            </mat-form-field>
+        </div>
+        <div mat-dialog-actions class="d-flex justify-content-center flex-wrap">
+            <button class="btn btn-outline-danger btn-sm mx-4 " mat-button [mat-dialog-close]="0">Cancelar</button>
+            <button type="submit" [disabled]="!forma.controls.correoC.valid" class="btn btn-outline-success btn-sm mx-4 mt-3 mt-md-0" mat-button (click)="enviarDatos('correoC')">
+                <span class="icon-switch" *ngIf="!loading"></span>
+                <span class="icon-spin3 animate-spin" *ngIf="loading"></span> Cambiar</button>
+        </div>
+    </div>
+    <div *ngIf="data.tipoVista == 'telefono'">
+        <h1 mat-dialog-title class="text-primary text-center">Cambiar Telefono</h1>
+        <div mat-dialog-content>
+            <p>{{data.info.telefono}}</p>
+            <mat-form-field class="d-block">
+                <input matInput placeholder="Nuevo Telefono" value="" formControlName="telefono" [errorStateMatcher]="matcher">
+                <mat-error *ngIf="forma.controls['telefono'].errors?.existe">
+                    El telefono ya existe
+                </mat-error>
+                <mat-error *ngIf="forma.controls['telefono'].errors?.required">
+                    El telefono es necesario
+                </mat-error>
+                <mat-error *ngIf="forma.controls['telefono'].errors?.minlength">
+                    El telefono tiene que ser mayor o igual a 5 digitos
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div mat-dialog-actions class="d-flex justify-content-center flex-wrap">
+            <button class="btn btn-outline-danger btn-sm mx-4 " mat-button [mat-dialog-close]="0">Cancelar</button>
+            <button type="submit" [disabled]="!forma.controls.telefono.valid" class="btn btn-outline-success btn-sm mx-4 mt-3 mt-md-0" (click)="enviarDatos('telefono')" mat-button>
+                <span class="icon-switch" *ngIf="!loading"></span>
+                <span class="icon-spin3 animate-spin" *ngIf="loading"></span> Cambiar</button>
+        </div>
+    </div>
+    <div *ngIf="data.tipoVista == 'telefono2'">
+        <h1 mat-dialog-title class="text-primary text-center">Cambiar Telefono Secundario</h1>
+        <div mat-dialog-content>
+            <p>{{data.info.telefono2}}</p>
+            <mat-form-field class="d-block">
+                <input matInput placeholder="Nuevo Telefono Secundario" value="" formControlName="telefono2" [errorStateMatcher]="matcher">
+                <mat-error *ngIf="forma.controls['telefono2'].errors?.existe">
+                    El telefono ya existe
+                </mat-error>
+                <mat-error *ngIf="forma.controls['telefono2'].errors?.required">
+                    El telefono es necesario
+                </mat-error>
+                <mat-error *ngIf="forma.controls['telefono2'].errors?.minlength">
+                    El telefono tiene que ser mayor o igual a 5 digitos
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div mat-dialog-actions class="d-flex justify-content-center flex-wrap">
+            <button class="btn btn-outline-danger btn-sm mx-4 " mat-button [mat-dialog-close]="0">Cancelar</button>
+            <button type="submit" [disabled]="!forma.controls.telefono2.valid" class="btn btn-outline-success btn-sm mx-4 mt-3 mt-md-0" (click)="enviarDatos('telefono2')" mat-button>
+                <span class="icon-switch" *ngIf="!loading"></span>
+                <span class="icon-spin3 animate-spin" *ngIf="loading"></span> Cambiar</button>
+        </div>
+    </div>
+    <div *ngIf="data.tipoVista == 'direccion'">
+        <h1 mat-dialog-title class="text-primary text-center">Cambiar Direccion</h1>
+        <div mat-dialog-content>
+            <p>{{data.info.direccion}}</p>
+            <mat-form-field class="d-block">
+                <input matInput placeholder="Nueva Direccion" value="" formControlName="direccion">
+            </mat-form-field>
+        </div>
+        <div mat-dialog-actions class="d-flex justify-content-center flex-wrap">
+            <button class="btn btn-outline-danger btn-sm mx-4 " mat-button [mat-dialog-close]="0">Cancelar</button>
+            <button type="submit" [disabled]="!forma.controls.direccion.valid" class="btn btn-outline-success btn-sm mx-4 mt-3 mt-md-0" (click)="enviarDatos('direccion')" mat-button>
+                <span class="icon-switch" *ngIf="!loading"></span>
+                <span class="icon-spin3 animate-spin" *ngIf="loading"></span> Cambiar</button>
+        </div>
+    </div>
+    <div *ngIf="data.tipoVista == 'cp'">
+        <h1 mat-dialog-title class="text-primary text-center">Cambiar Codigo Postal</h1>
+        <div mat-dialog-content>
+            <p>{{data.info.cp}}</p>
+            <mat-form-field class="d-block">
+                <input matInput placeholder="Nuevo Codigo Postal" value="" formControlName="cp">
+            </mat-form-field>
+        </div>
+        <div mat-dialog-actions class="d-flex justify-content-center flex-wrap">
+            <button class="btn btn-outline-danger btn-sm mx-4 " mat-button [mat-dialog-close]="0">Cancelar</button>
+            <button type="submit" [disabled]="!forma.controls.cp.valid" class="btn btn-outline-success btn-sm mx-4 mt-3 mt-md-0" (click)="enviarDatos('cp')" mat-button>
+                <span class="icon-switch" *ngIf="!loading"></span>
+                <span class="icon-spin3 animate-spin" *ngIf="loading"></span> Cambiar</button>
+        </div>
+    </div>
+    <div *ngIf="data.tipoVista == 'colonia'">
+        <h1 mat-dialog-title class="text-primary text-center">Cambiar Colonia</h1>
+        <div mat-dialog-content>
+            <p>{{data.info.colonia}}</p>
+            <mat-form-field class="d-block">
+                <input matInput placeholder="Nueva Colonia" value="" formControlName="colonia">
+            </mat-form-field>
+        </div>
+        <div mat-dialog-actions class="d-flex justify-content-center flex-wrap">
+            <button class="btn btn-outline-danger btn-sm mx-4 " mat-button [mat-dialog-close]="0">Cancelar</button>
+            <button type="submit" [disabled]="!forma.controls.colonia.valid" class="btn btn-outline-success btn-sm mx-4 mt-3 mt-md-0" (click)="enviarDatos('colonia')" mat-button>
+                <span class="icon-switch" *ngIf="!loading"></span>
+                <span class="icon-spin3 animate-spin" *ngIf="loading"></span> Cambiar</button>
+        </div>
+    </div>
+    <div *ngIf="data.tipoVista == 'ciudad'">
+        <h1 mat-dialog-title class="text-primary text-center">Cambiar Ciudad</h1>
+        <div mat-dialog-content>
+            <p>{{data.info.ciudad}}</p>
+            <mat-form-field class="d-block">
+                <input matInput placeholder="Nueva Ciudad" value="" formControlName="ciudad">
+            </mat-form-field>
+        </div>
+        <div mat-dialog-actions class="d-flex justify-content-center flex-wrap">
+            <button class="btn btn-outline-danger btn-sm mx-4 " mat-button [mat-dialog-close]="0">Cancelar</button>
+            <button type="submit" [disabled]="!forma.controls.ciudad.valid" class="btn btn-outline-success btn-sm mx-4 mt-3 mt-md-0" (click)="enviarDatos('ciudad')" mat-button>
+                <span class="icon-switch" *ngIf="!loading"></span>
+                <span class="icon-spin3 animate-spin" *ngIf="loading"></span> Cambiar</button>
+        </div>
+    </div>
+    <div *ngIf="data.tipoVista == 'estado'">
+        <h1 mat-dialog-title class="text-primary text-center">Cambiar Estado</h1>
+        <div mat-dialog-content>
+            <p>{{data.info.estado | estados}}</p>
+            <mat-form-field class="d-block">
+                <mat-label>Estado</mat-label>
+                <mat-select formControlName="estado">
+                    <mat-option [value]="elemento.aestado" *ngFor="let elemento of estadosData">{{elemento.estado}}</mat-option>
+
+                </mat-select>
+            </mat-form-field>
+            <!-- <mat-form-field class="d-block">
+                <input matInput placeholder="Nuevo Estado" value="" formControlName="estado">
+            </mat-form-field> -->
+        </div>
+        <div mat-dialog-actions class="d-flex justify-content-center flex-wrap">
+            <button class="btn btn-outline-danger btn-sm mx-4 " mat-button [mat-dialog-close]="0">Cancelar</button>
+            <button type="submit" [disabled]="!forma.controls.estado.valid" class="btn btn-outline-success btn-sm mx-4 mt-3 mt-md-0" (click)="enviarDatos('estado')" mat-button>
+                <span class="icon-switch" *ngIf="!loading"></span>
+                <span class="icon-spin3 animate-spin" *ngIf="loading"></span> Cambiar</button>
+        </div>
+    </div>
+
+    <div *ngIf="data.tipoVista == 'razonSocial'">
+        <h1 mat-dialog-title class="text-primary text-center">Cambiar Razon Social</h1>
+        <div mat-dialog-content>
+            <p></p>
+            <mat-form-field class="d-block">
+                <mat-label>Razon Social</mat-label>
+                <mat-select #razon>
+
+                    <mat-option *ngFor="let razon of razonSocial" [value]="razon.id">{{razon.rfc}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div mat-dialog-actions class="d-flex justify-content-center flex-wrap">
+            <button class="btn btn-outline-danger btn-sm mx-4 " mat-button [mat-dialog-close]="0">Cancelar</button>
+            <button [disabled]="!razon.value" type="button" class="btn btn-outline-success btn-sm mx-4 mt-3 mt-md-0" (click)="cambiarRazon(razon.value)" mat-button>
+                <span class="icon-switch" *ngIf="!loading"></span>
+                <span class="icon-spin3 animate-spin" *ngIf="loading" ></span> Cambiar</button>
+        </div>
+    </div>
+
+    <div *ngIf="data.tipoVista == 'validar'">
+        <h1 mat-dialog-title class="text-primary text-center">Validar Telefono</h1>
+        <div mat-dialog-content>
+            <p>{{data.info.telefono}}</p>
+            <mat-form-field class="d-block">
+                <input matInput placeholder="Ingresa el codigo de verificación" value="" formControlName="codigo" [errorStateMatcher]="matcher">
+                <mat-error *ngIf="forma.controls['codigo'].errors?.required">
+                    El codigo es necesario
+                </mat-error>
+            </mat-form-field>
+            <div class="alert alert-danger" *ngIf="codigoValido">
+                <b><span class="icon-attention-circled"></span> <span>El codigo es incorrecto</span></b>
+            </div>
+        </div>
+        <div mat-dialog-actions class="d-flex justify-content-center flex-wrap">
+            <button class="btn btn-outline-danger btn-sm mx-4 " mat-button [mat-dialog-close]="0">Cancelar</button>
+            <button type="submit" [disabled]="!forma.controls.codigo.valid" class="btn btn-outline-success btn-sm mx-4 mt-3 mt-md-0" (click)="enviarCodigo(data.tipo)" mat-button>
+                <span class="icon-paper-plane" *ngIf="!loading"></span>
+                <span class="icon-spin3 animate-spin" *ngIf="loading"></span> Validar</button>
+        </div>
+    </div>
+</form>

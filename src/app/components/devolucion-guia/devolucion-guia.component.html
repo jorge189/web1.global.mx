@@ -1,0 +1,110 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <div>
+        <h3>Devolucion de guias</h3>
+        <hr />
+        <div class="d-flex justify-content-center mt-2 grupo mb-5">
+            <button type="button" class="opciones" [ngClass]="{'active-opc': men == 'disponibles'}"
+                (click)="cambiarMenu('disponibles')">Disponibles</button>
+            <button type="button" class="opciones" [ngClass]="{'active-opc': men == 'historial'}"
+                (click)="cambiarMenu('historial')">Historial</button>
+
+        </div>
+        <div class="d-flex justify-content-center mt-2 grupo" *ngIf="men == 'disponibles'">
+            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'fedex'}"
+                (click)="cambiarPaqueteria('fedex')">Fedex</button>
+            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'dhl'}"
+                (click)="cambiarPaqueteria('dhl')">DHL</button>
+            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'estafeta'}"
+                (click)="cambiarPaqueteria('estafeta')">Estafeta</button>
+            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'redpack'}"
+                (click)="cambiarPaqueteria('redpack')">Redpack</button>
+            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'globalpaq'}"
+                (click)="cambiarPaqueteria('globalpaq')">Globalpaq</button>
+            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'paquetexpress'}"
+                (click)="cambiarPaqueteria('paquetexpress')">Paquetexpress</button>
+        </div>
+        <table class="table opc-tabla shadow-sm" *ngIf="men != 'disponibles'">
+            <thead class="bg-light shadow-sm">
+                <tr>
+                    <td>Folio de Venta</td>
+                    <td>Nota de Credito</td>
+                    <td>Fecha</td>
+                    <td>Paqueteria</td>
+                    <td>Cantidad</td>
+                    <td>Precio</td>
+                    <td>Monto Devuelto</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let devolucion of devoluciones">
+                    <td data-label="idventa_seguimiento">{{devolucion.idventa_seguimiento}}</td>
+                    <td data-label="id_venta_created">{{devolucion.id_venta_created}}</td>
+                    <td data-label="fecha">{{devolucion.fecha}}</td>
+                    <td data-label="paqueteria">{{devolucion.paqueteria}}</td>
+                    <td data-label="cantidad">{{devolucion.cantidad_devolucion*-1}}</td>
+                    <td data-label="precio">{{devolucion.precio}}</td>
+                    <td data-label="montoDevuelto">{{devolucion.cantidad_devolucion*devolucion.precio*-1}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-center mt-4 " style="z-index: 100000;" *ngIf="men != 'disponibles'">
+            <div class="btn-group mr-2 text-right" role="group" aria-label="First group" style="z-index: 4;">
+                <button type="button" class="btn btn-outline-secondary" *ngIf="paginaActiva > 1 "
+                    (click)="verPagina(paginaActiva - 1)">
+                    <mat-icon style="font-size:15px;width: auto !important;height: auto !important">navigate_before
+                    </mat-icon>
+                </button>
+                <button type="button" class="btn btn-outline-secondary" *ngFor="let pagina of paginas"
+                    [ngClass]="(paginaActiva == pagina) ? 'active' : ''" (click)="verPagina(pagina)">{{pagina}}</button>
+                <button type="button" class="btn btn-outline-secondary"
+                    *ngIf="paginaActiva < paginas[paginas.length - 1] " (click)="verPagina(paginaActiva + 1)">
+                    <mat-icon style="font-size:15px;width: auto !important;height: auto !important">navigate_next
+                    </mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <div>
+            <div class="container" *ngIf="men == 'disponibles'">
+                <table class="table opc-tabla shadow-sm" >
+                    <thead class="bg-light shadow-sm">
+                        <tr>
+                            <td>Tipo de guia</td>
+                            <td>Descripcion</td>
+                            <td>Peso</td>
+                            <td>Disponibles</td>
+                            <td>Devolucion</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let dipS of disponibles">
+                            <td>{{dipS.tipo}}</td>
+                            <td>{{dipS.descripcion}}</td>
+                            <td>{{dipS.peso}}</td>
+                            <td>{{dipS.disponibles}}</td>
+                            <td><button type="button" class="btn btn-outline-danger" (click)="devolverGuia(dipS.descripcion,dipS.peso,dipS.disponibles,dipS.tipo,dipS.idarticulo,dipS.usadas)"><span class="icon-cancel-circled"></span></button></td>
+                        </tr>
+                      
+                    </tbody>
+                </table>
+            
+
+        </div>
+        <div  class="d-flex justify-content-center mt-4 " style="z-index: 100000;" *ngIf="men == 'disponibles'">
+            <div class="btn-group mr-2 text-right" role="group" aria-label="First group" style="z-index: 4;">
+                <button type="button" class="btn btn-outline-secondary" *ngIf="paginaActiva2 > 1 "
+                    (click)="verPagina2(paginaActiva2 - 1)">
+                    <mat-icon style="font-size:15px;width: auto !important;height: auto !important">navigate_before
+                    </mat-icon>
+                </button>
+                <button type="button" class="btn btn-outline-secondary" *ngFor="let pagina of paginas2"
+                    [ngClass]="(paginaActiva2 == pagina) ? 'active' : ''" (click)="verPagina2(pagina)">{{pagina}}</button>
+                <button type="button" class="btn btn-outline-secondary"
+                    *ngIf="paginaActiva2 < paginas[paginas.length - 1] " (click)="verPagina2(paginaActiva2 + 1)">
+                    <mat-icon style="font-size:15px;width: auto !important;height: auto !important">navigate_next
+                    </mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

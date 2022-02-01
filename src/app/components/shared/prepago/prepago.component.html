@@ -1,0 +1,74 @@
+<div class="contenedor animated fadeIn fast">
+
+
+
+    <h3>Saldo Prepago</h3>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <h4 class="text-center text-sm-left" style="margin-top: 6%;">Tu estado de prepago es: <b class="text-primary">${{saldo}}</b></h4>
+        </div>
+        <div class="col-md-6 justify-content-end">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Buscar</mat-label>
+                <input matInput type="text" [(ngModel)]="userQuestion" type="text" name="userQuestion" id="userQuestions" (ngModelChange)="this.userQuestionUpdate.next($event)">
+            </mat-form-field>
+        </div>
+    </div>
+
+
+
+
+    <table class="table opc-tabla shadow-sm mt-3">
+        <thead class="bg-light shadow-sm">
+            <tr>
+                <td>Fecha</td>
+                <td>Articulo</td>
+                <td>Tipo</td>
+                <td>Cantidad</td>
+                <td>Monto</td>
+                <td>Total</td>
+                <!-- <td>Saldo Actual</td> -->
+                <td>Paqueteria</td>
+                <td>Tracking</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let prepago of array; let i = index">
+
+                <td  data-label="Fecha">{{ prepago.created_at }}</td>
+                <td  data-label="Articulo">{{ prepago.articulo }}</td>
+                <td [ngClass]="prepago.tipo == 'CARGO' ? 'prepagoCargo' : 'prepagoAbono'" data-label="Tipo">{{ prepago.tipo }}</td>
+                <td  data-label="Cantidad">{{ prepago.cantidad }}</td>
+                <td  data-label="Monto">{{ prepago.monto }}</td>
+                <td  data-label="Total">{{ prepago.total }}</td>
+                <td  data-label="Paqueteria">{{ prepago.paqueteria }}</td>
+                <td  data-label="Tracking">{{ prepago.guia }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-center mt-4" style="z-index: 100000">
+        <div class="btn-group mr-2 text-right" role="group" aria-label="First group" style="z-index: 4">
+            <button type="button" class="btn btn-outline-secondary" *ngIf="paginaActiva > 1" (click)="verPagina(paginaActiva - 1)">
+                <mat-icon style="
+          font-size: 15px;
+          width: auto !important;
+          height: auto !important;
+        ">navigate_before</mat-icon>
+            </button>
+            <button type="button" class="btn btn-outline-secondary" *ngFor="let pagina of paginas" [ngClass]="paginaActiva == pagina ? 'active' : ''" (click)="verPagina(pagina)">
+                {{ pagina }}
+            </button>
+            <button type="button" class="btn btn-outline-secondary" *ngIf="paginaActiva < paginas[paginas.length - 1]" (click)="verPagina(paginaActiva + 1)">
+                <mat-icon style="
+          font-size: 15px;
+          width: auto !important;
+          height: auto !important;
+        ">navigate_next</mat-icon>
+            </button>
+        </div>
+    </div>
+
+
+
+</div>

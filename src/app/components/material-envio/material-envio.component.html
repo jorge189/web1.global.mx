@@ -1,0 +1,120 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <div class="contenedor animated fadeIn">
+        <h3>Material de Envio</h3>
+        <hr />
+        <div class="d-flex justify-content-center mt-2 grupo">
+            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'fedex'}"
+                (click)="cambiarPaqueteria('fedex')">Fedex</button>
+            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'dhl'}"
+                (click)="cambiarPaqueteria('dhl')">DHL</button>
+            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'estafeta'}"
+                (click)="cambiarPaqueteria('estafeta')">Estafeta</button>
+            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'redpack'}"
+                (click)="cambiarPaqueteria('redpack')">Redpack</button>
+
+        </div>
+        <form [formGroup]="forma" (ngSubmit)="agregarMaterial()">
+
+            <div class="row d-flex  mt-2">
+                <div class="col-md-4">
+                    <mat-form-field appearance="legacy" class="d-block" class=" w-100">
+                        <mat-label>Destinatario</mat-label>
+                        <textarea matInput formControlName="destinatario" style="height: 35px;"></textarea>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="row ">
+
+                        <div class="col-md-12 fluid">
+                            <mat-form-field appearance="standard" class="w-100 d-block" >
+                                <mat-label> Material <small>*sujeto a disponibilidad</small></mat-label>
+                                <mat-select formControlName="idarticulo" style="text-align: end;" (selectionChange)="changeMaterial()">
+                                    <mat-option value=""></mat-option>
+                                    <mat-option [value]="elemento.idarticulo"
+                                        *ngFor="let elemento of material;let s = index">
+                                        {{elemento.articulo}}</mat-option>
+                                </mat-select>
+                                <!-- <mat-hint *ngIf="cantidad > 0">Disponibles {{cantidad}}</mat-hint> -->
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <mat-form-field appearance="standard" class="d-block"
+                                style="width: 75px;">
+                                <mat-label>Cantidad</mat-label>
+                                <input matInput type="number" [value]="" min="1" max="99" formControlName="cantidad">
+                            </mat-form-field>
+                        </div>
+
+
+                        <div class="col-md-4 " style="padding-top: 1.2rem;">
+                            <button class="btn btn-outline-primary btn-sm"  [disabled]="forma.invalid"
+                                (click)="agregarMaterial()"><span
+                                    class="icon-plus-circled"></span>
+                                Agregar</button>
+                        </div>
+                        <div class="col-md-4 " style="padding-top: 1.2rem;">
+                            <button class="btn btn-outline-success btn-sm" type="button" [disabled]="lista.length <= 0"
+                                (click)="enviar()"><span class="icon-clipboard"></span>
+                                Solicitar</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="col-md-12">
+            <h4>Solicitud de Material</h4>
+            <hr />
+        </div>
+        <div class="row mb-5 justify-content-center">
+
+            <div class="col-md-8 ">
+                <table class="table opc-tabla shadow-sm mt-5" *ngIf="lista.length > 0">
+                    <thead class="bg-light shadow-sm">
+                        <tr>
+                            <td>#</td>
+                            <td>Material</td>
+                            <td>Cantidad</td>
+                            <td>Acción</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let movimiento of lista; let i = index">
+                            <td data-label="#">{{ i + 1 }}</td>
+                            <td data-label="Nombre">{{ movimiento.material }}</td>
+                            <td data-label="Token"><input matInput type="number" [value]="movimiento.cantidad" min="1"
+                                    max="99"></td>
+                            <button class="btn-cool btn btn-light" (click)="eliminar(i)"> <span
+                                    class="icon-cancel-circled h5 text-danger"></span> </button>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <hr />
+        <h5 class="text-primary">Lista de Materiales </h5>
+        <div class="row">
+            <div class="card mb-3 ml-2 shadow-sm" style="width: 16rem;" *ngFor="let articulo of array">
+                <div class="p-5 d-flex align-items-center border-bottom" style="height: 150px">
+                    <img src="{{articulo.img}}" class="img-fluid " alt="..." style="max-height: 145px;">
+                </div>
+                <div class="card-body">
+                    <h6> <strong> {{articulo.nombre}} </strong></h6>
+                    <p>{{articulo.descripcion}}</p>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+</div>

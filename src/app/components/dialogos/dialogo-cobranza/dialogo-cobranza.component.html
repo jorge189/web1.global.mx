@@ -1,0 +1,141 @@
+<div *ngIf="modificar == false">
+    <h1 mat-dialog-title class="text-center text-capitalize">Guia con tracking: <strong class="text-primary ">{{datos.tracking}}</strong> {{paqueteria}}</h1>
+    <div class="container">
+        <div class="row" *ngIf="paqueteria == 'fedex'">
+            <div class="col-md-3">
+                <strong>Valor Declarado</strong><br>
+                <small>{{datos.valordeclarado}}</small>
+            </div>
+            <div class="col-md-3">
+                <strong>Entrega Extendida</strong><br>
+                <small>{{(datos.entrega_extendida == null)?0:datos.entrega_extendida}}</small>
+            </div>
+            <div class="col-md-3">
+                <strong>Recoleccion Sabatina</strong><br>
+                <small>{{(datos.recoleccion_sabado == null)?0:datos.recoleccion_sabado}}</small>
+            </div>
+            <div class="col-md-3">
+                <strong>Paquete Extragrande</strong><br>
+                <small>{{(datos.paquete_extragrande == null)?0:datos.paquete_extragrande}}</small>
+            </div>
+            <div class="col-md-3">
+                <strong>Devolucion Pospago</strong><br>
+                <small>{{(datos.devolucion_pospago == null)?0:datos.devolucion_pospago}}</small>
+            </div>
+            <div class="col-md-3">
+                <strong>Embarque Pesado</strong><br>
+                <small>{{(datos.embarque_pesado == null)?0:datos.embarque_pesado}}</small>
+            </div>
+            <div class="col-md-3">
+                <strong>Cargo Agregado Sobrepeso</strong><br>
+                <small>{{datos.cargo_add_sobrepeso}}</small>
+            </div>
+            <div class="col-md-3">
+                <strong>Cargo Reembalado</strong><br>
+                <small>{{datos.cargo_reembalado}}</small>
+            </div>
+            <div class="col-md-3">
+                <strong>Extra Largo Terrestre</strong><br>
+                <small>{{datos.extralargo_terr}}</small>
+            </div>
+            <div class="col-md-3">
+                <strong>Extra Largo Dia Siguiente</strong><br>
+                <small>{{datos.extralargo_dh}}</small>
+            </div>
+        </div>
+        <div class="row" *ngIf="paqueteria == 'dhl'">
+            <div class="col-md-3">
+                <strong>Seguro</strong><br>
+                <small>{{datos.seguro}}</small>
+            </div>
+            <div class="col-md-3">
+                <strong>Seguro 2</strong><br>
+                <small>{{datos.seguro2}}</small>
+            </div>
+            <div class="col-md-3">
+                <strong>Sobrepeso</strong><br>
+                <small>{{datos.sobrepeso}}</small>
+            </div>
+            <div class="col-md-3">
+                <strong>Cobertura Extendida</strong><br>
+                <small>{{datos.cobertura_extendida}}</small>
+            </div>
+            <div class="col-md-3">
+                <strong>Dimension Excedida</strong><br>
+                <small>{{datos.dimension_excedida}}</small>
+            </div>
+            <div class="col-md-3">
+                <strong>Manejo Especial</strong><br>
+                <small>{{datos.manejo_especial}}</small>
+            </div>
+            <div class="col-md-3">
+                <strong>Multiguia</strong><br>
+                <small>{{datos.multiguia}}</small>
+            </div>
+            <div class="col-md-3">
+                <strong>Recoleccion Zona Extendida</strong><br>
+                <small>{{datos.rec_zona_extendida}}</small>
+            </div>
+            <div class="col-md-3">
+                <strong>Devolucion</strong><br>
+                <small>{{datos.devolucion}}</small>
+            </div>
+            <div class="col-md-3">
+                <strong>Entrega Sabatina</strong><br>
+                <small>{{datos.entrega_sabatina}}</small>
+            </div>
+            <div class="col-md-3">
+                <strong>Correcion Direccion</strong><br>
+                <small>{{datos.correcion_direccion}}</small>
+            </div>
+            <div class="col-md-3">
+                <strong>Sello Aduanal</strong><br>
+                <small>{{datos.sello_aduanal}}</small>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div *ngIf="modificar == true">
+    <div class="text-right">
+        <button class="trans" type="button" (click)="cancel()">
+            <mat-icon class="text-danger">cancel</mat-icon>
+        </button>
+    </div>
+    <h1 mat-dialog-title class="text-primary text-center">Modificar Medidas y Pesos</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <mat-form-field class="d-block">
+                    <mat-label>Peso</mat-label>
+                    <input appNumbersOnly matInput type="number" value="{{data.peso_old}}" name="peso_old"
+                        [(ngModel)]="peso_old" />
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field class="d-block">
+                    <mat-label>Ancho</mat-label>
+                    <input appNumbersOnly matInput type="number" value="{{data.ancho_old}}" name="ancho_old"
+                        [(ngModel)]="ancho_old" />
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field class="d-block">
+                    <mat-label>Largo</mat-label>
+                    <input appNumbersOnly matInput type="number" value="{{data.largo_old}}" name="largo_old"
+                        [(ngModel)]="largo_old" />
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field class="d-block">
+                    <mat-label>Alto</mat-label>
+                    <input appNumbersOnly matInput type="number" value="{{data.alto_old}}" name="alto_old"
+                        [(ngModel)]="alto_old" />
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="text-right mt-5">
+            <button class="btn btn-outline-info" type="button" (click)="close()">Aceptar</button>
+
+        </div>
+    </div>

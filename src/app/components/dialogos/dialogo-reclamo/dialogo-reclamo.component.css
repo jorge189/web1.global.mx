@@ -1,0 +1,14 @@
+fieldset {
+	border: 1.5px solid rgb(129, 129, 129);
+	border-radius: 4px;
+}
+
+legend {
+	border-radius: 4px;
+	color: var(--primary);
+	font-size: 17px;
+	font-weight: bold;
+	padding: 3px 5px 3px 7px;
+	width: 100px;
+	text-align: center;
+}

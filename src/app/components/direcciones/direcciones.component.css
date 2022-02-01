@@ -1,0 +1,63 @@
+fieldset {
+	border: 1.5px solid rgb(129, 129, 129);
+	border-radius: 4px;
+}
+
+legend {
+
+	border-radius: 4px;
+	color: var(--primary);
+	font-size: 17px;
+	font-weight: bold;
+	padding: 3px 5px 3px 7px;
+	width: auto;
+}
+
+.tamano-input{
+    width: 90px;
+}
+
+.paquete span{
+    color: var(--success);
+    height: 10px;
+    cursor: pointer;
+}
+
+.paquete span:hover{
+    color: var(--secondary);
+}
+
+.grupo:after{
+    clear: both;
+    display: table;
+}
+
+.opciones{
+    width: 120px;
+    height: 40px;
+    border: 0;
+    background: rgb(253, 253, 253);
+    font-size: 1.1rem;
+    border-bottom: 3px solid rgb(253, 253, 253);;
+    overflow: hidden;
+    border-right: none;
+
+}
+
+.opciones:after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px;
+    transition: transform 0.2s;
+    border-bottom: 3px solid var(--primary);
+    transform: translateY(10px);
+}
+
+.active-opc:after{
+    transform: translateY(0px);
+}
+
+.opciones:focus{
+    outline: 0;
+}

@@ -1,0 +1,69 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <div class="contenedor">
+        <h3>Carrito <span class="badge rounded-circle badge-primary">{{wsTienda.cantidad}}</span></h3>
+        <hr />
+        <div *ngIf="loading">
+            <div *ngIf="carrito.length > 0; else noCarrito">
+                <ul class="border shadow-sm">
+                    <li class="bg-white w-100" *ngFor="let articulo of carrito">
+                        <div class="row d-flex justify-content-center align-items-center" style="min-height: 50px;">
+                            <div class="col-5 col-md-1 p-4 d-flex align-items-center p-md-0 d-md-block h-25">
+                                <img [src]="articulo.nombreProducto | img" alt="" class="img-fluid w-75">
+                            </div>
+                            <div class="col-md-4 text-center text-sm-left">
+                                <p [innerHTML]="cambiarNombre(articulo.nombreProducto)"></p>
+                            </div>
+                            <div class="col-3 col-md-1 mt-1 text-center text-sm-left">
+                                <label for="">Precio</label><br>
+                                <label for=""><b>${{articulo.precio}}</b></label>
+                            </div>
+                            <div class="col-3 col-md-2 mt-1 text-center text-sm-left">
+                                <label for="">Cantidad</label><br>
+                                <label for=""><b>{{articulo.cantidad}}</b></label>
+                            </div>
+                            <div class="col-3 col-md-2 mt-1 text-center text-md-left">
+                                <label for="">Subtotal</label>
+                                <p class="h4">${{articulo.cantidad * articulo.precio | number}}</p>
+                            </div>
+                            <div class="col-md-1 text-center my-2">
+                                <span class="icon-cancel-circled h5" [ngClass]="btnCancel == articulo.id ? 'icon-spin3 animate-spin' : 'icon-cancel-circled'" (click)="borrarArticulo(articulo)"></span>
+                            </div>
+                        </div>
+
+                    </li>
+
+                </ul>
+                <div class="row d-flex justify-content-center mt-5 mb-5">
+                    <div class="col-md-5 text-center">
+                        <h2>Total: ${{total | number}} MXN</h2>
+                        <hr />
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <button class="btn btn-outline-success btn-lg" [disabled]="total <= 0" (click)="addOrden(razon.value)">Realizar Pedido</button>
+                    </div>
+                    <div class="col-md-3">
+                        <mat-form-field appearance="legacy" class="d-block">
+                            <mat-label>Razon social</mat-label>
+                            <mat-select name="razon" #razon>
+                                <mat-option>None</mat-option>
+                                <mat-option *ngFor="let razones of razones" [value]="razones">{{razones.nombre}}</mat-option>
+                            </mat-select>
+                            <!--
+                            <mat-select #servicios>
+                                <mat-option *ngFor="let articulo of articulos" [value]="articulo.idarticulo" (click)="verDetalleArticulo(articulo)">
+                                    {{articulo.articulo}}</mat-option>
+                            </mat-select> -->
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #noCarrito>
+
+    <p class="h1 text-center mt-5">
+        <span class="icon-basket display-4" style="opacity: 0.5;"></span><br> Tu Carrito Esta Vacio!!
+    </p>
+</ng-template>

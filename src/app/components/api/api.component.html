@@ -1,0 +1,95 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <div class="contenedor animated fadeIn fast">
+        <h3>Globalpaq Api</h3>
+        <hr />
+        <div class="row">
+            <!-- *ngIf="totalReg < 5" -->
+            <div *ngIf="totalReg < 5" class="col-md-3 mb-2">
+                <button class="mr-1 btn btn-primary btn-block" style="display: inline-block !important" (click)="abrir_plugins('nuevo', '','',0)">
+                    Nuevo
+                </button>
+            </div>
+            <div class="col-md-3 mb-2">
+                <a class="mr-1 btn btn-secondary jbtn btn-block" href="https://sistema.globalpaq.mx/api/docs/" target="_blank" rel="noopener noreferrer">Ver Documentación</a>
+            </div>
+            <div class="col-md-3 mb-2">
+                <button (click)="abrir_plugins('plugins', '','',0)" class="mr-1 btn btn-success jbtn btn-block">
+                    Plugins Disponibles
+                </button>
+            </div>
+        </div>
+        <!-- <li *ngIf="name">
+            El nombre del token es <i>{{ name }}</i>
+
+        </li> -->
+
+        <table class="table opc-tabla shadow-sm mt-5">
+            <thead class="bg-light shadow-sm">
+                <tr>
+                    <td>#</td>
+                    <td>IDToken</td>
+                    <td>Nombre</td>
+                    <td>Token</td>
+                    <td>Acción</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let movimiento of array; let i = index">
+                    <td data-label="#">{{ i + 1 }}</td>
+                    <td data-label="IDToken">{{ movimiento.idtoken }}</td>
+                    <td data-label="Nombre">{{ movimiento.nombre }}</td>
+                    <td data-label="Token">
+                        <!--  <mat-form-field appearance="legacy" class="w-100"> -->
+                        <mat-label></mat-label>
+                        <textarea readonly="readonly" cols="30" matInput appearance="legacy" class="w-100">{{ movimiento.token }}</textarea>
+                        <!-- </mat-form-field> -->
+                    </td>
+                    <td> <button class="btn-cool btn btn-light" (click)="abrir_plugins('delete',movimiento.idtoken,'',i)"> <span class="icon-cancel-circled h5 text-danger"></span> </button> </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-center mt-4" style="z-index: 100000">
+            <div class="btn-group mr-2 text-right" role="group" aria-label="First group" style="z-index: 4">
+                <button type="button" class="btn btn-outline-secondary" *ngIf="paginaActiva > 1" (click)="verPagina(paginaActiva - 1)">
+                    <mat-icon style="
+              font-size: 15px;
+              width: auto !important;
+              height: auto !important;
+            ">navigate_before</mat-icon>
+                </button>
+                <button type="button" class="btn btn-outline-secondary" *ngFor="let pagina of paginas" [ngClass]="paginaActiva == pagina ? 'active' : ''" (click)="verPagina(pagina)">
+                    {{ pagina }}
+                </button>
+                <button type="button" class="btn btn-outline-secondary" *ngIf="paginaActiva < paginas[paginas.length - 1]" (click)="verPagina(paginaActiva + 1)">
+                    <mat-icon style="
+              font-size: 15px;
+              width: auto !important;
+              height: auto !important;
+            ">navigate_next</mat-icon>
+                </button>
+            </div>
+        </div>
+        <!--
+        <table class="table opc-tabla shadow-sm">
+            <thead class="bg-light shadow-sm">
+                <tr>
+                    <td>#</td>
+                    <td>Nombre</td>
+                    <td>Token</td>
+                    <td>Acción</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of dataSource; let i = index">
+                    <td data-label="Fecha">{{data.position}}</td>
+                    <td data-label="No.Pedido">{{data.name}}</td>
+                    <td data-label="Cantidad">{{data.weight}}</td>
+                    <td data-label="Descripción">{{data.symbol}} </td>
+                </tr>
+            </tbody>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+    -->
+    </div>
+</div>

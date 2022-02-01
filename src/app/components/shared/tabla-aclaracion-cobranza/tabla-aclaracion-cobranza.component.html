@@ -1,0 +1,48 @@
+<div class="text-right">
+    <mat-form-field class="col-md-4 ">
+        <mat-label>Buscar</mat-label>
+        <input matInput type="text" #buscarH (keyup)="buscar(buscarH.value)">
+    </mat-form-field>
+</div>
+<table class="table opc-tabla shadow-sm">
+    <thead class="bg-light shadow-sm">
+        <tr>
+            <td>Folio </td>
+            <td>Fecha</td>
+            <td>Paqueteria</td>
+            <td>Guias Enviadas</td>
+            <td>Status</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let acl of aclaraciones; index as i">
+            <td data-label="Folio"> {{acl.id}}</td>
+            <td data-label="fecha"> {{acl.fecha}}</td>
+            <td data-label="paqueteria"> {{acl.paqueteria}}</td>
+            <td data-label="Guias Enviadas"> <button class="btn btn-info" type="button" (click)="verMas(i)">Ver mas</button></td>
+            <td data-label="Status"> {{acl.status}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="d-flex justify-content-center mt-4 " style="z-index: 100000;" >
+    <div class="btn-group mr-2 text-right" role="group" aria-label="First group" style="z-index: 4;">
+        <button type="button" class="btn btn-outline-secondary" *ngIf="paginaActiva > 1 "
+            (click)="verPagina(paginaActiva - 1)">
+            <mat-icon style="font-size:15px;width: auto !important;height: auto !important">navigate_before
+            </mat-icon>
+        </button>
+        <button type="button" class="btn btn-outline-secondary" *ngFor="let pagina of paginas"
+            [ngClass]="(paginaActiva == pagina) ? 'active' : ''" (click)="verPagina(pagina)">{{pagina}}</button>
+        <button type="button" class="btn btn-outline-secondary" *ngIf="paginaActiva < paginas[paginas.length - 1] "
+            (click)="verPagina(paginaActiva + 1)">
+            <mat-icon style="font-size:15px;width: auto !important;height: auto !important">navigate_next
+            </mat-icon>
+        </button>
+    </div>
+</div>
+<ng-template #spin>
+    <div class="text-center h1">
+        <span class="icon-spin3 animate-spin"></span>
+    </div>
+</ng-template>

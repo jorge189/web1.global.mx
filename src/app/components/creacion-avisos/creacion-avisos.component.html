@@ -1,0 +1,62 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <div>
+        <h3>Creacion de Avisos</h3>
+        <hr />
+        <div class="d-flex justify-content-center mt-2 grupo">
+            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'fedex'}"
+                (click)="cambiarPaqueteria('fedex')">Fedex</button>
+            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'dhl'}"
+                (click)="cambiarPaqueteria('dhl')">DHL</button>
+            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'estafeta'}"
+                (click)="cambiarPaqueteria('estafeta')">Estafeta</button>
+            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'redpack'}"
+                (click)="cambiarPaqueteria('redpack')">Redpack</button>
+            <!-- <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'globalpaq'}"
+                (click)="cambiarPaqueteria('globalpaq')">Globalpaq</button> -->
+        </div>
+        <div class="container">
+                <div class="row">
+                    <div class="col-md-2">
+                        <mat-form-field class="w-100">
+                            <mat-label>Tipo de Servicio</mat-label>
+                            <mat-select name="t" #t (selectionChange)="changeTipo(t.value)" [(ngModel)]="selectTipo">
+                                <mat-option value="1">Dia Siguiente</mat-option>
+                                <mat-option value="2">Terrestre</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-5">
+                        <mat-form-field class="w-100" >
+                            <mat-label>Guias Disponibles</mat-label>
+                            <mat-select #d name="selectDisponibles" (selectionChange)="cantidadGenerar(d.value)"
+                                [(ngModel)]="selectDisponibles">
+                                <mat-option *ngFor="let dispo of disponibles"
+                                    [disabled]="!dispo.activo || dispo.disponibles <= 0"
+                                    [value]="dispo.tipo + '-' +dispo.peso+ '-' +dispo.disponibles+'-'+dispo.idarticulo+'-'+dispo.descripcion">{{dispo.descripcion}}
+                                    {{dispo.peso}}
+                                    KG (Disponibles: {{dispo.disponibles}} )
+                                    {{(!dispo.activo) ? 'No Activo': ''}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field class=" d-block">
+                            <mat-label>Recordarme cuando mis Guias lleguen a :</mat-label>
+                            <mat-select name="selectCantidad" #cant [disabled]="cantidadEnabled"
+                                [(ngModel)]="selectCantidad">
+                                <mat-option *ngFor="let cant of cantidad;let indice=index" [value]="indice+1">
+                                    {{indice+1}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-12">
+                        <button class="btn btn-primary" (click)="generarAviso()"  [disabled]="disabledButton">Crear Aviso</button>
+                    </div>
+                </div>
+                <br/>
+        </div>
+        <div class="container">
+            <app-tabla-avisos [recargar]="cambio"></app-tabla-avisos>
+        </div>
+    </div>
+</div>

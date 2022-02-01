@@ -1,0 +1,53 @@
+<div *ngIf="vista" class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <div class="contenedor animated fadeIn fast">
+        <div class="row" style="justify-content: center;">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <div mat-card-avatar class="example-header-image"></div>
+                    <mat-card-title>Generar Nueva <strong class="text-primary">Contraseña</strong></mat-card-title>
+                    <!--  <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+                </mat-card-header>
+                <!-- <img mat-card-image src="" alt="logo global">-->
+                <div class="row" style="justify-content: center;">
+                    <mat-card-content autocomplete="off">
+                        <p></p>
+                        <p>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Contraseña</mat-label>
+                                <input type="password" matInput placeholder="Placeholder" #pass  autocomplete="off">
+                                <mat-icon matSuffix><span class="icon-key" style="color: blueviolet;"></span></mat-icon>
+                                <!--  <mat-hint>Hint</mat-hint> -->
+                            </mat-form-field>
+                        </p>
+                        <p>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Confirmar Contraseña</mat-label>
+                                <input type="password" matInput placeholder="Placeholder"  #confirm autocomplete="off">
+                                <mat-icon matSuffix> <span class="icon-key" style="color: blueviolet;"></span> </mat-icon>
+                                <!--  <mat-hint>Hint</mat-hint> -->
+                            </mat-form-field>
+                        </p>
+                    </mat-card-content>
+                </div>
+                <div class="row" style="justify-content: center;">
+                    <mat-card-actions>
+                        <button mat-button class="btn btn-primary btn-block" (click)="recuperar(pass.value,confirm.value)">RESTAURAR</button>
+
+                    </mat-card-actions>
+                </div>
+            </mat-card>
+
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!vista">
+    <div class="row" style="justify-content: center;">
+        <mat-card class="example-card">
+            <mat-card-header>
+                <div mat-card-avatar class="example-header-image"></div>
+                <mat-card-title>Token <strong class="text-primary">No Valido</strong></mat-card-title>
+            </mat-card-header>
+        </mat-card>
+    </div>
+</div>

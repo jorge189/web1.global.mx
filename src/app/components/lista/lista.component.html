@@ -1,0 +1,65 @@
+<h3>Selección de servicios</h3>
+<hr>
+<form [formGroup]="forma">
+    <div class="mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-2">
+                <mat-form-field class="d-block">
+                    <mat-label>Paqueteria</mat-label>
+                    <mat-select #paqueteria formControlName="paqueteria">
+                        <mat-option [value]="paq.mensajeria" *ngFor="let paq of paqueterias">{{paq.mensajeria}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2">
+                <mat-form-field class="d-block">
+                    <mat-label>Tipo de envio</mat-label>
+                    <mat-select formControlName="tipo">
+                        <mat-option value="TERR">Terrestre</mat-option>
+                        <mat-option value="DIA SIG">Dia Siguiente</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-6">
+                <mat-form-field class="d-block" *ngIf="cargaLista">
+                    <mat-label>Servicios disponibles</mat-label>
+                    <mat-select #servicios>
+                        <mat-option *ngFor="let articulo of articulos" [value]="articulo.idarticulo"
+                            (click)="verDetalleArticulo(articulo)">
+                            {{articulo.articulo}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row justify-content-center my-4" *ngIf="cargaArticulo">
+            <div class="col-md-6 animated fadeIn">
+                <div class="card" >
+                    <div class="d-flex justify-content-center pt-2">
+                        <img [src]="articulo.articulo | img" class="card-img img-fluid w-25"  alt="...">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title" [innerHTML]="cambiarNombre(articulo.articulo)"></h5>
+                        <div class="row justify-content-center">
+                            <div class="col-4">
+                                <span><b>Precio</b></span><br>
+                                <span class="h5 font-weight-bold">${{articulo.precioReal}}</span>
+                            </div>
+                            <div class="col-4">
+                                <mat-form-field class="d-block">
+                                    <input type="number" #cantidad matInput placeholder="Cantidad" value="1" min="1">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="text-center" *ngIf="carError">
+                            <p class="alert alert-danger d-block"><span class="icon-attention-circled h5"></span> La cantidad tiene que ser mayor a 0</p>
+                        </div>
+                        <div class="col-12 text-center pt-2">
+                            <button class="btn btn-outline-primary" (click)="agregarProducto(articulo, cantidad.value)"><span class="icon-basket"></span>
+                                Agregar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

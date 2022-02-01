@@ -1,0 +1,110 @@
+<div *ngIf="data.view == 'plugins'">
+    <h2 mat-dialog-title>Plugins disponibles</h2>
+    <mat-dialog-content class="mat-typography">
+        <!--  <div class="modal-dialog"> -->
+        <!-- Contenido del modal -->
+        <!-- <div class="modal-content"> -->
+        <!-- <div class="modal-header">
+                <h3 class=""></h3>
+            </div> 
+        <div class="container modal-body mod">
+            <div class="container" id="contenedor"> -->
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4 text-center text-md-left">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/WordPress.svg/1200px-WordPress.svg.png" alt="plugin de wordpress" class="img img-fluid" style="max-width: 200px;margin-top: 2%;">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <p class="card-text"><strong>Descarga el Plugin</strong></p>
+                        <a href="https://sistema.globalpaq.mx/files/plugins/plugin_woocomerseV2.zip" target="_blank">Descargar</a>
+                        <br>
+                        <p>&nbsp;</p>
+                        <p class="card-text"> <strong> Revisar Manual de Uso </strong></p>
+                        <a href="https://sistema.globalpaq.mx/files/plugins/WORDPRESS.pdf" target="_blank">Ver Manual</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4 text-center text-md-left">
+                    <img src="https://javier-valero.es/wp-content/uploads/2012/01/Vertical-Logo-2015.png" alt="plugin de wordpress" class="img img-fluid" style="max-width: 200px;">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <p class="card-text"><strong>Descarga el Plugin</strong></p>
+                        <a href="https://sistema.globalpaq.mx/files/plugins/plugin_prestashopV2.zip" target="_blank">Descargar</a>
+                        <br>
+                        <p>&nbsp;</p>
+                        <p class="card-text"> <strong> Revisar Manual de Uso </strong></p>
+                        <a href="https://sistema.globalpaq.mx/files/plugins/PRESTASHOP.pdf" target="_blank">Ver Manual</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4 text-center text-md-left">
+                    <img src="https://images.g2crowd.com/uploads/product/image/social_landscape/social_landscape_8dfd1a922e19ef6ffc78a2bbe094855c/shopify.png" alt="plugin de wordpress" class="img img-fluid" style="max-width: 200px;">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <p class="card-text"><strong>Descarga el Plugin</strong></p>
+                        <a href="https://apps.shopify.com/globalpaq" target="_blank">Descargar</a>
+                        <br>
+                        <p>&nbsp;</p>
+                        <p class="card-text"> <strong> Revisar Manual de Uso </strong></p>
+                        <a href="https://plantillas.globalpaq.mx/video/instrucciones.mp4" target="_blank">Ver Manual</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--</div>
+               <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" value="buttonPlugins" id="buttonPlugins">Aceptar</button>
+            </div>
+        </div> -->
+        <!--   </div> -->
+        <!-- </div> -->
+
+    </mat-dialog-content>
+
+</div>
+
+<div *ngIf="data.view == 'nuevo'">
+    <h1 mat-dialog-title>Debe asignarle un nombre a su nuevo token</h1>
+    <div mat-dialog-content>
+        <!-- <p>Nombre Token</p> -->
+        <mat-form-field>
+            <mat-label>Nuevo Token</mat-label>
+            <input matInput [(ngModel)]="name">
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+        <button class="btn btn-outline-success btn-sm mx-4" mat-button (click)="onNoClick()" cdkFocusInitial>Guardar</button>
+        <button class="btn btn-outline-danger btn-sm mx-4" mat-button [mat-dialog-close]="data.name">Cancelar</button>
+    </div>
+</div>
+
+<div *ngIf="data.view == 'delete'">
+    <h1 mat-dialog-title>Eliminar Token</h1>
+    <div mat-dialog-content>
+        <!-- <p>Nombre Token</p> -->
+        <!-- <mat-form-field> -->
+        <mat-label>Token </mat-label>
+        <!-- <input matInput [(ngModel)]="data.idtoken"> -->
+        <label for="">{{data.idtoken}}</label>
+        <!-- </mat-form-field> -->
+    </div>
+    <div mat-dialog-actions>
+        <div style="display: none;">
+            <input value="{{status}}" #message> -->
+            <input value="CERRAR" #action>
+        </div>
+        <button class="btn btn-outline-danger btn-sm mx-4" mat-button (click)="onNoClick()">Cancelar</button>
+        <button class="btn btn-outline-success btn-sm mx-4" mat-button (click)="borrar(data.idtoken)" [mat-dialog-close]="data.name" cdkFocusInitial>Eliminar</button>
+    </div>
+</div>

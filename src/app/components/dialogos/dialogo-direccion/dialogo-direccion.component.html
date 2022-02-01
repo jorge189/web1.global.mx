@@ -1,0 +1,53 @@
+<h1 mat-dialog-title class="">Buscar <strong class="text-primary">Dirección {{data.paqueteria | titlecase}}</strong>
+</h1>
+<form [formGroup]="forma" (ngSubmit)="buscarDir()">
+    <div mat-dialog-content>
+        <div class="row my-3">
+            <div class="col-md-8">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Escribe el nombre a buscar</mat-label>
+                    <input matInput type="text" formControlName="texto">
+                </mat-form-field>
+            </div>
+            <div class="col-md-4 mt-3">
+                <button class="btn btn-outline-primary btn-block btn-sm" [disabled]="forma.invalid">
+                    <span class="icon-spin2 animate-spin" *ngIf="loading"></span>
+                    <span class="icon-search" *ngIf="!loading"></span>
+                    Buscar
+                </button>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <div class="list-group shadow-sm">
+                <button type="button"
+                    class="list-group-item list-group-item-action d-flex justify-content-between flex-wrap animated fadeIn"
+                    [ngClass]="activo == dir.iddireccion ? 'active' : ''" *ngFor="let dir of direcciones"
+                    (click)="addDireccion(dir.iddireccion)">
+                    <span>
+                        <b>Nombre</b>:
+                        {{dir.nombre | uppercase}}
+                    </span>
+                    <!-- <span>
+                    <b>CALLE</b>:
+                    {{dir.direccion | uppercase}}
+                </span> -->
+                    <span>
+                        <b>CP</b>:
+                        {{dir.cp | uppercase}}
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions class="d-flex justify-content-between border-top">
+        <div >
+            <mat-checkbox class="animated fadeIn" [disabled]="direccion == null" formControlName="predeterminado">Usar como predeterminado</mat-checkbox>
+        </div>
+        <div>
+            <button type="button" class="btn btn-outline-danger btn-sm mr-3" mat-button (click)="onNoClick()">Cerrar</button>
+            <button type="button" class="btn btn-outline-success btn-sm" [disabled]="direccion == null" (click)="usarDireccion()"
+                mat-button><span class="icon-ok"></span> Usar Dirección</button>
+        </div>
+    </div>
+</form>

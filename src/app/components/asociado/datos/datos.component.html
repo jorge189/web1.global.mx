@@ -1,0 +1,191 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <div class="contenedor animated fadeIn" *ngIf="loading; else spin">
+        <h3>Datos de Usuario</h3>
+        <hr />
+
+        <div class="row justify-content-sm-start ">
+            <div class="col-sm-2 text-center text-sm-left pr-3">
+                <span class="icon-user-circle-o display-1 text-primary"></span>
+            </div>
+            <div class="col-sm-9 mt-3">
+                <div class="text-center text-sm-left">
+                    <p class="h3">{{info.nombre}}</p>
+                    <p class="h5">
+                        {{info.correo}}
+                    </p>
+                </div>
+
+                <div class="mt-5 pt-3">
+                    <div>
+                        <h4 class="mb-3">Datos Personales</h4>
+                        <ul class="list-group shadow-sm mb-5">
+                            <li class="list-group-item ">
+                                <div class="row d-flex justify-content-between flex-wrap">
+                                    <div class="col-sm-3">
+                                        <span class="text-dark">Nombre y Apellido</span>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <span><b>{{info.nombre}}</b></span>
+                                    </div>
+                                    <div class="col-sm-3 text-right">
+                                        <span class="text-info icon-pencil" style="cursor: pointer; user-select: none;" (click)="cambiarDato(info, 'nombre')"></span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item ">
+                                <div class="row d-flex justify-content-between flex-wrap">
+                                    <div class="col-sm-3">
+                                        <span class="text-dark">E-mail (Contacto)</span>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <span><b>{{info.correoC}}</b></span>
+                                    </div>
+                                    <div class="col-sm-3 text-right">
+                                        <span class="text-info icon-pencil" style="cursor: pointer; user-select: none;" (click)="cambiarDato(info, 'correoC')"></span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item ">
+                                <div class="row d-flex justify-content-between flex-wrap">
+                                    <div class="col-sm-3">
+                                        <span class="text-dark">Télefono</span>
+                                    </div>
+                                    <div class="col-sm-5 d-flex justify-content-start flex-wrap">
+                                        <span><b>{{info.telefono}}</b></span>&nbsp;&nbsp;&nbsp;
+                                        <div *ngIf="info.telefono != ''">
+                                            <div *ngIf="info.tel_activo == 1">
+                                                <b class=text-success>Verificado</b>
+                                            </div>
+                                            <div *ngIf="info.tel_activo != 1">
+                                                <b class="text-info" style="cursor: pointer; user-select: none;" (click)="enviarCodigo(info, 1)">Verificar</b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3 text-right">
+
+                                        <span class="text-info icon-pencil" style="cursor: pointer; user-select: none;" (click)="cambiarDato(info, 'telefono')"></span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item ">
+                                <div class="row d-flex justify-content-between flex-wrap">
+                                    <div class="col-sm-3">
+                                        <span class="text-dark">Teléfono secundario</span>
+                                    </div>
+                                    <div class="col-sm-5 d-flex justify-content-start flex-wrap">
+                                        <span><b>{{info.telefono2}}</b></span>&nbsp;&nbsp;&nbsp;
+                                        <div *ngIf="info.telefono2 != ''">
+                                            <div *ngIf="info.tel_activo2 == 1">
+                                                <b class=text-success>Verificado</b>
+                                            </div>
+                                            <div *ngIf="info.tel_activo2 != 1">
+                                                <b class="text-info" style="cursor: pointer; user-select: none;" (click)="enviarCodigo(info, 2)">Verificar</b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3 text-right">
+                                        <span class="text-info icon-pencil" style="cursor: pointer; user-select: none;" (click)="cambiarDato(info, 'telefono2')"></span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <h4 class="mb-3">Dirección</h4>
+                        <ul class="list-group shadow-sm mb-5">
+                            <li class="list-group-item ">
+                                <div class="row d-flex justify-content-between flex-wrap">
+                                    <div class="col-sm-3">
+                                        <span class="text-dark">Dirección</span>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <span><b>{{info.direccion}}</b></span>
+                                    </div>
+                                    <div class="col-sm-3 text-right">
+                                        <span class="text-info icon-pencil" style="cursor: pointer; user-select: none;" (click)="cambiarDato(info, 'direccion')"></span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item ">
+                                <div class="row d-flex justify-content-between flex-wrap">
+                                    <div class="col-sm-3">
+                                        <span class="text-dark">Codigo Postal</span>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <span><b>{{info.cp}}</b></span>
+                                    </div>
+                                    <div class="col-sm-3 text-right">
+                                        <span class="text-info icon-pencil" style="cursor: pointer; user-select: none;" (click)="cambiarDato(info, 'cp')"></span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item ">
+                                <div class="row d-flex justify-content-between flex-wrap">
+                                    <div class="col-sm-3">
+                                        <span class="text-dark">Colonia</span>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <span><b>{{info.colonia}}</b></span>
+                                    </div>
+                                    <div class="col-sm-3 text-right">
+                                        <span class="text-info icon-pencil" style="cursor: pointer; user-select: none;" (click)="cambiarDato(info, 'colonia')"></span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item ">
+                                <div class="row d-flex justify-content-between flex-wrap">
+                                    <div class="col-sm-3">
+                                        <span class="text-dark">Ciudad</span>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <span><b>{{info.ciudad}}</b></span>
+                                    </div>
+                                    <div class="col-sm-3 text-right">
+                                        <span class="text-info icon-pencil" style="cursor: pointer; user-select: none;" (click)="cambiarDato(info, 'ciudad')"></span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item ">
+                                <div class="row d-flex justify-content-between flex-wrap">
+                                    <div class="col-sm-3">
+                                        <span class="text-dark">Estado</span>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <span><b>{{info.estado | estados}}</b></span>
+                                    </div>
+                                    <div class="col-sm-3 text-right">
+                                        <span class="text-info icon-pencil" style="cursor: pointer; user-select: none;" (click)="cambiarDato(info, 'estado')"></span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <h4 class="mb-3">Razon Social</h4>
+                        <ul class="list-group shadow-sm mb-5">
+                            <li class="list-group-item ">
+                                <div class="row d-flex justify-content-between flex-wrap">
+                                    <div class="col-sm-3">
+                                        <span class="text-dark">Razon</span>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <span><b>{{razonSocial?.rfc}} - {{razonSocial?.nombre}}</b></span>
+                                    </div>
+                                    <div class="col-sm-3 text-right">
+                                        <span class="text-info icon-pencil" style="cursor: pointer; user-select: none;" (click)="cambiarDato(info, 'razonSocial')"></span>
+                                    </div>
+                                </div>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #spin>
+    <div class="text-center h1">
+        <span class="icon-spin3 animate-spin"></span>
+    </div>
+</ng-template>

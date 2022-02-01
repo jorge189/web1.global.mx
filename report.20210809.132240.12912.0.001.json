@@ -1,0 +1,348 @@
+
+{
+  "header": {
+    "reportVersion": 2,
+    "event": "Allocation failed - JavaScript heap out of memory",
+    "trigger": "FatalError",
+    "filename": "report.20210809.132240.12912.0.001.json",
+    "dumpEventTime": "2021-08-09T13:22:40Z",
+    "dumpEventTimeStamp": "1628533360394",
+    "processId": 12912,
+    "threadId": null,
+    "cwd": "C:\\xampp\\htdocs\\globalpaq\\globalpaq",
+    "commandLine": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\xampp\\htdocs\\globalpaq\\globalpaq\\node_modules\\terser-webpack-plugin\\node_modules\\jest-worker\\build\\workers\\processChild.js"
+    ],
+    "nodejsVersion": "v12.16.2",
+    "wordSize": 64,
+    "arch": "x64",
+    "platform": "win32",
+    "componentVersions": {
+      "node": "12.16.2",
+      "v8": "7.8.279.23-node.34",
+      "uv": "1.34.2",
+      "zlib": "1.2.11",
+      "brotli": "1.0.7",
+      "ares": "1.15.0",
+      "modules": "72",
+      "nghttp2": "1.40.0",
+      "napi": "5",
+      "llhttp": "2.0.4",
+      "http_parser": "2.9.3",
+      "openssl": "1.1.1e",
+      "cldr": "36.0",
+      "icu": "65.1",
+      "tz": "2019c",
+      "unicode": "12.1"
+    },
+    "release": {
+      "name": "node",
+      "lts": "Erbium",
+      "headersUrl": "https://nodejs.org/download/release/v12.16.2/node-v12.16.2-headers.tar.gz",
+      "sourceUrl": "https://nodejs.org/download/release/v12.16.2/node-v12.16.2.tar.gz",
+      "libUrl": "https://nodejs.org/download/release/v12.16.2/win-x64/node.lib"
+    },
+    "osName": "Windows_NT",
+    "osRelease": "10.0.19042",
+    "osVersion": "Windows 10 Pro",
+    "osMachine": "x86_64",
+    "cpus": [
+      {
+        "model": "Intel(R) Core(TM) i5-5300U CPU @ 2.30GHz",
+        "speed": 2295,
+        "user": 30134843,
+        "nice": 0,
+        "sys": 25285750,
+        "idle": 233682312,
+        "irq": 2245578
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-5300U CPU @ 2.30GHz",
+        "speed": 2295,
+        "user": 30518968,
+        "nice": 0,
+        "sys": 17731937,
+        "idle": 240851828,
+        "irq": 551296
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-5300U CPU @ 2.30GHz",
+        "speed": 2295,
+        "user": 33893343,
+        "nice": 0,
+        "sys": 21194718,
+        "idle": 234014671,
+        "irq": 308078
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-5300U CPU @ 2.30GHz",
+        "speed": 2295,
+        "user": 30316312,
+        "nice": 0,
+        "sys": 16276703,
+        "idle": 242509718,
+        "irq": 252171
+      }
+    ],
+    "host": "DESKTOP-FBN3TKT"
+  },
+  "javascriptStack": {
+    "message": "No stack.",
+    "stack": [
+      "Unavailable."
+    ]
+  },
+  "nativeStack": [
+    {
+      "pc": "0x00007ff6506b2309",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff6506b6869",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff6506b56e8",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff6507ddd82",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff650ffa27e",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff650fe2351",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff650eae8ac",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff650e8a7c3",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff650e88acb",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff650eb406d",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff650eb5da4",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff650eabe03",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff650eaa474",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff650ecb67d",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff650c3125f",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff65144730d",
+      "symbol": ""
+    },
+    {
+      "pc": "0x000003dbda764b90",
+      "symbol": ""
+    }
+  ],
+  "javascriptHeap": {
+    "totalMemory": 350945280,
+    "totalCommittedMemory": 350945280,
+    "usedMemory": 310443640,
+    "availableMemory": 1885825496,
+    "memoryLimit": 2197815296,
+    "heapSpaces": {
+      "read_only_space": {
+        "memorySize": 262144,
+        "committedMemory": 262144,
+        "capacity": 32808,
+        "used": 32808,
+        "available": 0
+      },
+      "new_space": {
+        "memorySize": 33554432,
+        "committedMemory": 33554432,
+        "capacity": 16759296,
+        "used": 356336,
+        "available": 16402960
+      },
+      "old_space": {
+        "memorySize": 261496832,
+        "committedMemory": 261496832,
+        "capacity": 255197216,
+        "used": 255171160,
+        "available": 26056
+      },
+      "code_space": {
+        "memorySize": 954368,
+        "committedMemory": 954368,
+        "capacity": 492864,
+        "used": 492864,
+        "available": 0
+      },
+      "map_space": {
+        "memorySize": 528384,
+        "committedMemory": 528384,
+        "capacity": 307600,
+        "used": 307600,
+        "available": 0
+      },
+      "large_object_space": {
+        "memorySize": 54099968,
+        "committedMemory": 54099968,
+        "capacity": 54080088,
+        "used": 54080088,
+        "available": 0
+      },
+      "code_large_object_space": {
+        "memorySize": 49152,
+        "committedMemory": 49152,
+        "capacity": 2784,
+        "used": 2784,
+        "available": 0
+      },
+      "new_large_object_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 16759296,
+        "used": 0,
+        "available": 16759296
+      }
+    }
+  },
+  "resourceUsage": {
+    "userCpuSeconds": 7.734,
+    "kernelCpuSeconds": 1.156,
+    "cpuConsumptionPercent": 177.8,
+    "maxRss": 384864256,
+    "pageFaults": {
+      "IORequired": 178139,
+      "IONotRequired": 0
+    },
+    "fsActivity": {
+      "reads": 26,
+      "writes": 5
+    }
+  },
+  "libuv": [
+  ],
+  "workers": [
+  ],
+  "environmentVariables": {
+    "ALLUSERSPROFILE": "C:\\ProgramData",
+    "APPDATA": "C:\\Users\\armando\\AppData\\Roaming",
+    "BROWSERSLIST_IGNORE_OLD_DATA": "1",
+    "CHROME_CRASHPAD_PIPE_NAME": "\\\\.\\pipe\\crashpad_13348_ZZALCFUGQFHTKFFH",
+    "COLORTERM": "truecolor",
+    "CommonProgramFiles": "C:\\Program Files\\Common Files",
+    "CommonProgramFiles(x86)": "C:\\Program Files (x86)\\Common Files",
+    "CommonProgramW6432": "C:\\Program Files\\Common Files",
+    "COMPUTERNAME": "DESKTOP-FBN3TKT",
+    "ComSpec": "C:\\WINDOWS\\system32\\cmd.exe",
+    "dp0": "C:\\Users\\armando\\AppData\\Roaming\\npm\\",
+    "DriverData": "C:\\Windows\\System32\\Drivers\\DriverData",
+    "FORCE_COLOR": "1",
+    "GIT_ASKPASS": "c:\\Users\\armando\\AppData\\Local\\Programs\\Microsoft VS Code\\resources\\app\\extensions\\git\\dist\\askpass.sh",
+    "HOMEDRIVE": "C:",
+    "HOMEPATH": "\\Users\\armando",
+    "JAVA_HOME": "C:\\Program Files\\Java\\jdk1.8.0_251",
+    "JEST_WORKER_ID": "1",
+    "LANG": "es_419.UTF-8",
+    "LOCALAPPDATA": "C:\\Users\\armando\\AppData\\Local",
+    "LOGONSERVER": "\\\\DESKTOP-FBN3TKT",
+    "NUMBER_OF_PROCESSORS": "4",
+    "OneDrive": "C:\\Users\\armando\\OneDrive",
+    "OneDriveConsumer": "C:\\Users\\armando\\OneDrive",
+    "ORIGINAL_XDG_CURRENT_DESKTOP": "undefined",
+    "OS": "Windows_NT",
+    "Path": "C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\PuTTY\\;C:\\Program Files\\nodejs\\;C:\\Gradle\\gradle-6.5\\bin;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\Git\\cmd;C:\\Program Files\\Git\\mingw64\\bin;C:\\Program Files\\Git\\usr\\bin;C:\\Users\\armando\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\armando\\AppData\\Roaming\\npm;C:\\Users\\armando\\AppData\\Roaming\\Composer\\vendor\\bin;C:\\Users\\armando\\AppData\\Local\\Programs\\Microsoft VS Code\\bin",
+    "PATHEXT": ".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JSE;.WSF;.WSH;.MSC",
+    "PROCESSOR_ARCHITECTURE": "AMD64",
+    "PROCESSOR_IDENTIFIER": "Intel64 Family 6 Model 61 Stepping 4, GenuineIntel",
+    "PROCESSOR_LEVEL": "6",
+    "PROCESSOR_REVISION": "3d04",
+    "ProgramData": "C:\\ProgramData",
+    "ProgramFiles": "C:\\Program Files",
+    "ProgramFiles(x86)": "C:\\Program Files (x86)",
+    "ProgramW6432": "C:\\Program Files",
+    "PROMPT": "$P$G",
+    "PSModulePath": "C:\\Program Files\\WindowsPowerShell\\Modules;C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\Modules",
+    "PT5HOME": "C:\\Program Files (x86)\\Cisco Packet Tracer 6.0.1",
+    "PT6HOME": "C:\\Program Files (x86)\\Cisco Packet Tracer 6.0.1",
+    "PUBLIC": "C:\\Users\\Public",
+    "SESSIONNAME": "Console",
+    "SystemDrive": "C:",
+    "SystemRoot": "C:\\WINDOWS",
+    "TEMP": "C:\\Users\\armando\\AppData\\Local\\Temp",
+    "TERM_PROGRAM": "vscode",
+    "TERM_PROGRAM_VERSION": "1.59.0",
+    "TMP": "C:\\Users\\armando\\AppData\\Local\\Temp",
+    "USERDOMAIN": "DESKTOP-FBN3TKT",
+    "USERDOMAIN_ROAMINGPROFILE": "DESKTOP-FBN3TKT",
+    "USERNAME": "armando",
+    "USERPROFILE": "C:\\Users\\armando",
+    "VSCODE_GIT_ASKPASS_MAIN": "c:\\Users\\armando\\AppData\\Local\\Programs\\Microsoft VS Code\\resources\\app\\extensions\\git\\dist\\askpass-main.js",
+    "VSCODE_GIT_ASKPASS_NODE": "C:\\Users\\armando\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
+    "VSCODE_GIT_IPC_HANDLE": "\\\\.\\pipe\\vscode-git-c56da7ed0e-sock",
+    "WEBPACK_DEV_SERVER": "true",
+    "windir": "C:\\WINDOWS",
+    "_prog": "node"
+  },
+  "sharedObjects": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+    "C:\\WINDOWS\\System32\\KERNEL32.DLL",
+    "C:\\WINDOWS\\System32\\KERNELBASE.dll",
+    "C:\\WINDOWS\\System32\\WS2_32.dll",
+    "C:\\WINDOWS\\System32\\RPCRT4.dll",
+    "C:\\WINDOWS\\System32\\PSAPI.DLL",
+    "C:\\WINDOWS\\System32\\ADVAPI32.dll",
+    "C:\\WINDOWS\\System32\\msvcrt.dll",
+    "C:\\WINDOWS\\System32\\sechost.dll",
+    "C:\\WINDOWS\\System32\\USER32.dll",
+    "C:\\WINDOWS\\System32\\win32u.dll",
+    "C:\\WINDOWS\\System32\\GDI32.dll",
+    "C:\\WINDOWS\\System32\\gdi32full.dll",
+    "C:\\WINDOWS\\System32\\msvcp_win.dll",
+    "C:\\WINDOWS\\System32\\ucrtbase.dll",
+    "C:\\WINDOWS\\System32\\CRYPT32.dll",
+    "C:\\WINDOWS\\System32\\bcrypt.dll",
+    "C:\\WINDOWS\\SYSTEM32\\dbghelp.dll",
+    "C:\\WINDOWS\\SYSTEM32\\IPHLPAPI.DLL",
+    "C:\\WINDOWS\\SYSTEM32\\USERENV.dll",
+    "C:\\WINDOWS\\SYSTEM32\\WINMM.dll",
+    "C:\\WINDOWS\\System32\\IMM32.DLL",
+    "C:\\WINDOWS\\SYSTEM32\\powrprof.dll",
+    "C:\\WINDOWS\\SYSTEM32\\UMPDC.dll",
+    "C:\\WINDOWS\\SYSTEM32\\CRYPTBASE.DLL",
+    "C:\\WINDOWS\\system32\\uxtheme.dll",
+    "C:\\WINDOWS\\System32\\combase.dll",
+    "C:\\WINDOWS\\system32\\mswsock.dll",
+    "C:\\WINDOWS\\SYSTEM32\\kernel.appcore.dll",
+    "C:\\WINDOWS\\System32\\bcryptprimitives.dll",
+    "C:\\WINDOWS\\System32\\NSI.dll",
+    "C:\\WINDOWS\\system32\\pnrpnsp.dll",
+    "C:\\WINDOWS\\system32\\wshbth.dll",
+    "C:\\WINDOWS\\system32\\NLAapi.dll",
+    "C:\\WINDOWS\\SYSTEM32\\DNSAPI.dll",
+    "C:\\WINDOWS\\System32\\winrnr.dll"
+  ]
+}

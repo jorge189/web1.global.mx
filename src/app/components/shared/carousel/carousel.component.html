@@ -1,0 +1,38 @@
+<!------ Include the above in your HEAD tag ---------->
+
+<section class="slide-wrapper d-md-block d-none">
+    <div class="container">
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol style="display: none;" class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+                <li data-target="#myCarousel" data-slide-to="3"></li>
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div *ngFor="let images of images; let i = index" class="carousel-item">
+                <img src="{{images.nomImage}}" class="d-block w-100" alt="...">
+            </div>
+
+
+            <div class="carousel-inner ">
+                <div class="carousel-item active">
+                    <div class="fill" style=" background-image: url(../../../../assets/img/PASOS.svg);"></div>
+                </div>
+                <div *ngFor="let images of images; let i = index" class="carousel-item">
+                    <div class="fill" [style]=" 'background-image: url('+images.nomImage+');' | style "></div>
+                </div>
+                <!-- <div class="carousel-item">
+                    <div class="fill" style=" background-image: url(../../../../assets/img/PASOS.svg);"></div>
+                </div>
+                <div class="carousel-item">
+                    <div class="fill" style=" background-image: url(../../../../assets/img/PASOS.svg);"></div>
+                </div> -->
+            </div>
+
+
+        </div>
+    </div>
+</section>

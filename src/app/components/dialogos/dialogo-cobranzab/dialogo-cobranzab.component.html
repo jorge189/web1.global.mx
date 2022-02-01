@@ -1,0 +1,78 @@
+<h1 mat-dialog-title class="text-center text-capitalize text-primary">Guias Enviadas</h1>
+<div mat-dialog-content>
+    <div class="row">
+        <div class="col-md-6">
+            <mat-form-field class="d-block">
+                <mat-label>Numero de Orden</mat-label>
+                <input matInput type="text" value="{{clave}}" name="clave" [(ngModel)]="clave" disabled />
+            </mat-form-field>
+        </div>
+        <div class="col-md-6">
+            <mat-form-field class="d-block">
+                <mat-label>Monto Indemnizado</mat-label>
+                <input matInput type="text" value="{{monto}}" name="monto" [(ngModel)]="monto" disabled />
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="text-right">
+        <mat-form-field class="col-md-4 ">
+            <mat-label>Buscar</mat-label>
+            <input matInput type="text" #buscarH (keyup)="buscar(buscarH.value)">
+        </mat-form-field>
+    </div>
+    <table class="table opc-tabla shadow-sm">
+        <thead class="bg-light shadow-sm">
+            <tr>
+                <td>Tracking </td>
+                <td>Fecha</td>
+                <td>Peso</td>
+                <td>Peso Volumetrico</td>
+                <td>Comentario</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let guia of guiasEnv;index as i">
+                <td data-label="Tracking">{{guia.tracking}} </td>
+                <td data-label="Fecha">{{guia.fecha}}</td>
+                <td data-label="Peso">
+                    <div class="text-success">Peso De Paqueteria: {{guia.row.peso_old}} Kg</div>
+                    <div class="text-danger" *ngIf="guia.row.peso_old != guia.row.peso_new"><br>Peso Modificado:
+                        {{guia.row.peso_new}} Kg</div>
+                </td>
+                <td data-label="Peso Volumetrico">
+                    <div class="text-success">Peso Volumetrico de paqueteria: {{guia.pesoVolumetricoo}} Kg</div>
+                    <div class="text-danger" *ngIf="guia.pesoVolumetricoo != guia.pesoVolumetricon"><br>Peso Volumetrico
+                        Modificado: {{guia.pesoVolumetricon}} Kg</div>
+                </td>
+                <td data-label="Comentario">{{guia.comentario}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-center mt-4 " style="z-index: 100000;">
+        <div class="btn-group mr-2 text-right" role="group" aria-label="First group" style="z-index: 4;">
+            <button type="button" class="btn btn-outline-secondary" *ngIf="paginaActiva > 1 "
+                (click)="verPagina(paginaActiva - 1)">
+                <mat-icon style="font-size:15px;width: auto !important;height: auto !important">navigate_before
+                </mat-icon>
+            </button>
+            <button type="button" class="btn btn-outline-secondary" *ngFor="let pagina of paginas"
+                [ngClass]="(paginaActiva == pagina) ? 'active' : ''" (click)="verPagina(pagina)">{{pagina}}</button>
+            <button type="button" class="btn btn-outline-secondary" *ngIf="paginaActiva < paginas[paginas.length - 1] "
+                (click)="verPagina(paginaActiva + 1)">
+                <mat-icon style="font-size:15px;width: auto !important;height: auto !important">navigate_next
+                </mat-icon>
+            </button>
+        </div>
+    </div>
+    <ng-template #spin>
+        <div class="text-center h1">
+            <span class="icon-spin3 animate-spin"></span>
+        </div>
+    </ng-template>
+    <mat-form-field class="text-capitalize d-block mt-5">
+        <textarea matInput placeholder="..." [(ngModel)]="comentario" name="comentario" disabled></textarea>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions class="d-flex justify-content-end  w-100">
+    <button class="btn btn-outline-danger" (click)="cerrarDialog()">Cerrar</button>
+</div>

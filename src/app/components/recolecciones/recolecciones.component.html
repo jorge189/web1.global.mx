@@ -1,0 +1,34 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <div class="contenedor animated fadeIn" *ngIf="carga;else spin">
+        <h3>Nueva Recolección</h3>
+        <hr />
+
+        <div class="mt-4">
+            <div class="d-flex justify-content-center flex-wrap mt-2 grupo">
+                <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'fedex'}"
+                    (click)="cambiarPaqueteria('fedex')">Fedex</button>
+                <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'dhl'}"
+                    (click)="cambiarPaqueteria('dhl')">DHL</button>
+                <!-- <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'estafeta'}"
+                    (click)="cambiarPaqueteria('estafeta')">Estafeta</button>
+                <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'redpack'}"
+                    (click)="cambiarPaqueteria('redpack')">Redpack</button>
+                <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'paquetexpress'}"
+                    (click)="cambiarPaqueteria('paquetexpress')">Paquetexpress</button> -->
+                <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'globalpaq'}"
+                    (click)="cambiarPaqueteria('globalpaq')">Globalpaq</button>
+            </div>
+        </div>
+        
+        <app-normal *ngIf="paqueteria == 'fedex' || paqueteria == 'dhl'" [paqueteria]="paqueteria"></app-normal>
+
+        <app-globalpaq *ngIf="paqueteria == 'globalpaq'"></app-globalpaq>
+    </div>
+</div>
+
+
+<ng-template #spin>
+    <div class="text-center h1">
+        <span class="icon-spin3 animate-spin"></span>
+    </div>
+</ng-template>

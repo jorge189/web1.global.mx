@@ -1,0 +1,47 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <div class="contenedor animated fadeIn" *ngIf="carga;else spin">
+        <h3>Tienda Globalpaq</h3>
+        <hr />
+        <h5 class="text-primary">Productos Disponibles</h5>
+        <div class="row mt-4  justify-content-center flex-wrap">
+            <div class="card mb-3 ml-2 shadow-sm" style="width: 16rem;" *ngFor="let articulo of articulos">
+                <div class="p-5 d-flex align-items-center border-bottom" style="height: 150px">
+                    <img [src]="articulo.articulo | img" class="img-fluid " alt="...">
+                </div>
+                <div class="card-body">
+                    <h6 class="card-title" style="min-height: 70px;" [innerHTML]="cambiarNombre(articulo.articulo)">
+                    </h6>
+                    <div class="row">
+                        <div class="col-7 pt-3" *ngIf="articulo.idarticulo != 1730">
+                            <p class="card-text h5"><b>${{articulo.precio}}</b></p>
+                        </div>
+                        <div class="col-7" *ngIf="articulo.idarticulo == 1730">
+                            <mat-form-field class="d-block">
+                                <input type="number" matInput placeholder="Precio" [value]="0" [(ngModel)]="precio">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-5">
+                            <mat-form-field class="d-block">
+                                <input type="number" matInput placeholder="Cantidad"
+                                    [value]="(articulo.facturacion ? articulo.facturacion : 1)"
+                                    [min]="(articulo.facturacion ? articulo.facturacion : 1)" max="99" #cantidad
+                                    [disabled]="articulo.idarticulo == 1730">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-12 text-center pt-2">
+                            <button class="btn btn-outline-primary"
+                                (click)="agregarProducto(articulo, cantidad.value)"><span class="icon-basket"></span>
+                                Agregar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #spin>
+    <div class="text-center h1">
+        <span class="icon-spin3 animate-spin"></span>
+    </div>
+</ng-template>

@@ -1,0 +1,138 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <div class="contenedor animated fadeIn" *ngIf="carga;else spin">
+        <app-lista></app-lista>
+        <h3>Cotizar Servicio</h3>
+        <hr />
+        <form [formGroup]="formulario" (ngSubmit)="cotizar()">
+            <div class="row  shadow-sm p-2 mt-4 justify-content-center bg-white">
+                <div class="col-md-2">
+                    <p class="h6 text-primary"><span class="icon-truck"></span> Envio</p>
+                    <mat-form-field class="d-block">
+                        <input matInput placeholder="C.P. Origen" value="" formControlName="origen">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2">
+                    <p class="h6">&nbsp;</p>
+                    <mat-form-field class="d-block">
+                        <input matInput placeholder="C.P. Destino" value="" formControlName="destino">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-1">
+                    <p class="h6 text-primary d-flex"><span class="icon-box"></span>Paquete</p>
+                    <mat-form-field class="d-block">
+                        <input type="number" matInput placeholder="Alto" (keyup)="getPesoV()" value=""
+                            formControlName="alto">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-1">
+                    <p class="h6">&nbsp;</p>
+                    <mat-form-field class="d-block">
+                        <input type="number" matInput placeholder="Largo" (keyup)="getPesoV()" value=""
+                            formControlName="largo">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-1">
+                    <p class="h6">&nbsp;</p>
+                    <mat-form-field class="d-block">
+                        <input type="number" matInput placeholder="Ancho" (keyup)="getPesoV()" value=""
+                            formControlName="ancho">
+                    </mat-form-field>
+                </div>
+                <!-- <div class="col-md-3">
+                    <p class="h6 text-primary"><span class="icon-box"></span> Paquete</p>
+                    <div class="d-md-flex justify-content-md-between">
+                        <mat-form-field class="d-block">
+                            <input type="number" matInput placeholder="Alto" (keyup)="getPesoV()" value="" formControlName="alto">
+                        </mat-form-field>
+                        <mat-form-field class="d-block">
+                            <input type="number" matInput placeholder="Largo" (keyup)="getPesoV()" value="" formControlName="largo">
+                        </mat-form-field>
+                        <mat-form-field class="d-block">
+                            <input type="number" matInput placeholder="Ancho" (keyup)="getPesoV()" value="" formControlName="ancho">
+                        </mat-form-field>
+                    </div>
+                </div> -->
+                <div class="col-md-4">
+                    <p class="h6">&nbsp;</p>
+                    <div class="d-md-flex">
+                        <mat-form-field class="d-block w-50 mr-2">
+                            <input type="number" matInput placeholder="Peso Volumetrico" [value]="pesov"
+                                formControlName="pesov">
+                        </mat-form-field>
+                        <mat-form-field class="d-block w-50">
+                            <input type="number" matInput placeholder="Peso" value="" formControlName="peso">
+                        </mat-form-field>
+                    </div>
+
+                </div>
+                <!-- <div class="col-md-2 pr-1">
+                <mat-checkbox class="d-block text-primary">Asegurar Envio</mat-checkbox>
+                <mat-form-field class="d-block" style="margin-top: -5px">
+                    <input type="number" matInput placeholder="Monto" value="">
+                </mat-form-field>
+            </div> -->
+                <div class="col-12 text-center my-3">
+                    <button class="btn-ok" type="submit" [disabled]="!formulario.valid">Cotizar</button>
+                    <button class="btn btn-outline-info" type="button" (click)="limpiar()">Limpiar</button>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+
+        </div>
+        <div *ngIf="loadArticulos">
+            <div class="text-center h1 mt-3">
+                <span class="icon-spin3 animate-spin"></span>
+            </div>
+        </div>
+        <div *ngIf="message">
+            <p class="alert alert-danger d-block text-center">
+                <span>No hay Articulos Disponibles</span>
+            </p>
+        </div>
+        <div class="d-flex justify-content-center flex-wrap my-3 shadow-sm animated fadeIn" *ngIf="!loadArticulos">
+
+            <div class="card w-100" *ngFor="let articulo of articulos">
+                <div class="row no-gutters justify-content-center">
+                    <div class="col-md-4 d-flex align-items-center justify-content-center p-2">
+                        <img [src]="articulo.articulo | img" class="card-img img-fluid w-50" width="120" alt="...">
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body">
+                            <h6 class="card-title" [innerHTML]="cambiarNombre(articulo.articulo)"></h6>
+                            <div class="row mt-2">
+                                <div class="col-sm-3">
+                                    <p class="card-text"><b>${{totalVenta(articulo)}}</b></p>
+                                </div>
+                                <div class="col-sm-5">
+                                    <small>Zona Extendida<span
+                                            [ngClass]="zonas(articulo) ? 'icon-ok-circled text-success' : 'icon-cancel-circled text-danger'"></span></small><br>
+                                    <small>Seguro <span class="icon-cancel-circled text-danger"></span></small><br>
+                                    <small>Paquete Extragrande <span
+                                            [ngClass]="extraGrande(articulo) ? 'icon-ok-circled text-success' : 'icon-cancel-circled text-danger'"></span></small><br>
+                                </div>
+
+                                <div
+                                    class="col-sm-3 text-center">
+                                    <div class="py-2">
+                                        <span class="card-text" (click)="Detalles(articulo)"><strong class="text-primary"
+                                                style="cursor: pointer">Detalles</strong>
+                                        </span>
+                                    </div>
+                                    <button class="btn btn-outline-primary" (click)="agregarCarrito(articulo)"><span
+                                            class="icon-basket"></span>&nbsp;Agregar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #spin>
+    <div class="text-center h1">
+        <span class="icon-spin3 animate-spin"></span>
+    </div>
+</ng-template>

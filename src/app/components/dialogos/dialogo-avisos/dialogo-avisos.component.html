@@ -1,0 +1,33 @@
+<button type="button" class="close" aria-label="Close" (click)="onNoClick()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <div *ngIf="data.vista == 'modificar'">
+      <h3 class=" text-center text-primary text-capitalize">{{data.data.titulo}}</h3>
+      <h5 class=" text-center text-capitalize">{{data.data.subtitulo}}</h5>
+    <div class="row justify-content-center mt-4" >
+        <!-- <label class="col-md-2 pa">Minimo:</label> -->
+        <mat-form-field appearance="legacy" class="col-md-5">
+          <mat-select [(ngModel)]="selected">
+            <mat-option *ngFor="let numero of cantidad;let i = index" [value]="i+1">{{i+1}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="row justify-content-end" >
+          <button class="btn btn-outline-success" (click)="modificar()"><span class="icon-pencil"></span>Modificar</button>
+      </div>
+      </div>
+      <div *ngIf="data.vista == 'eliminar'">
+        <h3 class=" text-center text-primary text-capitalize">{{data.data.titulo}}</h3>
+      <h5 class=" text-center text-capitalize">{{data.data.subtitulo}}</h5>
+
+
+      <div class="row mt-4" >
+        <div class="col-md-9">
+          <button class="btn btn-outline-danger" (click)="onNoClick()"><span class="icon-cancel"></span>Cancelar</button>
+        </div>
+        <div class="col-md-3">
+          <button class="btn btn-outline-success" (click)="delete()"><span class="icon-pencil"></span>Aceptar</button>
+        </div>
+      </div>
+      </div>

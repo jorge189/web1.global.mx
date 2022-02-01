@@ -1,0 +1,15 @@
+<div style="z-index: 1000;position: fixed;top: 53px; right: 0;">
+    <div (newNoti)="newNotification($event.id)" *ngFor="let item of notificaciones" class="toast" [ngClass]="(item.activo) ? '': 'hide'" style="opacity: 1;width: 300px !important; border-color: #6492BE;" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img [src]="(item.icon != '') ? item.icon : './assets/img/notification.png'" class="rounded mr-2 img img-fluid" width="20">
+            <strong class="mr-auto">{{item.titulo}}</strong>
+            <small>{{item.date}}</small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close" (click)="closeToast(item.id)">
+                <span class="text-danger icon-cancel-circled h5"></span>
+            </button>
+        </div>
+        <div class="toast-body" [innerHTML]="item.html">
+            
+        </div>
+    </div>
+</div>

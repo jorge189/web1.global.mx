@@ -1,0 +1,22 @@
+.jbtn:hover {
+    transition: ease 0.2s;
+    transform: scale(1.05, 1.03);
+}
+
+.jbtn:disabled {
+    transform: scale(1, 1);
+}
+
+.mat-header-cell {
+    color: aliceblue;
+    font-size: 24px;
+}
+
+.btn-cool {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    margin-inline: auto;
+}

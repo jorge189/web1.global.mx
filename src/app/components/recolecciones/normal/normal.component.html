@@ -1,0 +1,184 @@
+<div class="row mt-5 justify-content-center align-items-center">
+    <div class="col-md-5">
+        <mat-form-field appearance="legacy" class="w-100">
+            <mat-label>Numero de Guia</mat-label>
+            <input [(ngModel)]="tracking" matInput>
+        </mat-form-field>
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-primary btn-block btn-sm" (click)="validarGuia()" [disabled]="tracking == '' || loading">
+            <span class="icon-search" *ngIf="!loading"></span>
+            <span class="icon-spin3 animate-spin" *ngIf="loading"></span>
+            Buscar
+        </button>
+    </div>
+</div>
+<div *ngIf="msgError != ''">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <p class="alert alert-danger text-center">
+                <span>{{msgError}}</span>
+            </p>
+        </div>
+    </div>
+</div>
+<div *ngIf="msgOk != ''">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <p class="alert alert-success text-center">
+                <span [innerHTML]="msgOk"></span>
+            </p>
+        </div>
+    </div>
+</div>
+<div *ngIf="validado">
+    <div class="my-4 row">
+        <div class="col-md-3">
+            <mat-checkbox [(ngModel)]="checkDirecc" (change)="direccionGuia($event)">Usar la dirección de la guia
+            </mat-checkbox>
+            <button class="btn btn-outline-primary btn-sm" (click)="openDialogDireccion('remitente')"><span
+                    class="icon-search"></span> Buscar Dirección</button>
+        </div>
+        <div class="col-md-3">
+        </div>
+    </div>
+    <form [formGroup]="forma" (ngSubmit)="generar()">
+        <div formGroupName="remitente">
+            <div class="row">
+                <div class="col-md-3">
+                    <mat-form-field class="w-100">
+                        <input class="text-uppercase" matInput placeholder="Nombre" formControlName="nombre">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field class="w-100">
+                        <input class="text-uppercase" matInput placeholder="Compania" formControlName="compania">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2">
+                    <mat-form-field class="w-100">
+                        <input type="number" placeholder="Telefono" matInput formControlName="telefono">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field class="w-100">
+                        <input class="text-uppercase" matInput placeholder="Calle y numero" formControlName="calle">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <mat-form-field class="w-100">
+                        <input type="number" matInput placeholder="Codigo Postal" formControlName="cp" #cpR>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field class="w-100">
+                        <mat-label>Colonia</mat-label>
+                        <mat-select formControlName="colonia">
+                            <mat-option *ngFor="let col of coloniasRemitente" [value]="col.colonia">
+                                {{col.colonia}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field class="w-100">
+                        <input class="text-uppercase" type="text" matInput placeholder="Ciudad"
+                            formControlName="ciudad">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field class="w-100">
+                        <mat-label>Estado</mat-label>
+                        <mat-select formControlName="estado">
+                            <mat-option [value]="elemento.aestado" *ngFor="let elemento of estados">
+                                {{elemento.estado}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div formGroupName="recoleccion">
+            <div class="row">
+                <div class="col-md-4">
+                    <mat-form-field class="w-100">
+                        <mat-label>Fecha de Recolección</mat-label>
+                        <input matInput [matDatepickerFilter]="noWeekends" [matDatepicker]="picker"
+                            formControlName="fecha">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field class="w-100">
+                        <mat-label>Hora de entrega</mat-label>
+                        <mat-select formControlName="horaBefore">
+                            <mat-option value="08:00:00">8:00 a.m.</mat-option>
+                            <mat-option value="08:30:00">8:30 a.m.</mat-option>
+                            <mat-option value="09:00:00">9:00 a.m.</mat-option>
+                            <mat-option value="09:30:00">9:30 a.m.</mat-option>
+                            <mat-option value="10:00:00">10:00 a.m.</mat-option>
+                            <mat-option value="10:30:00">10:30 a.m.</mat-option>
+                            <mat-option value="11:00:00">11:00 a.m.</mat-option>
+                            <mat-option value="11:30:00">11:30 a.m.</mat-option>
+                            <mat-option value="12:00:00">12:00 p.m.</mat-option>
+                            <mat-option value="12:30:00">12:30 p.m.</mat-option>
+                            <mat-option value="13:00:00">1:00 p.m.</mat-option>
+                            <mat-option value="13:30:00">1:30 p.m.</mat-option>
+                            <mat-option value="14:00:00">2:00 p.m.</mat-option>
+                            <mat-option value="14:30:00">2:30 p.m.</mat-option>
+                            <mat-option value="15:00:00">3:00 p.m.</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field class="w-100">
+                        <mat-label>Ultima hora disponible</mat-label>
+                        <mat-select formControlName="horaAfter">
+                            <mat-option value="12:00:00">12:00 p.m.</mat-option>
+                            <mat-option value="12:30:00">12:30 p.m.</mat-option>
+                            <mat-option value="13:00:00">1:00 p.m.</mat-option>
+                            <mat-option value="13:30:00">1:30 p.m.</mat-option>
+                            <mat-option value="14:00:00">2:00 p.m.</mat-option>
+                            <mat-option value="14:30:00">2:30 p.m.</mat-option>
+                            <mat-option value="15:00:00">3:00 p.m.</mat-option>
+                            <mat-option value="15:30:00">3:30 p.m.</mat-option>
+                            <mat-option value="16:00:00">4:00 p.m.</mat-option>
+                            <mat-option value="16:30:00">4:30 p.m.</mat-option>
+                            <mat-option value="17:00:00">5:00 p.m.</mat-option>
+                            <mat-option value="17:30:00">5:30 p.m.</mat-option>
+                            <mat-option value="18:00:00">6:00 p.m.</mat-option>
+                            <mat-option value="18:30:00">6:30 p.m.</mat-option>
+                            <mat-option value="19:00:00">7:00 p.m.</mat-option>
+                            <mat-option value="19:30:00">7:30 p.m.</mat-option>
+                            <mat-option value="20:00:00">8:00 p.m.</mat-option>
+                            <mat-option value="20:30:00">8:30 p.m.</mat-option>
+                            <mat-option value="21:00:00">9:00 p.m.</mat-option>
+                            <mat-option value="21:30:00">9:30 p.m.</mat-option>
+                            <mat-option value="22:00:00">10:00 p.m.</mat-option>
+                            <mat-option value="22:30:00">10:30 p.m.</mat-option>
+                            <mat-option value="23:00:00">11:00 p.m.</mat-option>
+                            <mat-option value="23:30:00">11:30 p.m.</mat-option>
+                            <mat-option value="24:00:00">12:00 a.m.</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-8">
+                    <mat-form-field class="w-100">
+                        <input type="text" matInput placeholder="Indicaciones especiales"
+                            formControlName="indicaciones">
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3 justify-content-center">
+            <div class="col-md-4">
+                <button class="btn btn-success btn-sm btn-block" [disabled]="forma.invalid">
+                    <span class="icon-spin3 animate-spin" *ngIf="loading2"></span>
+                    Generar Recolección
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

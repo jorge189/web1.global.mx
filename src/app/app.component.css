@@ -1,0 +1,167 @@
+header {
+    height: 50px;
+    z-index: 200;
+}
+
+ul>li {
+    margin-top: 5px;
+    margin-right: 10px;
+}
+
+ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+.social {
+    font-size: 28px;
+    color: var(--primary);
+}
+
+.social:hover {
+    color: var(--secondary);
+}
+
+.logo {
+    width: 180px;
+    height: 43px;
+}
+
+.menu {
+    cursor: pointer;
+    font-size: 24px;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+/*bar*/
+
+.bar {
+    width: 260px;
+    z-index: 100;
+    background-image: url('../assets/img/ima.jpg');
+    height: 100%;
+}
+
+.bar li {
+    display: block;
+    line-height: 30px;
+}
+
+.bar ul {
+    display: block;
+    height: 90%;
+}
+
+.bar .nav {
+    height: 90%;
+    overflow-y: auto;
+}
+
+.bar a {
+    color: var(--light);
+    transition: padding 0.13s;
+}
+
+.bar a:hover {
+    color: var(--primary) !important;
+    padding-left: 15px;
+}
+
+.bar li>ul {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.8s;
+}
+
+.abrir-sub li>ul {
+    max-height: 200px;
+}
+
+.bar-close {
+    transform: translateX(-350px);
+}
+
+.user {
+    color: var(--white);
+    user-select: none;
+}
+
+.user:hover {
+    color: var(--primary);
+    border-radius: 10px;
+}
+
+.origin {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    transition: ease-out 0.1s;
+    transform-origin: 100% 100%;
+}
+
+.rotar {
+    transform-origin: 100% 100%;
+    transform: rotate(90deg)
+}
+
+.activado {
+    margin-left: 15px;
+    pointer-events: none;
+}
+
+.activado a {
+    color: var(--primary) !important;
+}
+
+.activado2 a {
+    color: var(--primary) !important;
+}
+
+.carrito {
+    color: black;
+    font-size: 20px;
+}
+
+.carrito span:first-child {
+    padding: 3px;
+}
+
+.carrito span:first-child:hover {
+    color: var(--primary);
+    border-radius: 100%;
+}
+
+.carrito span:last-child {
+    color: white;
+    background-color: var(--danger);
+    margin-left: -5px;
+    font-size: 11px;
+}
+
+
+.mat-menu-content:not(:empty) {
+    width: 273px !important;
+}
+
+.btnmenu {
+    width: 273px !important;
+    text-align: center;
+}
+
+@media screen and (max-width: 989px) {
+    .social {
+        font-size: 25px;
+    }
+    .logo {
+        width: 180px;
+        height: 43px;
+    }
+    header {
+        height: auto;
+    }
+}

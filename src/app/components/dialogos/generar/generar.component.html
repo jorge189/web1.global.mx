@@ -1,0 +1,133 @@
+<div *ngIf="generar != 'robot'">
+    <div *ngIf="guiaOk">
+        <div mat-dialog-content class="text-center my-3">
+            <h1 mat-dialog-title class="text-center"><strong class="text-primary">Guia</strong> Generada Correctamente!
+            </h1>
+            <div *ngIf="!data.data.data[0]">
+                <h5>Tracking: <strong>{{data.data.data.tracking}}</strong></h5>
+                <a [href]="data.data.tipoG | links:data.data.paqueteria:data.data.data.label:data.data.data.tracking:data.data.idtipoguia" target="_blank">Descargar</a>
+            </div>
+            <div *ngIf="data.data.data[0]">
+                <h5>Tracking Master: <strong>{{data.data.data[0].tracking}}</strong></h5>
+                <a [href]="data.data.tipoG | links:data.data.paqueteria:data.data.data[0].label:data.data.data[0].tracking:data.data.idtipoguia" target="_blank">Descargar</a>
+                <div class="list-group mt-3">
+                    <div class="list-group-item list-group-item-action" *ngFor="let item of data.data.data[1]">
+                        <a [href]="data.data.tipoG | links:data.data.paqueteria:item.label:item.tracking:data.data.idtipoguia" target="_blank">{{item.tracking}}</a>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="recOk != null">
+                <div *ngIf="recOk">
+                    <h1 mat-dialog-title class="text-center mt-5"><strong class="text-primary">Recolección</strong> Generada Correctamente!
+                    </h1>
+                    <div>
+                        <h5>No. Recolección: <strong>{{data.recoleccion.data.recoleccion}}</strong></h5>
+                    </div>
+                </div>
+
+                <div *ngIf="!recOk" class="my-5">
+                    <div class="alert alert-danger">
+                        <h5>Error al generar la recolección</h5>
+                        <h6>{{data.recoleccion?.data?.message}}</h6>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="correo" class="animated fadeIn mt-4">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <mat-form-field class="w-100">
+                            <input matInput placeholder="Correo Electronico" #email>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3">
+                        <button [disabled]="!btnEmail" class="btn btn-outline-success btn-block btn-sm mt-3" (click)="enviarGuia(email.value)">Enviar</button>
+                    </div>
+                </div>
+                <div class="alert alert-success" *ngIf="this.msgEmail != ''">
+                    <span>{{msgEmail}}</span>
+                </div>
+            </div>
+        </div>
+
+        <div mat-dialog-actions class="d-flex justify-content-center">
+            <button class="btn btn-outline-danger btn-sm mx-2" (click)="onNoClick(true)">Cerrar</button>
+            <button class="btn btn-outline-primary btn-sm mx-2" (click)="irEnvios()">Ir a envios</button>
+            <button class="btn btn-outline-info btn-sm mx-2" (click)="abrirEnvio()">Enviar por
+                Correo</button>
+        </div>
+    </div>
+
+    <div *ngIf="!guiaOk">
+        <div mat-dialog-content class="text-center my-5">
+            <div class="alert alert-danger">
+                <h5>Error al generar la guia</h5>
+                <h6>{{msgErrorGuia}}</h6>
+            </div>
+        </div>
+
+        <div mat-dialog-actions class="d-flex justify-content-center">
+            <button class="btn btn-outline-danger btn-sm mx-2" (click)="onNoClick(false)">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="generar == 'robot'">
+    <div mat-dialog-content class="text-center my-3">
+        <div *ngIf="cargando">
+            <div class="text-center mb-2">
+                <span class="icon-download-4 display-4"></span>
+            </div>
+            <h1 mat-dialog-title class="text-center mb-3">Generando <strong class="text-primary">Guia</strong></h1>
+            <div class="progress">
+
+                <div class="progress-bar bg-primary" role="progressbar" [ngStyle]="{'width': porcentaje}" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+        <div *ngIf="guiaROk">
+            <div>
+                <h1 mat-dialog-title class="text-center"><strong class="text-primary">Guia</strong> Generada Correctamente</h1>
+                <h5>Tracking: <strong>{{tracking}}</strong></h5>
+                <a [href]="data.data.tipoG | links:data.data.paqueteria:'':tracking:data.data.idtipoguia" target="_blank">Descargar</a>
+            </div>
+        </div>
+
+        <div *ngIf="guiaRErr">
+            <div mat-dialog-content class="text-center my-2">
+                <div class="alert alert-danger">
+                    <h5>Error al generar la guia</h5>
+                    <h6>{{guiaRErrMsg}}</h6>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="correo" class="animated fadeIn mt-4">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <mat-form-field class="w-100">
+                        <input matInput placeholder="Correo Electronico" #email>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                    <button [disabled]="!btnEmail" class="btn btn-outline-success btn-block btn-sm mt-3" (click)="enviarGuia(email.value)">Enviar</button>
+                </div>
+            </div>
+            <div class="alert alert-success" *ngIf="this.msgEmail != ''">
+                <span>{{msgEmail}}</span>
+            </div>
+        </div>
+    </div>
+
+    <div mat-dialog-actions class="d-flex justify-content-center">
+        <div *ngIf="guiaROk">
+            <button class="btn btn-outline-danger btn-sm mx-2" (click)="onNoClick(true)">Cerrar</button>
+            <button class="btn btn-outline-primary btn-sm mx-2" (click)="irEnvios()">Ir a envios</button>
+            <button class="btn btn-outline-info btn-sm mx-2" (click)="abrirEnvio()">Enviar por Correo</button>
+        </div>
+        <div *ngIf="guiaRErr">
+            <div mat-dialog-actions class="d-flex justify-content-center">
+                <button class="btn btn-outline-danger btn-sm mx-2" (click)="onNoClick(false)">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

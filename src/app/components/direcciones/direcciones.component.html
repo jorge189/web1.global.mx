@@ -1,0 +1,22 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <div class="contenedor animated fadeIn">
+        <h3>Direcciones</h3>
+        <hr />
+
+        <div class="d-flex justify-content-center flex-wrap mt-2 grupo">
+            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'fedex'}"
+                (click)="cambiarPaqueteria('fedex')">Fedex</button>
+            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'dhl'}"
+                (click)="cambiarPaqueteria('dhl')">DHL</button>
+            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'estafeta'}"
+                (click)="cambiarPaqueteria('estafeta')">Estafeta</button>
+            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'redpack'}"
+                (click)="cambiarPaqueteria('redpack')">Redpack</button>
+        </div>
+
+        <app-nueva-direccion [paqueteria]="paqueteria"></app-nueva-direccion>
+
+        <app-ver-direccion [paqueteria]="paqueteria"></app-ver-direccion>
+        
+    </div>
+</div>

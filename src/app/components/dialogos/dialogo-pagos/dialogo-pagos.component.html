@@ -1,0 +1,56 @@
+<h1 mat-dialog-title class="text-primary text-center">Enviar Comprobante</h1>
+<form [formGroup]="forma" (ngSubmit)="enviarComprobante()">
+    <div mat-dialog-content>
+        <div class="row">
+            <div class="col-md-7">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label id="example-radio-group-label" class="h5 mb-3">Metodos de Pago</label>
+                        <mat-radio-group aria-labelledby="grupo-metodo" formControlName="metodo">
+                            <mat-radio-button class="d-block" *ngFor="let metodo of metodos" [value]="metodo"
+                                (click)="buscar(metodo)">
+                                {{metodo}}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div class="col-md-6" *ngIf="activeBanco">
+                        <label id="example-radio-group-label" class="h5">Tipo de Banco</label>
+                        <mat-form-field class="d-block" appearance="legacy">
+                            <mat-select formControlName="banco" [value]="bancos[0]"  >
+                                <mat-option *ngFor="let banco of bancos;let i = index" [value]="banco">{{banco}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6" *ngIf="activeOtro">
+                        <mat-form-field class="d-block">
+                            <input matInput placeholder="Referencia" value="" formControlName="referencia">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 mt-4 mt-md-0">
+                <mat-form-field class="d-block">
+                    <input matInput type="date" placeholder="Fecha de Pago" value="" formControlName="fecha">
+                </mat-form-field><br>
+                <div class="form-group">
+                    <label for="exampleFormControlFile1" class="h5">Subir Comprobante</label>
+                    <input type="file" class="form-control-file" id="file-img" formControlName="comprobante"
+                        (change)="onFileChange($event)" />
+                </div>
+                <div>
+                    <p class="alert alert-danger" *ngIf="error"><span class="icon-attention-circled h5"></span>
+                        <b>{{message}}</b></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div mat-dialog-actions class="d-flex justify-content-center flex-wrap">
+        <button class="btn btn-outline-danger btn-sm mx-4 " [mat-dialog-close]="0"
+            (click)="onNoClick()">Cancelar</button>
+        <button type="submit" class="btn btn-outline-success btn-sm mx-4 mt-3 mt-md-0"
+            [disabled]="!forma.valid">
+            <span class="icon-paper-plane" *ngIf="!loading"></span>
+            <span class="icon-spin3 animate-spin" *ngIf="loading"></span> Enviar Comprobante</button>
+    </div>
+</form>

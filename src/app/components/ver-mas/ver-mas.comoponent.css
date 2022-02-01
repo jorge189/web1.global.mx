@@ -1,0 +1,224 @@
+.btn-cool {
+    transition: all 0.3s ease-in;
+    width: 95%;
+    background-color: var(--light) !important;
+}
+
+.btn-cool:hover {
+    color: #e7630e;
+    background-color: #f8f9fa !important;
+    border: 2px solid #ef6b01 !important;
+}
+
+.btn-cool::after {
+    position: absolute;
+    content: " ";
+    top: 0;
+    left: 0;
+    width: 0px;
+    height: 40px;
+    background-color: var(--primary);
+    transition: width 0.3s ease-in;
+    font-family: "fontello" !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    text-decoration: none;
+    speak: none;
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white !important;
+}
+
+.btn-cool:hover::after {
+    content: "\E81E";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 14%;
+    height: 100%;
+    background-color: var(--primary);
+    opacity: 1;
+}
+
+.btn-cool2:hover::after {
+    content: "\e835" !important;
+}
+
+.btn-cool3:hover::after {
+    content: "\e81f" !important;
+}
+
+.btn {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    height: 63px;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    line-height: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 5% 1% 1% 1%;
+}
+
+.btn span.icon,
+.btn span.title {
+    letter-spacing: 0.25em;
+    display: block;
+    position: relative;
+    line-height: 50px;
+    padding: 0 30px;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+}
+
+.btn span.left {
+    float: left;
+    border-radius: 6px 0 0 6px;
+    -moz-border-radius: 6px 0 0 6px;
+    -webkit-border-radius: 6px 0 0 6px;
+}
+
+.btn span.right {
+    float: right;
+    border-radius: 0 6px 6px 0;
+    -moz-border-radius: 0 6px 6px 0;
+    -webkit-border-radius: 0 6px 6px 0;
+}
+
+.btn span.icon {
+    font-size: 23px;
+    background-color: whitesmoke;
+    -webkit-box-shadow: 0 3px 0 0 #b92217;
+    box-shadow: 0 3px 0 0 #b92217;
+    text-shadow: 0px 1px 1px #888;
+}
+
+.btn span.title {
+    -webkit-box-shadow: 0 3px 0 0 #e55743;
+    box-shadow: inset 0 3px 0 0 #e55743;
+    box-shadow: 0 3px 0 0 #e55743;
+    background-color: white;
+}
+
+.btn span.arrow-left,
+.btn span.arrow-right {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: 25px solid transparent;
+    border-bottom: 25px solid transparent;
+    -webkit-transition: all .15s;
+    -transition: all .15s;
+    -webkit-transition-property: left, right;
+    transition-property: left, right;
+}
+
+.btn.left span.arrow-left {
+    right: 0;
+    -webkit-box-shadow: 10px 0 0 0 #ff6500, 10px 3px 0 0 #b14e0c;
+    box-shadow: 10px 0 0 0 #ff6500, 10px 3px 0 0 #b14e0c;
+    border-right: 10px solid #ff6500;
+}
+
+.btn.right span.arrow-left {
+    right: 0;
+    -webkit-box-shadow: 10px 0 0 0 whitesmoke, 10px 3px 0 0 #b92217;
+    box-shadow: 10px 0 0 0 whitesmoke, 10px 3px 0 0 #b92217;
+    border-right: 10px solid whitesmoke;
+}
+
+.btn.left span.arrow-right {
+    left: 0;
+    -webkit-box-shadow: -10px 0 0 0 whitesmoke, -10px 3px 0 0 #b92217;
+    box-shadow: -10px 0 0 0 whitesmoke, -10px 3px 0 0 #b92217;
+    border-left: 10px solid whitesmoke;
+}
+
+.btn.right span.arrow-right {
+    left: 0;
+    -webkit-box-shadow: -10px 0 0 0 #ff6500, -10px 3px 0 0 #b14e0c;
+    box-shadow: -10px 0 0 0 #ff6500, -10px 3px 0 0 #b14e0c;
+    border-left: 10px solid #ff6500;
+}
+
+.btn span.slant-left,
+.btn span.slant-right {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: 0 solid transparent;
+    border-bottom: 50px solid transparent;
+    -webkit-transition: all .15s;
+    -transition: all .15s;
+    -webkit-transition-property: left, right;
+    transition-property: left, right;
+}
+
+.btn.left span.slant-right {
+    left: 0;
+    -webkit-box-shadow: -10px 0 0 0 whitesmoke, -10px 3px 0 0 #b92217;
+    box-shadow: -10px 0 0 0 whitesmoke, -10px 3px 0 0 #b92217;
+    border-left: 10px solid whitesmoke;
+}
+
+.btn.right span.slant-right {
+    left: 0;
+    -webkit-box-shadow: -10px 0 0 0 #ff6500, -10px 3px 0 0 #b14e0c;
+    box-shadow: -10px 0 0 0 #ff6500, -10px 3px 0 0 #b14e0c;
+    border-left: 10px solid #ff6500;
+}
+
+.btn.left span.slant-left {
+    right: 0;
+    -webkit-box-shadow: 10px 0 0 0 #ff6500, 10px 3px 0 0 #b14e0c;
+    box-shadow: 10px 0 0 0 #ff6500, 10px 3px 0 0 #b14e0c;
+    border-right: 10px solid #ff6500;
+}
+
+.btn.right span.slant-left {
+    right: 0;
+    -webkit-box-shadow: 10px 0 0 0 whitesmoke, 10px 3px 0 0 #b92217;
+    box-shadow: 10px 0 0 0 whitesmoke, 10px 3px 0 0 #b92217;
+    border-right: 10px solid whitesmoke;
+}
+
+.btn:active,
+.btn.active {
+    height: 51px;
+}
+
+.btn:hover {}
+
+.btn:hover span.arrow-left {
+    right: 10px;
+}
+
+.btn:hover span.arrow-right {
+    left: 10px;
+}
+
+.btn:hover span.slant-left {
+    right: 10px;
+}
+
+.btn:hover span.slant-right {
+    left: 10px;
+}
+
+.btn-small {
+    height: 30px;
+    font-size: 12px;
+    line-height: 10px;
+}
+
+a.btn-small span.btn {
+    height: 30px;
+}

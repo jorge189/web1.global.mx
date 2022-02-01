@@ -1,0 +1,14 @@
+<div class="b animated fadeIn "  *ngIf="mostrar">
+    <mat-card class="a" *ngIf="loading">
+        <div class="row">
+            <div class="col-10">
+                <mat-card-title>{{titulo}}</mat-card-title>
+            </div>
+            <div class="col-2"><button class="btn-transparent" (click)="ocultar()">x</button></div>
+        </div>
+        <mat-card-content>
+            <div><p>{{comentario}}</p></div>
+            <div><img class="img img-fluid" [src]="imagen | imgtips"/></div>
+        </mat-card-content>
+    </mat-card>
+</div>

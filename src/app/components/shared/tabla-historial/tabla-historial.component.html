@@ -1,0 +1,350 @@
+<div class=" my-3" id="histori">
+    <div class="">
+        <form [formGroup]="forma" (ngSubmit)="cargarTabla()" class="w-100 d-md-flex flex-wrap"
+            *ngIf="paqueteria != 'globalpaq'">
+            <mat-form-field class=" d-block">
+                <mat-label>Dias a Consultar</mat-label>
+                <mat-select name="dias" #fecha formControlName="dias" (selectionChange)="cambiar(fecha.value)"
+                    [(value)]="selected">
+                    <mat-option value="7">7</mat-option>
+                    <mat-option value="15">15</mat-option>
+                    <mat-option value="30">30</mat-option>
+                    <mat-option value="60">60</mat-option>
+                    <mat-option value="120">120</mat-option>
+                    <mat-option value="0">Personalizado</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div *ngIf="opcionFecha" class="d-md-flex">
+                <mat-form-field class="d-block px-2">
+                    <input matInput type="date" formControlName="inicio" placeholder="Inicio" name="inicio" value=""
+                        #inicio>
+                </mat-form-field>
+                <mat-form-field class="d-block px-2">
+                    <input matInput type="date" formControlName="fin" placeholder="Fin" name="fin" value="" #fin>
+                </mat-form-field>
+            </div>
+            <mat-form-field class="d-block ml-md-2">
+                <mat-label>Numero de Registros</mat-label>
+                <mat-select name="registros" formControlName="registros">
+                    <mat-option value="5">5</mat-option>
+                    <mat-option value="10">10</mat-option>
+                    <mat-option value="25">25</mat-option>
+                    <mat-option value="50">50</mat-option>
+                    <mat-option value="100">100</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="ml-md-3 mt-2">
+                <button type="submit" class="btn btn-primary btn-sm btn-block" [disabled]="!forma.valid"><span
+                        class="icon-spin3 animate-spin" *ngIf="disabled"></span> Visualizar</button>
+            </div>
+            <div class="ml-md-3 mt-2 mb-2">
+                <button type="button" class="btn btn-outline-success btn-sm btn-block" [disabled]="!forma.valid"
+                    (click)="exportarHistorial()"><span class="icon-floppy" *ngIf="!iconExport"></span>
+                    <span class="icon-spin3 animate-spin" *ngIf="iconExport"></span>&nbsp;Descargar</button>
+            </div>
+        </form>
+        <form class="w-100 d-md-flex flex-wrap" *ngIf="paqueteria == 'globalpaq'">
+            <mat-form-field class="d-block col-md-3">
+                <mat-label>Cantidad por pagina</mat-label>
+                <mat-select name="cPagina" [(ngModel)]="cPagina">
+                    <mat-option value="5" selected>5</mat-option>
+                    <mat-option value="10">10</mat-option>
+                    <mat-option value="50">50</mat-option>
+                    <mat-option value="100">100</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="d-block col-md-3">
+                <mat-label>Estatus</mat-label>
+                <mat-select name="selectStatus" [(ngModel)]="selectStatus">
+                    <mat-option value="0" selected>Todos</mat-option>
+                    <mat-option value="1">Guia creada</mat-option>
+                    <mat-option value="2">Recoleccion programada</mat-option>
+                    <mat-option value="3">En transito</mat-option>
+                    <mat-option value="4">Paquete no entregado, Segundo intento de entrega</mat-option>
+                    <mat-option value="5">Paquete entregado</mat-option>
+                    <mat-option value="6">Envio cancelado</mat-option>
+                    <mat-option value="7">Devolucion a origen</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="d-block col-md-4">
+                <mat-label>Buscar: </mat-label>
+                <span matPrefix class="aa">
+                    <mat-icon>search</mat-icon>
+                </span>
+                <input matInput type="text" name="serch" [(ngModel)]="value" placeholder="buscar">
+                <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+            <mat-form-field class="d-block col-md-3">
+                <mat-label>Inicio </mat-label>
+                <input matInput type="date" placeholder="Inicio" name="initB" [(ngModel)]="initB">
+            </mat-form-field>
+            <mat-form-field class="d-block col-md-3">
+                <mat-label>Fin </mat-label>
+                <input matInput type="date" placeholder="Fin" name="endB" [(ngModel)]="endB">
+            </mat-form-field>
+            <div class="col-md-3">
+                <button class="btn btn-outline-info mt-2 ml-2" (click)="enviosGlobalpaq()">Visualizar</button>
+                <button (click)="enviosGlobalpaqFile()" class="btn btn-outline-success mt-2 ml-2"><span class="icon-floppy"></span>Exportar</button>
+            </div>
+
+
+        </form>
+        <!-- <span class="icon-spin3 animate-spin"></span> -->
+    </div>
+    <div *ngIf="loading">
+        <table class="table opc-tabla shadow-sm" *ngIf="paqueteria != 'globalpaq'">
+            <thead class="bg-light shadow-sm">
+                <tr>
+                    <td>Fecha</td>
+                    <td>Guía</td>
+                    <td>Tipo</td>
+                    <td>Estatus</td>
+                    <td>Acciones</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of historial;index as i">
+                    <td data-label="Fecha">{{data.fecha}}</td>
+                    <td data-label="Tracking">{{data.tracking}}</td>
+                    <td data-label="Tipo">{{data.tipoguia}} {{data.pesoguia | number}}KG</td>
+                    <td data-label="Status"
+                        [ngClass]="{'text-danger': (data.statusenvio == 5 || data.statusenvio == 15)}">
+                        {{(data.statusenvio == 5 || data.statusenvio == 15) ? 'Envio Cancelado' : 'Revisar
+                        Manualmente'}}</td>
+                    <td data-label="Acciones" class="text-right">
+                        <div class="row text-right justify-content-end justify-content-md-center"
+                            *ngIf="data.statusenvio != 5">
+                            <div class="col-2">
+                                <a [href]="getTipoGuia(data.idtipoguia, data.tipoguia, data.pesoguia) | links:paqueteria:(data.rutapdf || data.filename):data.tracking:data.idtipoguia"
+                                    class="text-success" target="_blank" title="descargar pdf"><span
+                                        class="icon-download-4 h6"></span></a>
+                            </div>
+                            <div class="col-2">
+                                <a [href]="'https://rastreo.globalpaq.mx/'+paqueteria+'/'+data.tracking"
+                                    target="_blank" *ngIf="paqueteria != 'redpack' && paqueteria != 'paquetexpress'">
+                                    <span class="text-info icon-info-circled h6" title="Ultimo Seguimiento"
+                                        style="cursor: pointer;"></span>
+                                </a>
+                            </div>
+                            <div class="col-2">
+                                <span *ngIf="data.statusenvio != 5" class="text-danger icon-cancel-circled h6"
+                                    (click)="confirmacionCancelar(data.tracking)"
+                                    title="Cancelar Guia" style="cursor: pointer;"></span>
+                            </div>
+                            <div class="col-2">
+                                <span class="icon-help-circled h6" style="cursor: pointer;"
+                                    (click)="nuevoReclamo(data.tracking)"></span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-center"><span class="card-text" (click)="openDialogDetalles(data)"><strong
+                                class="text-primary" style="cursor: pointer">Detalles</strong></span></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="row mb-3" *ngIf="paqueteria != 'globalpaq'">
+            <div class="col-md-6 mt-3">
+                <strong>Total Registros: {{totalRegistros}}</strong>
+            </div>
+            <div class="col-md-6 text-center mt-3">
+
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-4 " style="z-index: 100000;">
+            <div class="btn-group mr-2 text-right" role="group" aria-label="First group" style="z-index: 4;">
+                <button type="button" class="btn btn-outline-secondary" *ngIf="paginaActiva > 1 "
+                    (click)="verPagina(paginaActiva - 1)">
+                    <mat-icon style="font-size:15px;width: auto !important;height: auto !important">
+                        navigate_before</mat-icon>
+                </button>
+                <button type="button" class="btn btn-outline-secondary" *ngFor="let pagina of paginas"
+                    [ngClass]="(paginaActiva == pagina) ? 'active' : ''" (click)="verPagina(pagina)">{{pagina}}</button>
+                <button type="button" class="btn btn-outline-secondary"
+                    *ngIf="paginaActiva < paginas[paginas.length - 1] " (click)="verPagina(paginaActiva + 1)">
+                    <mat-icon style="font-size:15px;width: auto !important;height: auto !important">
+                        navigate_next</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div *ngIf="paqueteria == 'globalpaq'">
+            <div class="row mb-3">
+                <div class=" col-md-3 d-flex justify-content-start mt-4">
+                    <div class="ml-3">
+                        <strong>Total Registros: {{totalRegistros2}}</strong>
+                    </div>
+                </div>
+                <div class="col-md-6"></div>
+                <div class=" col-md-3 d-flex justify-content-end mt-4 " style="z-index: 100000;">
+                    <div class="btn-group mr-2 text-right" role="group" aria-label="First group" style="z-index: 4;">
+                        <button type="button" class="btn btn-outline-secondary" *ngIf="paginaActiva2 > 1 "
+                            (click)="verPagina2(paginaActiva2 - 1)">
+                            <mat-icon style="font-size:15px;width: auto !important;height: auto !important">
+                                navigate_before</mat-icon>
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" *ngFor="let pagina of paginas2"
+                            [ngClass]="(paginaActiva2 == pagina) ? 'active' : ''"
+                            (click)="verPagina2(pagina)">{{pagina}}</button>
+                        <button type="button" class="btn btn-outline-secondary"
+                            *ngIf="paginaActiva2 < paginas2[paginas2.length - 1] "
+                            (click)="verPagina2(paginaActiva2 + 1)">
+                            <mat-icon style="font-size:15px;width: auto !important;height: auto !important">
+                                navigate_next</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="row ml-3" *ngFor="let data of dataGlobalpaq;index as i">
+                <div [ngClass]="{
+                 'bg-success':(data.status == 1 || data.status == 2 || data.status == 5),
+                 'bg-info' : (data.status == 3 || data.status == 4 || data.status == 7),
+                 'bg-danger' : data.status == 6
+                }" style="width: 5px;">
+                </div>
+                <div class="col-md-12 marginL">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <p class="font-weight-bold h6 mb-0">Guia</p>
+                                    <div [ngClass]="{
+                                        'text-success':(data.status == 1 || data.status == 2 || data.status == 5),
+                                        'text-info' : (data.status == 3 || data.status == 4 || data.status == 7),
+                                        'text-danger' : data.status == 6
+                                       }" style="font-size: 1.25rem;">{{data.tracking}}</div>
+                                </div>
+                                <div class="col-md-3">
+                                    <p class="font-weight-bold h6 mb-0">Remitente</p> {{data.remitente}}
+                                </div>
+                                <div class="col-md-3">
+                                    <p class="font-weight-bold h6 mb-0">Paquete (cm)</p>
+                                    {{data.ancho_declarado}}X{{data.largo_declarado}}X{{data.alto_declarado}}
+                                </div>
+                                <div class="col-md-3">
+                                    <p class="font-weight-bold h6 mb-0">Estatus</p>
+                                    <div [ngSwitch]="data.status">
+                                        <div *ngSwitchCase="1">Guia Creada</div>
+                                        <div *ngSwitchCase="2">Recolección Programada</div>
+                                        <div *ngSwitchCase="3">En tránsito</div>
+                                        <div *ngSwitchCase="4">Paquete no entregado, Segundo intento de entrega</div>
+                                        <div *ngSwitchCase="5">Paquete entregado</div>
+                                        <div *ngSwitchCase="6">Envio Cancelado</div>
+                                        <div *ngSwitchCase="7">Devolución Origen</div>
+                                        <div *ngSwitchDefault>Indefinido</div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <p class="font-weight-bold h6 mb-0">Recolección</p>
+                                    <div *ngIf="data.codigo != null">{{data.codigo}}</div>
+                                    <div *ngIf="data.codigo == null">No Programada</div>
+                                </div>
+                                <div class="col-md-3">
+                                    <p class="font-weight-bold h mb-0">Tipo</p>
+                                    <div *ngIf="data.tipoGuia == 46">GLOBALPAQ DIA SIGUIENTE METROPOLITANA</div>
+                                    <div *ngIf="data.tipoGuia == 47">GLOBALPAQ EXPRESS METROPOLITANA</div>
+                                </div>
+                                <div class="col-md-3">
+                                    <p class="font-weight-bold h6 mb-0">Destinatario</p>{{data.destinatario}}
+                                </div>
+                                <div class="col-md-3">
+                                    <p class="font-weight-bold h6 mb-0">Peso Neto</p> {{data.peso_declarado}}
+                                </div>
+                                <div class="col-md-3">
+                                    <p class="font-weight-bold h6 mb-0">Contenido</p>{{data.contenido}}
+                                </div>
+                                <div class="col-md-3">
+                                    <p class="font-weight-bold h6 mb-0">Fecha Recolección</p>{{data.fecha_recoleccion}}
+                                </div>
+                                <div class="col-md-3">
+                                    <p class="font-weight-bold h6 mb-0">Fecha Creación</p> {{data.created_at}}
+                                </div>
+                                <div class="col-md-3">
+                                    <p class="font-weight-bold h6 mb-0">Peso Amparado</p>{{data.pesoGuia}}
+                                </div>
+                                <div class="col-md-3">
+                                    <p class="font-weight-bold h6 mb-0">Excedente</p>
+                                    <div *ngIf="data.peso_real - data.pesoGuia <= 0">0</div>
+                                    <div *ngIf="data.peso_real - data.pesoGuia > 0">{{data.peso_real - data.pesoGuia}}
+                                        Kg</div>
+                                </div>
+
+                                <div [ngSwitch]="data.status" *ngIf="!data.recoleccion_now">
+                                    <div *ngSwitchCase="3" class="col-md-12">
+                                        <button class="btn btn-outline-success m-1 mt-2 "
+                                            (click)="navigationUrl(data.tracking)" title="Imprimir Guia"><span
+                                                class="icon-file-pdf h5" (click)="navigationUrl(data.tracking)"></span>
+                                        </button>
+                                        <button class="btn btn-outline-info m-1 mt-2" title="Rastreo"
+                                            (click)="rastreo(data.tracking)"><span class="icon-info-circled h5"></span>
+                                        </button>
+                                    </div>
+                                    <div *ngSwitchCase="4" class="col-md-12">
+                                        <button class="btn btn-outline-success m-1 mt-2 "
+                                            (click)="navigationUrl(data.tracking)" title="Imprimir Guia"><span
+                                                class="icon-file-pdf h5" (click)="navigationUrl(data.tracking)"></span>
+                                        </button>
+                                        <button class="btn btn-outline-info m-1 mt-2" title="Rastreo"
+                                            (click)="rastreo(data.tracking)"><span class="icon-info-circled h5"></span>
+                                        </button>
+                                    </div>
+                                    <div *ngSwitchCase="5" class="col-md-12">
+                                        <button class="btn btn-outline-success m-1 mt-2 "
+                                            (click)="navigationUrl(data.tracking)" title="Imprimir Guia"><span
+                                                class="icon-file-pdf h5" (click)="navigationUrl(data.tracking)"></span>
+                                        </button>
+                                        <button class="btn btn-outline-info m-1 mt-2" title="Rastreo"
+                                            (click)="rastreo(data.tracking)"><span class="icon-info-circled h5"></span>
+                                        </button>
+                                    </div>
+                                    <div *ngSwitchCase="6" class="col-md-12">
+                                        <button class="btn btn-outline-info m-1 mt-2" title="Rastreo"
+                                            (click)="rastreo(data.tracking)"><span class="icon-info-circled h5"></span>
+                                        </button>
+                                    </div>
+                                    <div *ngSwitchCase="7" class="col-md-12">
+                                        <button class="btn btn-outline-success m-1 mt-2 "
+                                            (click)="navigationUrl(data.tracking)" title="Imprimir Guia"><span
+                                                class="icon-file-pdf h5" (click)="navigationUrl(data.tracking)"></span>
+                                        </button>
+                                        <button class="btn btn-outline-info m-1 mt-2" title="Rastreo"
+                                            (click)="rastreo(data.tracking)"><span class="icon-info-circled h5"></span>
+                                        </button>
+                                    </div>
+                                    <div *ngSwitchDefault class="col-md-12">
+                                        <button class="btn btn-outline-success m-1 mt-2 "
+                                            (click)="navigationUrl(data.tracking)" title="Imprimir Guia"><span
+                                                class="icon-file-pdf h5" (click)="navigationUrl(data.tracking)"></span>
+                                        </button>
+                                        <button class="btn btn-outline-danger m-1 mt-2"
+                                            (click)="cancel(data.tracking,i)" title="Cancelar Guia"><span
+                                                class="icon-cancel h5"></span>
+                                        </button>
+                                        <button class="btn btn-outline-info m-1 mt-2" title="Rastreo"
+                                            (click)="rastreo(data.tracking)"><span class="icon-info-circled h5"></span>
+                                        </button>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-4 m-2" *ngIf="data.status == 1">
+                                    <button class="btn btn-outline-primary" (click)="saveDataStorage(data)">Generar Recoleccion</button>
+                                </div>
+                                <div class="col-md-3" *ngIf="data.recoleccion_now">
+                                    <button class="btn btn-outline-success m-1 mt-2 "
+                                        (click)="navigationUrl(data.tracking)" title="Imprimir Guia"><span
+                                            class="icon-file-pdf h5"
+                                            (click)="navigationUrl(data.tracking)"></span></button>
+                                    <button class="btn btn-outline-info m-1 mt-2" title="Rastreo"
+                                        (click)="rastreo(data.tracking)"><span
+                                            class="icon-info-circled h5"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

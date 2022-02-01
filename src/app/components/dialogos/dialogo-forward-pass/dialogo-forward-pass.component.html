@@ -1,0 +1,33 @@
+<div class="row g-0" style="max-width: 540px;">
+    <div class="col-md-6 float-md-right" style="text-align: center;">
+        <h1 mat-dialog-title>
+            Recuperar <strong class="text-primary">Contraseña</strong> </h1>
+    </div>
+    <div class="col-md-6 text-center text-md-right">
+        <div class="col-md-3 text-right"></div>
+        <img src="../../../../assets/img/ISOTIPO.png" alt="" class="img img-fluid" style="max-width: 50px;margin-top: -1.5%;;">
+    </div>
+</div>
+
+<div mat-dialog-content>
+    <p></p>
+
+    <div class="card mb-3" style="max-width: 534px;">
+        <div class="row g-0 justify-content-center ">
+
+        </div>
+        <br>
+        <p style="text-align: center;">Introduce el correo electrónico registrado para recibir instrucciones de como generar un nuevo password.</p>
+    </div>
+    <div class="row" style="justify-content: center;">
+        <mat-form-field>
+            <mat-label>E-mail</mat-label>
+            <input type="email" matInput [(ngModel)]="data.correo">
+
+        </mat-form-field>
+    </div>
+</div>
+<div class="text-center justify-content-center" mat-dialog-actions>
+    <button class="btn btn-outline-danger btn-sm mx-4" mat-button (click)="onNoClick()">Cerrar</button>
+    <button class="btn btn-outline-success btn-sm mx-4" [mat-dialog-close]="data.correo" mat-button cdkFocusInitial>Enviar</button>
+</div>

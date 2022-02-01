@@ -1,0 +1,14 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <div class="contenedor animated fadeIn" *ngIf="carga;else spin">
+        <h3>Guìas por Cupon</h3>
+        <hr />
+        <app-crear-cupon (nuevoCupon)="actualizarData()"></app-crear-cupon>
+        <app-ver-cupon [newData]="cambio"></app-ver-cupon>
+</div>
+</div>
+
+<ng-template #spin>
+    <div class="text-center h1">
+        <span class="icon-spin3 animate-spin"></span>
+    </div>
+</ng-template>

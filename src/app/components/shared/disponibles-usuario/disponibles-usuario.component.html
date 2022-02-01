@@ -1,0 +1,47 @@
+<div>
+    <table class="table opc-tabla shadow-sm mt-3">
+        <thead class="bg-light shadow-sm">
+            <tr>
+                <td>#</td>
+                <td>Descripción</td>
+                <td>Peso</td>
+                <td>Asignadas</td>
+                <td>Usadas</td>
+                <td>Disponibles</td>
+                <td>Acciones</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of asignaciones; let i = index">
+                <td data-label="#">{{i+1}}</td>
+                <td data-label="Descripción">{{item.descripcion}}</td>
+                <td data-label="Peso">{{item.peso}} Kg</td>
+                <td data-label="Asignadas">{{item.total}}</td>
+                <td data-label="Usadas">{{item.usadas}}</td>
+                <td data-label="Disponibles"><b>{{item.disponibles}}</b></td>
+                <td data-label="Acciones">
+                    <button class="btn btn-light" title="Eliminar" (click)="deleteAsignacion(item)" *ngIf="item.disponibles > 0">
+                        <span class="icon-minus-circled text-danger"></span>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="d-flex justify-content-center mt-4 " style="z-index: 100000;">
+    <div class="btn-group mr-2 text-right" role="group" aria-label="First group" style="z-index: 4;">
+        <button type="button" class="btn btn-outline-secondary" *ngIf="paginaActiva > 1 "
+            (click)="verPagina(paginaActiva - 1)">
+            <mat-icon style="font-size:15px;width: auto !important;height: auto !important">navigate_before
+            </mat-icon>
+        </button>
+        <button type="button" class="btn btn-outline-secondary" *ngFor="let pagina of paginas"
+            [ngClass]="(paginaActiva == pagina) ? 'active' : ''" (click)="verPagina(pagina)">{{pagina}}</button>
+        <button type="button" class="btn btn-outline-secondary"
+            *ngIf="paginaActiva < paginas[paginas.length - 1] " (click)="verPagina(paginaActiva + 1)">
+            <mat-icon style="font-size:15px;width: auto !important;height: auto !important">navigate_next
+            </mat-icon>
+        </button>
+    </div>
+</div>

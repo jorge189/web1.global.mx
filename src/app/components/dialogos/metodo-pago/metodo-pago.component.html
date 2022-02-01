@@ -1,0 +1,106 @@
+<h1 mat-dialog-title class="text-center">Realizar <strong class="text-primary">Pago</strong></h1>
+<div mat-dialog-content class="mt-4">
+    <div class="mb-4">
+        <div class="mb-3">
+            <h5 class="text-center">Pedido</h5>
+            <div class="list-group shadow-sm">
+                <div class="list-group-item">
+                      <div class="row text-center">
+                          <div class="col-md-4">
+                            <h6>{{pedido.fecha | date:'short'}}</h6>
+                          </div>
+                          <div class="col-md-5">
+                              <h6>No: Operación: <b>{{pedido.idventa}}</b></h6>
+                          </div>
+                          <div class="col-md-3">
+                            <h6>Total: <b>MXN ${{pedido.total}}</b></h6>
+                          </div>
+                      </div>
+                </div>
+              </div>
+        </div>
+        <hr/>
+        <h5 class="text-center">Metodo de pago</h5>
+        <div class="d-flex justify-content-center flex-wrap mt-3 grupo">
+            <button type="button" class="opciones" [ngClass]="{'active-opc': metodo == 'paypal'}"
+            (click)="cambiarMetodo('paypal')">PayPal</button>
+            <!-- <button type="button" class="opciones" [ngClass]="{'active-opc': metodo == 'saldofavor'}"
+            (click)="cambiarMetodo('saldofavor')">Saldo a favor</button> -->
+            <button type="button" class="opciones" [ngClass]="{'active-opc': metodo == 'prepago'}"
+            (click)="cambiarMetodo('prepago')">Saldo Prepago</button>
+            <button type="button" class="opciones" [ngClass]="{'active-opc': metodo == 'mercadopago'}"
+            (click)="cambiarMetodo('mercadopago')">MercadoPago</button>
+        </div>
+
+        <div *ngIf="metodo == 'paypal'" class="text-center mt-4">
+            <button class="btn btn-light border" [disabled]="carga" (click)="pagar()">
+                <b>Pagar con</b> &nbsp;&nbsp; <img class="img-fluid" src="../../../../assets/img/PayPal.png" width="80" alt="" >
+                <span class="icon-spin3 animate-spin" *ngIf="carga"></span>
+            </button>
+        </div>
+
+        <div *ngIf="metodo == 'saldofavor' && loading" class="text-center mt-4">
+            <h5>Tu saldo</h5>
+            <h5><b>MXN ${{saldo}}</b></h5>
+            <mat-checkbox class="example-margin" [(ngModel)]="factura">Solicitar Factura</mat-checkbox>
+            <div class="row justify-content-center" >
+                <div class="col-md-5" *ngIf="pedido.total > saldo">
+                    <p class="alert alert-danger">
+                        <span>No tienes saldo suficiente</span>
+                    </p>
+                </div>
+                <div class="col-md-5" *ngIf="msgError != ''">
+                    <p class="alert alert-danger">
+                        <span>{{msgError}}</span>
+                    </p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-5">
+                    <button class="btn btn-success btn-sm btn-block" [disabled]="pedido.total > saldo || carga" (click)="pagar()">
+                        <span class="icon-spin3 animate-spin" *ngIf="carga"></span>
+                        Realizar Pago
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="metodo == 'prepago' && loading" class="text-center mt-4">
+            <h5>Tu saldo</h5>
+            <h5><b>MXN ${{saldo}}</b></h5>
+            <div class="row justify-content-center" >
+                <div class="col-md-5" *ngIf="pedido.total > saldo">
+                    <p class="alert alert-danger">
+                        <span>No tienes saldo suficiente</span>
+                    </p>
+                </div>
+                <div class="col-md-5" *ngIf="msgError != ''">
+                    <p class="alert alert-danger">
+                        <span>{{msgError}}</span>
+                    </p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-5">
+                    <button (click)="pagar()" class="btn btn-success btn-sm btn-block" [disabled]="pedido.total > saldo || carga" (click)="pagar()">
+                        <span class="icon-spin3 animate-spin" *ngIf="carga"></span>
+                        Realizar Pago
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <hr/>
+
+
+    </div>
+</div>
+<div mat-dialog-actions class="w-100">
+    <div class="row justify-content-start w-100 ml-1">
+        <div class="col-md-3 text-center">
+            <button type="button" class="btn btn-outline-danger btn-sm btn-block"
+                (click)="onNoClick()">Cancelar</button>
+        </div>
+
+    </div>
+</div>

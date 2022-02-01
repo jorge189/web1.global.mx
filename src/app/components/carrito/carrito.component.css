@@ -1,0 +1,21 @@
+ul{
+    list-style: none;
+    padding: 0;
+}
+
+li{
+    border-bottom: 1.2px solid rgb(180, 180, 180);
+}
+
+.icon-cancel-circled{
+    cursor: pointer;
+    color: var(--danger);
+}
+
+.icon-cancel-circled:hover{
+    color: rgb(114, 4, 4); 
+}
+
+.badge-primary{
+    background-color: var(--primary);
+}

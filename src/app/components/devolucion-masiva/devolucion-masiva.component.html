@@ -1,0 +1,54 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <h3>Cancelacion Masiva</h3>
+    <hr />
+    <div class="d-flex justify-content-center mt-2 grupo">
+        <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'fedex'}"
+            (click)="cambiarPaqueteria('fedex')">Fedex</button>
+        <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'dhl'}"
+            (click)="cambiarPaqueteria('dhl')">DHL</button>
+        <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'estafeta'}"
+            (click)="cambiarPaqueteria('estafeta')">Estafeta</button>
+        <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'redpack'}"
+            (click)="cambiarPaqueteria('redpack')">Redpack</button>
+        <!-- <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'globalpaq'}"
+                (click)="cambiarPaqueteria('globalpaq')">Globalpaq</button> -->
+    </div>
+</div>
+<div class="row  justify-content-center  formulario">
+    <form class="col-md-10 " >
+        <mat-form-field class="w-100 ">
+            <mat-label class="text-capitalize">Ingresa los trackings de las guias a cancelar </mat-label>
+            <textarea appNumbersOnly matInput placeholder="12345678&#10;54321078&#10;64973468&#10;" class="formi" name="textarea" [(ngModel)]="textarea"></textarea>
+        </mat-form-field>
+    </form>
+</div>
+
+<div class="text-right container">
+    <div class="row justify-content-end">
+        <button class="btn btn-outline-danger align-content-center mt-3 mr-1 btn-block col-md-2 ml-3 mr-3" mat-button  (click)="cancelar()">
+          <div class=""><span class="icon-cancel"></span>Cancelar Guias</div>
+        </button>
+    </div>
+  </div>
+
+  <div class="container  mt-5" *ngIf="visible == true">
+    <table class="table opc-tabla shadow-sm">
+        <thead class="bg-light shadow-sm">
+          <tr>
+            <td >Paqueteria</td>
+            <td >Tracking</td>
+            <td >Mensaje</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cancelar of cancelaciones">
+            <td scope="row">{{paqueteria | titlecase}}</td>
+            <td>{{cancelar.tracking}}</td>
+            <td >{{cancelar.info | titlecase}}</td>
+          </tr>
+      
+        </tbody>
+      </table>
+  </div>
+
+   

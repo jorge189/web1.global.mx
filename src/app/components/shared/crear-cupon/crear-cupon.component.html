@@ -1,0 +1,88 @@
+<div class="d-flex justify-content-center mt-2 grupo">
+    <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'fedex'}" (click)="cambiarPaqueteria('fedex')">Fedex</button>
+    <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'dhl'}" (click)="cambiarPaqueteria('dhl')">DHL</button>
+    <button type="button" class="opciones"[ngClass]="{'active-opc': paqueteria == 'estafeta'}" (click)="cambiarPaqueteria('estafeta')">Estafeta</button>
+    <button type="button" class="opciones"[ngClass]="{'active-opc': paqueteria == 'redpack'}" (click)="cambiarPaqueteria('redpack')">Redpack</button>
+
+</div>
+<div class="container my-3" >
+    <form   class="w-100 d-md-flex flex-wrap">
+            <div class="row">
+                <div class="col-md-3">
+                    <mat-form-field class="w-100">
+                        <mat-label>Tipo de Servicio</mat-label>
+                        <mat-select name="t"  #t (selectionChange)="changeTipo(t.value)" [(ngModel)]="selectTipo">
+                            <mat-option value="1">Dia Siguiente</mat-option>
+                            <mat-option value="2">Terrestre</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-5">
+                    <mat-form-field class="w-100">
+                        <mat-label>Guias Disponibles</mat-label>
+                        <mat-select #d name="selectDisponibles" (selectionChange)="cantidadGenerar(d.value)" [(ngModel)]="selectDisponibles">
+                            <mat-option *ngFor="let dispo of disponibles"
+                                [disabled]="!dispo.activo || dispo.disponibles <= 0"
+                                [value]="dispo.tipo + '-' +dispo.peso+ '-' +dispo.disponibles">{{dispo.descripcion}} {{dispo.peso}}
+                                KG (Disponibles: {{dispo.disponibles}} )
+                                {{(!dispo.activo) ? 'No Activo': ''}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            <div class="col-md-3">
+                <mat-form-field class=" d-block">
+                    <mat-label>Cantidad a Generar</mat-label>
+                    <mat-select name="selectCantidad"  #cant [disabled]="cantidadEnabled" [(ngModel)]="selectCantidad">
+                        <mat-option *ngFor="let cant of cantidad;let indice=index"
+                                [value]="indice+1">{{indice+1}}</mat-option>
+                        
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-12">
+                <div class="row">
+                    <mat-form-field class="col-md-2" *ngIf="paqueteria != 'estafeta'">
+                        <mat-label>Asegurar<small>(Opcional)</small></mat-label>
+                        <input appNumbersOnly matInput type="number" [(ngModel)]="asegurar" name ="seguro"  #asegurado (keyup)="keySeguro(asegurado.value)">
+                      </mat-form-field>
+                      <div class="col-md-2 d-flex justify-content-md-center align-items-center" *ngIf="paqueteria != 'estafeta' && paqueteria != 'redpack'">
+                        <span class="example-list-section">
+                            <mat-checkbox name="extendida"  class="example-margin"   [(ngModel)]="checkeda">
+                            </mat-checkbox>
+                          </span>
+                          <label class="textCheckbox">Zona Extendida</label>
+                      </div>
+                      <div class="col-md-2 d-flex justify-content-md-center align-items-center" *ngIf="paqueteria != 'estafeta'">
+                        <span class="example-list-section">
+                            <mat-checkbox name="sobrepeso"  class="example-margin"  [(ngModel)]="checkedb">
+                            </mat-checkbox>
+                            </span>
+                          <label class="textCheckbox">Sobrepeso</label>
+                      </div>
+                      <div class="col-md-2 d-flex justify-content-md-center align-items-center" *ngIf="paqueteria != 'estafeta'">
+                        <span class="example-list-section">
+                            <mat-checkbox name="recoleccion"  class="example-margin"  [(ngModel)]="checkedc">
+                            </mat-checkbox>
+                          </span>
+                          <label class="textCheckbox">Recoleccion</label>
+                      </div>
+                      <mat-form-field class="col-md-2">
+                        <mat-label>No Cliente<small>(opcional)</small></mat-label>
+                        <input appNumbersOnly matInput #noClientes type="text" name="noCliente" [(ngModel)]="numeroCliente" (keyup)="keyCliente(noClientes.value)">
+                      </mat-form-field>
+                </div>
+            </div>
+            <ng-template [ngIf]="Alerta">
+                <div class="alert alert-danger" role="alert">
+                    {{mensaje | titlecase}}
+                  </div>
+            </ng-template>
+  
+            <div class="col-md-12">
+                <button class="btn btn-primary" (click)="generarCupon()" [disabled]="disabledButton">Generar Cupon</button>
+            </div>
+        </div>
+        <br/> 
+       
+        </form>
+</div>

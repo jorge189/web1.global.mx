@@ -1,0 +1,92 @@
+<button type="button" class="close" aria-label="Close" (click)="onNoClick()">
+  <span aria-hidden="true">&times;</span>
+</button>
+<div>
+
+  <h2 class="mat-dialog-title text-center text-primary">{{titulo}}</h2>
+
+  <div mat-dialog-content *ngIf="mostrar ==true">
+    <div class="row">
+      <div class="col-4">
+        Disponibles: {{data.disponibles}}
+      </div>
+      <div class="col-5">
+        {{data.descripcion | titlecase}}
+      </div>
+      <div class="col-3">
+        Peso: {{data.peso}} Kg
+      </div>
+    </div>
+    <hr />
+    <table class="table opc-tabla shadow-sm ">
+      <thead class="bg-light shadow-sm ">
+        <tr class="blue">
+          <th>Guias Adquiridas</th>
+          <th>Disponibles</th>
+          <th>Precio</th>
+          <th>Guias Devueltas</th>
+          <th>Numero de Guias a Devolver</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="loading">
+          <td colspan="6" class="text-center">
+            <span class="icon-spin3 animate-spin h3"></span>
+          </td>
+        </tr>
+        <tr class="" *ngFor="let devolucion of todo;let i = index">
+          <th>{{devolucion.cantidad}}</th>
+          <th>{{devolucion.disponibles}}</th>
+          <th>{{devolucion.precio}}</th>
+          <th>{{devolucion.regreso==null ? 0: devolucion.regreso}}</th>
+          <th>
+            <div>
+              <mat-form-field appearance="legacy" *ngIf="todo[i] == todo[0]">
+                <mat-select [(ngModel)]="selected">
+                  <mat-option *ngFor="let numero of devolucion.totalDisponibles;let i = index" [value]="i+1">{{i+1}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </th>
+          <th><button (click)="devolverGuia(todo[i],i)" *ngIf="todo[i] == todo[0]"
+              class="btn btn-outline-success btn-sm">Devolver Guia</button></th>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div mat-dialog-content *ngIf="mostrar !=true">
+    <table class="table opc-tabla shadow-sm ">
+      <thead class="bg-light shadow-sm ">
+        <tr class="blue">
+          <td>Folio de Venta</td>
+          <td>Nota de Credito</td>
+          <td>Fecha</td>
+          <td>Paqueteria</td>
+          <td>Cantidad</td>
+          <td>Precio</td>
+          <td>Monto Devuelto</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let devolucion of historialTipo">
+          <td data-label="idventa_seguimiento">{{devolucion.idventa_seguimiento}}</td>
+          <td data-label="id_venta_created">{{devolucion.id_venta_created}}</td>
+          <td data-label="fecha">{{devolucion.fecha}}</td>
+          <td data-label="paqueteria">{{devolucion.paqueteria}}</td>
+          <td data-label="cantidad">{{devolucion.cantidad_devolucion*-1}}</td>
+          <td data-label="precio">{{devolucion.precio}}</td>
+          <td data-label="montoDevuelto">{{devolucion.cantidad_devolucion*devolucion.precio*-1 | number:'3.2-5'}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="text-right">
+    <button class="btn btn-outline-info btn-sm align-content-center mt-3" mat-button (click)="cambio()">
+      <div *ngIf="mostrar == true" class="">Historial<span class="icon-right-open"></span></div>
+      <div *ngIf="mostrar != true" class=""><span class="icon-left-open"></span>Regresar</div>
+    </button>
+  </div>
+</div>

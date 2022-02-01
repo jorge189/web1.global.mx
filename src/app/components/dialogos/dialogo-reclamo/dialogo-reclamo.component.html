@@ -1,0 +1,239 @@
+<h1 mat-dialog-title class="text-primary">Nueva Aclaración</h1>
+<form [formGroup]="forma" (ngSubmit)="enviarAclaracion()">
+    <div mat-dialog-content class="py-2">
+        <div class="row justify-content-center">
+            <div class="col-md-11 mb-3">
+                <fieldset class="col-md-12 px-3 shadow-sm">
+                    <legend>Tracking</legend>
+                    <div class="row justify-content-center">
+                        <div class="col-md-5">
+                            <mat-form-field class="d-block">
+                                <mat-label>Paqueteria</mat-label>
+                                <mat-select formControlName="paqueteria" >
+                                    <mat-option value="FEDEX">FEDEX</mat-option>
+                                    <mat-option value="DHL">DHL</mat-option>
+                                    <mat-option value="ESTAFETA">ESTAFETA</mat-option>
+                                    <mat-option value="REDPACK">REDPACK</mat-option>
+                                    <mat-option value="PAQUETEXPRESS">PAQUETEXPRESS</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-5 d-flex justify-content-between align-items-center">
+                            <mat-form-field class="d-block w-75">
+                                <input formControlName="tracking" matInput placeholder="Numero de Guia">
+                            </mat-form-field>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="button" class="btn btn-info btn-sm" (click)="getDirecciones()"
+                                [disabled]="forma.controls.paqueteria.status != 'VALID' || forma.controls.tracking.status != 'VALID'">
+                                <span class="icon-search"></span>
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-md-11 mb-3">
+                <fieldset class="col-md-12 px-3 shadow-sm">
+                    <legend>Direcciones</legend>
+                    <div class="row justify-content-center">
+                        <div class="col-md-5">
+                            <mat-form-field class="d-block">
+                                <textarea formControlName="remitente" rows="4" matInput
+                                    placeholder="Dirección de Remitente" [disabled]="true"></textarea>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-5">
+                            <mat-form-field class="d-block">
+                                <textarea formControlName="destinatario" rows="4" matInput
+                                    placeholder="Dirección de Destinatario" [disabled]="true"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="col-md-11 mb-3">
+                <fieldset class="col-md-12 px-3 shadow-sm">
+                    <legend>Aclaración</legend>
+                    <div class="row justify-content-center">
+                        <div class="col-md-10 justify-content-center">
+                            <mat-form-field class="d-block">
+                                <mat-label>Tipo de Aclaración</mat-label>
+                                <mat-select formControlName="tiporeclamo" #tipoS (ngModelChange)="validar(tipoS.value)">
+                                    <mat-option value="">--Seleccione--</mat-option>
+                                    <mat-option  *ngFor="let reclamo of reclamos"  [value]="reclamo.idtipo">{{reclamo.descripcion}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-md-11 mb-3" *ngIf="forma.value.tipo != ''">
+                <fieldset class="col-md-12 px-3 shadow-sm">
+                    <legend>Datos</legend>
+
+                    <div class="form-group" formGroupName="onlytracking" *ngIf="onlytracking">
+                        <div class="row justify-content-center">
+                            <div class="col-md-10">
+                                <label for="exampleFormControlFile1" class="h5">Guia</label>
+                                <input type="file" class="form-control-file" id="file-img" formControlName="guia"
+                                    (change)="onFileChange($event)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div formGroupName="trackDirecc" *ngIf="trackDirecc">
+                        <div class="row justify-content-center">
+                            <div class="col-md-10">
+                                <label for="exampleFormControlFile1" class="h5">Guia</label>
+                                <input type="file" class="form-control-file" id="file-img" formControlName="guia"
+                                    (change)="onFileChange($event)" />
+                                <br>
+                            </div>
+                            <div class="col-md-10">
+                                <mat-form-field class="d-block">
+                                    <textarea formControlName="direccion" rows="2" matInput
+                                        placeholder="Dirección "></textarea>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div formGroupName="cobranza" *ngIf="cobranza">
+                        <div class="row justify-content-center">
+                            <div class="col-md-10">
+                                <label for="exampleFormControlFile1" class="h5">Guia</label>
+                                <input type="file" class="form-control-file" id="file-img" formControlName="guia"
+                                    (change)="onFileChange($event)" />
+                                <br>
+                            </div>
+                            <div class="col-md-10">
+                                <mat-form-field class="d-block">
+                                    <textarea formControlName="info" rows="2" matInput
+                                        placeholder="Información Adicional"></textarea>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div formGroupName="indemnizacion" *ngIf="indemnizacion">
+
+                        <div class="row justify-content-center">
+                            <div class="col-md-10">
+                                <div>
+                                    <label for="exampleFormControlFile1" class="h5">Guia</label>
+                                    <input type="file" class="form-control-file" id="file-img" formControlName="guia"
+                                        (change)="onFileChange($event)" />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div>
+                                    <label id="seguro">Seguro</label>
+                                    <br>
+                                    <mat-radio-group formControlName="seguro"
+                                        aria-labelledby="example-radio-group-label">
+                                        <mat-radio-button value="1">Si &nbsp;&nbsp;&nbsp;</mat-radio-button>
+                                        <mat-radio-button value="2">No</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div>
+                                    <mat-form-field class="d-block">
+                                        <input type="number" formControlName="monto" matInput placeholder="Monto"
+                                            value="">
+
+                                    </mat-form-field>
+                                    <label for="">*Maximo 30 dias de salario minimo.</label>
+                                </div>
+                            </div>
+                            <div class="col-md-10">
+                                <div>
+                                    <label id="seguro">¿Como desea recibir su indemnización? &nbsp;&nbsp;&nbsp;</label>
+                                    <mat-radio-group formControlName="transferencia"
+                                        #trans >
+                                        <mat-radio-button value="1">Transferencia &nbsp;&nbsp;&nbsp;</mat-radio-button>
+                                        <mat-radio-button value="2">Saldo a favor</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </div>
+                            <div class="col-md-10">
+                                <div>
+                                    <label for="exampleFormControlFile1" class="h5">Factura</label>
+                                    <input type="file" class="form-control-file" id="file-img" formControlName="factura"
+                                        (change)="onFileChange($event)" />
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div formGroupName="banco" *ngIf="banco">
+                        <div class="row justify-content-center">
+                            <div class="col-md-5">
+                                <mat-form-field class="d-block">
+                                    <input type="text" formControlName="tipo" matInput placeholder="Banco" value="">
+                                </mat-form-field>
+
+                            </div>
+                            <div class="col-md-5">
+                                <mat-form-field class="d-block">
+                                    <input type="text" formControlName="titular" matInput placeholder="Titular"
+                                        value="">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-5">
+                                <mat-form-field class="d-block">
+                                    <input type="number" formControlName="cuenta" matInput placeholder="Cuenta"
+                                        value="">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-5">
+                                <mat-form-field class="d-block">
+                                    <input type="number" formControlName="clave" matInput placeholder="Clave" value="">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div formGroupName="damage" *ngIf="damage">
+                        <div class="row justify-content-center">
+                            <div class="col-md-10">
+                                <h5>Foto exterior</h5>
+                                <hr />
+                                <div>
+                                    <label for="exampleFormControlFile1" class="h6">Foto 1</label>
+                                    <input type="file" class="form-control-file" id="file-img"
+                                        formControlName="fotoext1" (change)="onFileChange($event)" />
+                                    <br>
+                                </div>
+                                <div>
+                                    <label for="exampleFormControlFile1" class="h6">Foto 2</label>
+                                    <input type="file" class="form-control-file" id="file-img"
+                                        formControlName="fotoext2" (change)="onFileChange($event)" />
+                                    <br>
+                                </div>
+                                <h5>Foto interior</h5>
+                                <hr />
+                                <div>
+                                    <label for="exampleFormControlFile1" class="h6">Foto 1</label>
+                                    <input type="file" class="form-control-file" id="file-img"
+                                        formControlName="fotoint1" (change)="onFileChange($event)" />
+                                    <br>
+                                </div>
+                                <div>
+                                    <label for="exampleFormControlFile1" class="h6">Foto 2</label>
+                                    <input type="file" class="form-control-file" id="file-img"
+                                        formControlName="fotoint2" (change)="onFileChange($event)" />
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions>
+        <button type="button" class="btn btn-outline-danger btn-sm" mat-button (click)="onNoClick()">Cerrar</button>
+        <button [disabled]="forma.invalid" type="submit" class="btn btn-outline-success btn-sm mx-4 mt-3 mt-md-0"
+            mat-button>
+            <span class="icon-paper-plane" *ngIf="!send"></span>
+            <span class="icon-spin3 animate-spin" *ngIf="send"></span> Enviar Aclaración</button>
+    </div>
+</form>

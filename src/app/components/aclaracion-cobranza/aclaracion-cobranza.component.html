@@ -1,0 +1,191 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <h3>Aclaraciones de Cobranza</h3>
+    <hr />
+    <div class="d-flex justify-content-center mt-2 grupo mb-5">
+        <button type="button" class="opciones" [ngClass]="{'active-opc': men == 'nueva'}"
+            (click)="cambiarMenu('nueva')">Nueva</button>
+        <button type="button" class="opciones" [ngClass]="{'active-opc': men == 'historial'}"
+            (click)="cambiarMenu('historial')">Aclaraciones</button>
+
+    </div>
+    <div class="container my-3" *ngIf="men != 'historial'">
+        <form class="w-100 d-md-flex flex-wrap">
+            <div class="row">
+                <div class="col-md-3">
+                    <mat-form-field class="w-100">
+                        <mat-label>Paqueteria</mat-label>
+                        <mat-select name="paqueteria" [(ngModel)]="paqueteria">
+                            <mat-option value="FEDEX">Fedex</mat-option>
+                            <mat-option value="DHL">Dhl</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field class="w-100">
+                        <mat-label>Metodo de busqueda</mat-label>
+                        <mat-select name="t" #t (selectionChange)="changeMetodo(t.value)" [(ngModel)]="metodo">
+                            <mat-option value="fecha">Fecha</mat-option>
+                            <mat-option value="tracking">Tracking</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3" *ngIf="metodo ==  'fecha'">
+                    <mat-form-field class=" d-block">
+                        <mat-label>Dias a Consultar</mat-label>
+                        <mat-select name="selectCantidad" #cant
+                            [(ngModel)]="selectCantidad">
+                            <mat-option value="5">5</mat-option>
+                            <mat-option value="15">15</mat-option>
+                            <mat-option value="30">30</mat-option>
+                            <mat-option value="60">60</mat-option>
+                            <mat-option value="90">90</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+
+
+                </div>
+                <div class="col-md-3" *ngIf="metodo ==  'tracking'">
+                    <mat-form-field class="d-block">
+                        <mat-label>Ingresa El tracking</mat-label>
+                        <input appNumbersOnly matInput type="text" [(ngModel)]="trackingSearch" name="track" />
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3  mt-2">
+                    <button class="btn btn-primary d-block w-100" (click)="buscar()"
+                        >Buscar</button>
+                </div>
+            </div>
+            <br />
+
+        </form>
+    </div>
+    <div class="container" *ngIf="men != 'historial'">
+        <div class="row">
+
+            <div class="col-md-8">
+                <mat-form-field class="text-capitalize d-block">
+                    <mat-label class="text-is">Ingresa un comentario para su aclaracion <small>(obligatorio)</small>
+                    </mat-label>
+                    <textarea matInput noresize row='2' placeholder="..." [(ngModel)]="comentario"
+                        name="comentario"></textarea>
+                </mat-form-field>
+            </div>
+            <mat-form-field class="col-md-4 mt-4">
+                <mat-label>Buscar</mat-label>
+                <input matInput type="text" #buscars (keyup)="search(buscars.value)">
+            </mat-form-field>
+        </div>
+
+        <div class="container row " *ngFor="let a of aclaraciones; index as i">
+            <!-- <button class="d-block col-md-12  border-0 pr bg-transparent"  #btn (click)="onClick(a,i)" > -->
+            <div class="card mb-3" [ngClass]="(a.disponible) ? 'bg-transparent' : 'bg-danger text-white'">
+                <div class="card-body">
+                    <div class="row">
+                        <div *ngIf="a.seleccionado">
+                            <div class="col-md-1 text-success">
+                                <label class="text-succes flecha1"><span class="icon-ok bg-succes"></span></label>
+                            </div>
+                        </div>
+                        <!-- 783839322548  -->
+                        <div class="col-md-11">
+                            <h5 class="card-title">Tracking :{{a.tracking}}</h5>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <strong>Fecha</strong><br>
+                            <small>{{a.fecha}}</small>
+                        </div>
+                        <div class="col-md-3">
+                            <strong>idventa</strong><br>
+                            <small>{{a.idventa}}</small>
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Peso Amparado</strong><br>
+                            <small>{{a.pesoguia}} kg</small>
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Peso Cobrado</strong><br>
+                            <small>{{a.pesoCobradoPaqueteria}} kg</small>
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Excedente</strong><br>
+                            <small>{{a.diferencia}} kg</small>
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Peso Real</strong><br>
+                            <small class="text-success">{{a.pesoguia1}} Kg</small>
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Ancho</strong><br>
+                            <small class="text-success">{{a.ancho1}} Kg</small>
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Largo</strong><br>
+                            <small class="text-success">{{a.largo1}} Kg</small>
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Alto</strong><br>
+                            <small class="text-success">{{a.alto1}} Kg</small>
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Peso Volumetrico</strong><br>
+                            <small>{{a.peso_volumetrico}} Kg</small>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Acciones</strong><br>
+                            <button class="btn btn-outline-warning mr-3 mt-3" (click)="verMas(a)">Ver Mas</button>
+                            <button *ngIf="a.disponible" class="btn btn-outline-info  mr-3 mt-3" #input
+                                (click)="onClick(a,i,false)">
+                                <div *ngIf="!a.seleccionado">Seleccionar</div>
+                                <div *ngIf="a.seleccionado">Remover</div>
+                            </button>
+                            <button class="btn btn-outline-danger mt-3" *ngIf="a.disponible"
+                                (click)="modificar(i)">Modificar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- </button> -->
+
+        </div>
+        <div class="d-flex justify-content-center mt-4 " style="z-index: 100000;">
+            <div class="btn-group mr-2 text-right" role="group" aria-label="First group" style="z-index: 4;">
+                <button type="button" class="btn btn-outline-secondary" *ngIf="paginaActiva > 1 "
+                    (click)="verPagina(paginaActiva - 1)">
+                    <mat-icon style="font-size:15px;width: auto !important;height: auto !important">navigate_before
+                    </mat-icon>
+                </button>
+                <button type="button" class="btn btn-outline-secondary" *ngFor="let pagina of paginas"
+                    [ngClass]="(paginaActiva == pagina) ? 'active' : ''" (click)="verPagina(pagina)">{{pagina}}</button>
+                <button type="button" class="btn btn-outline-secondary"
+                    *ngIf="paginaActiva < paginas[paginas.length - 1] " (click)="verPagina(paginaActiva + 1)">
+                    <mat-icon style="font-size:15px;width: auto !important;height: auto !important">navigate_next
+                    </mat-icon>
+                </button>
+            </div>
+        </div>
+
+    </div>
+    <div class="container fadeIn" *ngIf="men == 'historial'">
+        <app-tabla-aclaracion-cobranza></app-tabla-aclaracion-cobranza>
+    </div>
+
+</div>
+<ng-template #spin>
+    <div class="text-center h1">
+        <span class="icon-spin3 animate-spin"></span>
+    </div>
+</ng-template>
+<div class="col-md-3" id="newAclaracion" *ngIf="men != 'historial'">
+    <button matTooltip="Finalizar Aclaracion" mat-fab class="bg-success text-light" aria-label="Example icon button with a delete icon" (click)="nuevaAclaracion()" *ngIf="btnAcl">
+        <mat-icon>done</mat-icon>
+    </button>
+    <!-- <button class="text-left btn btn-success mt-3 seleccionar" (click)="nuevaAclaracion()" *ngIf="btnAcl">
+
+        <label class="text-succes flecha1"><span class="icon-ok bg-succes"></span></label>
+
+    </button> -->
+</div>

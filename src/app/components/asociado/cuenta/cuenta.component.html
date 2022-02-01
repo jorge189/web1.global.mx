@@ -1,0 +1,106 @@
+<div class="mx-3 text-justify text-md-left my-4 pt-4 mt-md-0 animated fadeIn">
+    <div class="contenedor animated fadeIn">
+
+        <div class="d-flex justify-content-center mt-2 grupo">
+            <button type="button" style="width: auto" class="opciones" [ngClass]="{'active-opc': estado == 'cuenta'}" (click)="cambiarEstado('cuenta')">Estado de Cuenta</button>
+            <button type="button" style="width: auto" class="opciones" [ngClass]="{'active-opc': estado == 'prepago'}" (click)="cambiarEstado('prepago')">Saldo Prepago</button>
+
+
+        </div>
+
+        <div *ngIf="estado == 'prepago'">
+
+            <app-prepago></app-prepago>
+        </div>
+        <div *ngIf="estado == 'cuenta'">
+
+
+
+            <div class="contenedor animated fadeIn" *ngIf="carga;else spin">
+                <h3>Estado de Cuenta</h3>
+                <hr />
+
+                <h4 class="text-center text-sm-left">Tu estado de cuenta es de: <b class="text-primary">${{saldo}}</b></h4>
+                <br>
+                <h5 class="text-left">Serviciós Adicionales Generados:</h5>
+
+                <table class="table opc-tabla border">
+                    <thead>
+                        <tr class="h6">
+                            <td class="bg-light text-dark">Mes Actual</td>
+                            <td class="bg-light text-dark">Mes Pasado</td>
+                            <td class="bg-light text-dark">Mes Antepasado</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="h6">
+                            <td data-label="Mes Actual">${{actual}}</td>
+                            <td data-label="Mes Pasado">${{pasado}}</td>
+                            <td data-label="Mes Antepasado">${{antepasado}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h5 class="mt-4">Historial:</h5>
+                <br>
+                <div>
+                    <form class="d-md-flex flex-wrap" [formGroup]="forma" (ngSubmit)="visualizar()">
+                        <mat-form-field class="d-block ml-2">
+                            <mat-label>Numero de Registros</mat-label>
+                            <mat-select name="registros" formControlName="registros">
+                                <mat-option value="5">5</mat-option>
+                                <mat-option value="10">10</mat-option>
+                                <mat-option value="25">25</mat-option>
+                                <mat-option value="50">50</mat-option>
+                                <mat-option value="100">100</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div class="ml-md-3 mt-2">
+                            <button type="submit" class="btn btn-primary btn-sm btn-block" [disabled]="!forma.valid"><span
+                            class="icon-spin3 animate-spin" *ngIf="disabled"></span> Visualizar</button>
+                        </div>
+                    </form>
+                </div>
+                <div *ngIf="loading" class="mb-5 g c9xftygubhikjl">
+                    <table class="table opc-tabla shadow-sm">
+                        <thead class="bg-light shadow-sm">
+                            <tr>
+                                <td>Fecha Pago</td>
+                                <td>ReferenciaC</td>
+                                <td>ReferenciaA</td>
+                                <td>Cargo</td>
+                                <td>Abono</td>
+                                <td>Comentario</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let registro of registros; let i = index">
+                                <td data-label="Fecha Pago">{{registro.fecha_pago}}</td>
+                                <td data-label="ReferenciaC">{{registro.referenciac}}</td>
+                                <td data-label="ReferenciaA">{{registro.referenciaa}}</td>
+                                <td data-label="Cargo">{{registro.cargo}}</td>
+                                <td data-label="Abono">{{registro.abono}}</td>
+                                <td data-label="Comentario">{{registro.comentario}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row mb-4">
+                        <div class="col-md-6 my-4">
+                            <strong>Total Registros: {{totalRegistros}}</strong>
+                        </div>
+                        <div class="col-md-6 text-center my-3">
+                            <button class="btn btn-outline-dark btn-sm mr-2 mt-1" *ngIf="activeAnterior" (click)="verAnterior()">Anterior</button>
+                            <button type="button" class="btn btn-outline-dark btn-sm mr-2 mt-1" *ngFor="let pagina of paginas" [ngClass]="{'active': paginaActive == pagina}" (click)="verPagina(pagina)">{{pagina}}</button>
+                            <button class="btn btn-outline-dark btn-sm mt-1" *ngIf="activeSiguiente" (click)="verSiguiente()">Siguiente</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #spin>
+        <div class="text-center h1">
+            <span class="icon-spin3 animate-spin"></span>
+        </div>
+    </ng-template>

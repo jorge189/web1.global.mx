@@ -1,0 +1,45 @@
+<div class="container mt-5">
+    <h3 class="reco">Mis Avisos</h3>
+    <div class="row justify-content-end">
+        <mat-form-field class="col-md-4 ">
+            <mat-label >Buscar</mat-label>
+            <input matInput type="text" #buscars (keyup)="buscar(buscars.value)" >
+          </mat-form-field>
+    </div>
+    <table class="table opc-tabla shadow-sm">
+        <thead class="bg-light shadow-sm">
+            <tr>
+                <td>Fecha</td>
+                <td>Paqueteria</td>
+                <td>Peso</td>
+                <td>Limite</td>
+                <td>Modificar</td>
+                <td>Eliminar</td>
+            </tr>
+        </thead>
+        <tbody>
+             <tr *ngFor="let aviso of avisos">
+                        <td data-label="Fecha">{{aviso.fecha_created}}</td>
+                        <td data-label="No.Pedido">{{aviso.paqueteria}}</td>
+                        <td data-label="Total">{{aviso.peso}}</td>
+                        <td data-label="Status">{{aviso.minimo}}</td>
+                        <td data-label="Status"><button class="btn btn-light" (click)="modificar(aviso.id,aviso.minimo, aviso.paqueteria,aviso.idtipo_guia,aviso.peso,aviso.nombre)"><span class="icon-pencil h5 text-success"></span></button></td>
+                        <td data-label="Status"><button class="btn btn-light" (click)="btnEliminar(aviso.id,aviso.minimo, aviso.paqueteria,aviso.idtipo_guia,aviso.peso,aviso.nombre)"><span class="icon-cancel h5 text-danger"></span></button></td>
+          </tr>
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-center mt-4 " style="z-index: 100000;">
+        <div class="btn-group mr-2 text-right" role="group" aria-label="First group" style="z-index: 4;">
+        <button type="button" class="btn btn-outline-secondary" *ngIf="paginaActiva > 1 "
+        (click)="verPagina(paginaActiva - 1)">
+        <mat-icon style="font-size:15px;width: auto !important;height: auto !important">navigate_before</mat-icon>
+        </button>
+        <button type="button" class="btn btn-outline-secondary" *ngFor="let pagina of paginas"
+        [ngClass]="(paginaActiva == pagina) ? 'active' : ''" (click)="verPagina(pagina)">{{pagina}}</button>
+        <button type="button" class="btn btn-outline-secondary" *ngIf="paginaActiva < paginas[paginas.length - 1] "
+        (click)="verPagina(paginaActiva + 1)">
+        <mat-icon style="font-size:15px;width: auto !important;height: auto !important">navigate_next</mat-icon>
+        </button>
+        </div>
+        </div>
+</div>

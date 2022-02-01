@@ -1,0 +1,16 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <div class="contenedor animated fadeIn" *ngIf="carga;else spin">
+        <!-- <div [innerHTML]="html">
+
+        </div> -->
+        <div>
+            <iframe class="w-100" style="height: 180vh" src="https://sistema.globalpaq.mx/api/v0/public/formas-pago/html" frameborder="0" scrolling="no"></iframe>
+        </div>
+    </div>
+</div>
+
+<ng-template #spin>
+    <div class="text-center h1">
+        <span class="icon-spin3 animate-spin"></span>
+    </div>
+</ng-template>

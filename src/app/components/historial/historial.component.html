@@ -1,0 +1,16 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <div class="contenedor mb-5">
+        <h3>Historial de Envios</h3>
+        <hr />
+        <div class="d-flex justify-content-center flex-wrap mt-2 grupo">
+            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'fedex'}" (click)="cambiarPaqueteria('fedex')">Fedex</button>
+            <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'dhl'}" (click)="cambiarPaqueteria('dhl')">DHL</button>
+            <button type="button" class="opciones"[ngClass]="{'active-opc': paqueteria == 'estafeta'}" (click)="cambiarPaqueteria('estafeta')">Estafeta</button>
+            <button type="button" class="opciones"[ngClass]="{'active-opc': paqueteria == 'redpack'}" (click)="cambiarPaqueteria('redpack')">Redpack</button>
+            <button type="button" class="opciones"[ngClass]="{'active-opc': paqueteria == 'paquetexpress'}" (click)="cambiarPaqueteria('paquetexpress')">Paquetexpress</button>
+            <button type="button" class="opciones"[ngClass]="{'active-opc': paqueteria == 'globalpaq'}" (click)="cambiarPaqueteria('globalpaq')">Globalpaq</button>
+        </div>
+        <app-tabla-historial [paqueteria]="paqueteria"></app-tabla-historial>
+        <!-- <router-outlet></router-outlet> -->
+    </div>
+</div>

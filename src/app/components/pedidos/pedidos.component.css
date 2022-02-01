@@ -1,0 +1,18 @@
+.accion{
+    color: #3261FF;
+    cursor: pointer;
+}
+
+.accion:hover{
+    text-decoration: underline;
+}
+
+.btn-outline-primary{
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.btn-outline-primary:hover{
+    background-color: var(--primary);
+    color: var(--white);
+}

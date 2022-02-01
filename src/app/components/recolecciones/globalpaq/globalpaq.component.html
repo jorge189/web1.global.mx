@@ -1,0 +1,172 @@
+<div class="my-4">
+    <h5 class="text-center">Selecciona uno o varios numeros de guia</h5>
+    <div>
+        <table class="table opc-tabla shadow-sm mt-3">
+            <thead class="bg-light shadow-sm">
+                <tr>
+                    <td>Guia</td>
+                    <td>Fecha Creación</td>
+                    <td>Remitente</td>
+                    <td>Destinatario</td>
+                    <td>Peso Vol. Kg.</td>
+                    <td>Peso Dec. Kg.</td>
+                    <td>Accioness</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of disponibles; let i = index">
+                    <td data-label="Guia">{{item.tracking}}</td>
+                    <td data-label="Fecha Creación">{{item.fecha | date:'short'}}</td>
+                    <td data-label="Remitente">{{item.remitente}}</td>
+                    <td data-label="Destinatario">{{item.destinatario}}</td>
+                    <td data-label="Peso Vol. Kg."><b>{{item.peso_volumetrico}}</b></td>
+                    <td data-label="Peso Dec. Kg."><b>{{item.peso_declarado}}</b></td>
+                    <td data-label="Acciones">
+                        <button type="button" *ngIf="!item.agregado" mat-mini-fab class="bg-primary text-light"
+                            aria-label="Agregar guia" (click)="agregarGuia(item)">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                        <button type="button" *ngIf="item.agregado" mat-mini-fab class="bg-danger text-light"
+                            aria-label="Eliminar guia" (click)="borrarGuia(item.tracking)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-center mt-4 " style="z-index: 100000;">
+            <div class="btn-group mr-2 text-right" role="group" aria-label="First group" style="z-index: 4;">
+                <button type="button" class="btn btn-outline-secondary" *ngIf="paginaActiva > 1 "
+                    (click)="verPagina(paginaActiva - 1)">
+                    <mat-icon style="font-size:15px;width: auto !important;height: auto !important">navigate_before
+                    </mat-icon>
+                </button>
+                <button type="button" class="btn btn-outline-secondary" *ngFor="let pagina of paginas"
+                    [ngClass]="(paginaActiva == pagina) ? 'active' : ''" (click)="verPagina(pagina)">{{pagina}}</button>
+                <button type="button" class="btn btn-outline-secondary" *ngIf="paginaActiva < paginas[paginas.length - 1] "
+                    (click)="verPagina(paginaActiva + 1)">
+                    <mat-icon style="font-size:15px;width: auto !important;height: auto !important">navigate_next
+                    </mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <div>
+            <h5 class="text-center mt-5 mb-3">Datos de recolección</h5>
+            <form [formGroup]="forma" (ngSubmit)="generarRecoleccion()">
+                <div formGroupName="remitente">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <mat-form-field class="w-100">
+                                <input class="text-uppercase" matInput placeholder="Nombre" formControlName="nombre">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field class="w-100">
+                                <input class="text-uppercase" matInput placeholder="Compania"
+                                    formControlName="compania">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field class="w-100">
+                                <input type="number" placeholder="Telefono" matInput formControlName="telefono">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field class="w-100">
+                                <input class="text-uppercase" matInput placeholder="Calle y numero"
+                                    formControlName="calle">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <mat-form-field class="w-100">
+                                <input type="number" matInput placeholder="Codigo Postal" formControlName="cp" #cpR>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field class="w-100">
+                                <mat-label>Colonia</mat-label>
+                                <mat-select formControlName="colonia">
+                                    <mat-option *ngFor="let col of coloniasRemitente" [value]="col.colonia">
+                                        {{col.colonia}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field class="w-100">
+                                <input class="text-uppercase" type="text" matInput placeholder="Ciudad"
+                                    formControlName="ciudad">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field class="w-100">
+                                <mat-label>Estado</mat-label>
+                                <mat-select formControlName="estado">
+                                    <mat-option [value]="elemento.aestado" *ngFor="let elemento of estados">
+                                        {{elemento.estado}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div formGroupName="recoleccion">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <mat-form-field class="w-100">
+                                <mat-label>Fecha de Recolección</mat-label>
+                                <input matInput [matDatepickerFilter]="noWeekends" [matDatepicker]="picker"
+                                    formControlName="fecha">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-8">
+                            <mat-form-field class="w-100">
+                                <input type="text" matInput placeholder="Indicaciones especiales"
+                                    formControlName="indicaciones">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3 justify-content-center" *ngIf="errMsg != ''">
+                    <div class="col-md-4">
+                        <p class="alert alert-danger">
+                            <span>
+                                {{errMsg}}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row mt-3 justify-content-center" *ngIf="okMsg != ''">
+                    <div class="col-md-4">
+                        <p class="alert alert-success text-center">
+                            <span [innerHTML]="okMsg"></span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row mt-3 justify-content-center">
+                    <div class="col-md-4">
+                        <button class="btn btn-success btn-sm btn-block" [disabled]="forma.invalid || agregadas.length <= 0 || loading2">
+                            <span class="icon-spin3 animate-spin" *ngIf="loading2"></span>
+                            Generar Recolección
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    
+</div>
+
+<div class="fab" *ngIf="agregadas.length > 0">
+    <button matTooltip="Ver Guias Agregadas" (click)="verGuias()" mat-fab class="bg-secondary text-light"
+        aria-label="Guias Agregadas">
+        <h5>{{agregadas.length}}</h5>
+    </button>
+</div>

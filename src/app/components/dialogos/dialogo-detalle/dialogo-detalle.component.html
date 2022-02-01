@@ -1,0 +1,16 @@
+<h1 mat-dialog-title class="">Detalles de <strong class="text-primary">Cotización</strong></h1>
+
+<div mat-dialog-content>
+    <table class="table tabla-detalle">
+        <tr>
+            <td data-label="Nombre" [innerHTML]="cambiarNombre(data.articulo.articulo)"></td>
+            <td data-label="Precio Articulo">${{data.articulo.precioReal}}</td>
+            <td data-label="Zona Extendida">${{data.articulo.zona}}</td>
+            <td data-label="Paquete Extragrande">${{data.articulo.extraGrande}}</td>
+            <td data-label="Seguro">$0</td>
+        </tr>
+    </table>
+</div>
+<div mat-dialog-actions>
+  <button class="btn btn-outline-danger btn-sm" mat-button (click)="onNoClick()">Cerrar</button>
+</div>

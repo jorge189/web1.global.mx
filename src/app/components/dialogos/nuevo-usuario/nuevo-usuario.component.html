@@ -1,0 +1,85 @@
+<h1 mat-dialog-title class="text-center">Agregar <strong class="text-primary">Usuario</strong></h1>
+<form [formGroup]="forma" (ngSubmit)="agregar()">
+    <div mat-dialog-content>
+        <div class="row justify-content-center mb-2">
+            <div class="col-md-5">
+                <mat-form-field class="w-100">
+                    <mat-label>Nombre</mat-label>
+                    <input type="text" matInput formControlName="nombre" [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="forma.controls.nombre.invalid">
+                        Es necesario el nombre
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-5">
+                <mat-form-field class="w-100">
+                    <mat-label>Usuario</mat-label>
+                    <input type="text" matInput formControlName="usuario" [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="forma.controls.usuario.errors?.required">
+                        Es necesario el usuario
+                    </mat-error>
+                    <mat-error *ngIf="forma.controls.usuario.errors?.existe">
+                        El usuario ya existe
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-2">
+            <div class="col-md-5">
+                <mat-form-field class="w-100">
+                    <mat-label>Email</mat-label>
+                    <input type="text" matInput formControlName="correo" [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="forma.controls.correo.errors?.required">
+                        Es necesario el correo electronico
+                    </mat-error>
+                    <mat-error *ngIf="forma.controls.correo.errors?.email">
+                        El correo no es valido
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-5">
+                <mat-form-field class="w-100">
+                    <mat-label>Repetir Email</mat-label>
+                    <input type="text" matInput formControlName="correoR" [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="forma.controls.correoR.errors?.error">
+                        El correo no coincide
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <mat-form-field class="w-100">
+                    <mat-label>Contraseña</mat-label>
+                    <input type="password" matInput formControlName="pass" [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="forma.controls.pass.errors?.required">
+                        Es necesario una contraseña
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-5">
+                <mat-form-field class="w-100">
+                    <mat-label>Repetir Contraseña</mat-label>
+                    <input type="password" matInput formControlName="passR" [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="forma.controls.passR.errors?.error">
+                        La contraseña no coincide
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+    </div>
+    <div mat-dialog-actions class="w-100">
+        <div class="row justify-content-end w-100 ml-1">
+            <div class="col-md-3 text-center">
+                <button type="button" class="btn btn-outline-danger btn-sm btn-block" (click)="onNoClick()">Cancelar</button>
+            </div>
+            <div class="col-md-3 text-center">
+                <button type="submit" class="btn btn-outline-success btn-sm btn-block" [disabled]="forma.invalid || loading"> 
+                    <span class="icon-plus-circled" *ngIf="!loading"></span>
+                    <span class="icon-spin3 animate-spin" *ngIf="loading"></span>
+                     Agregar</button>
+            </div>
+        </div>
+    </div>
+</form>

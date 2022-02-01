@@ -1,0 +1,171 @@
+<header class="bg-light shadow fixed-top">
+    <div class="d-lg-flex justify-content-between d-block">
+        <div class="d-flex justify-content-between">
+            <a href="#" class="">
+                <img src="https://globalpaq.com/img/svg/logo-main-nav.svg" alt="" class="img-fluid bg-light logo mt-1 pl-3" style="width: 200px">
+            </a>
+            <div class="d-flex">
+                <button mat-button [matMenuTriggerFor]="menu" class="menu2   d-lg-none" *ngIf="wsLogin.loginView">
+                    <span class="icon-user rounded-circle" >
+                    </span>
+                    </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item routerLinkActive="activado2" [routerLink]="['datos-usuario']" (click)=" abrirBarra()" style="text-align: center;"><a style="color: black;">Datos de Usuario</a></button>
+                    <button mat-menu-item routerLinkActive="activado2" [routerLink]="['estado-cuenta']" (click)=" abrirBarra()" style="text-align: center;"><a  style="color: black;">Estado de Cuenta</a></button>
+                    <button mat-menu-item (click)="cerrarSesion()">  Cerrar Sesión</button>
+                </mat-menu>
+                <div routerLinkActive="activado" *ngIf="wsLogin.loginView">
+                    <a [routerLink]="['carrito']" class="carrito mt-2 d-inline-block d-lg-none"><span
+                            class="icon-basket"></span><span
+                            class="badge rounded-circle badge-primary">{{wsTienda.cantidad}}</span></a>
+
+                </div>
+
+                <span class="text-dark icon-menu d-inline-block ml-4 mt-2 menu pr-2" (click)="sidebar=!sidebar" *ngIf="wsLogin.loginView"></span>
+            </div>
+
+        </div>
+
+        <div class="justify-content-center d-none d-lg-block">
+            <ul class="text-center">
+                <li class="mr-5 mt-2" routerLinkActive="activado" *ngIf="wsLogin.loginView">
+                    <a [routerLink]="['carrito']" class="carrito"><span class="icon-basket"></span><span
+                            class="badge rounded-circle badge-primary">{{wsTienda.cantidad}}</span></a>
+                </li>
+                <!-- <li class="mr-5 mt-3" *ngIf="wsLogin.loginView">
+                    <span class="icon-user rounded-circle"></span>&nbsp;<b>{{idasociado}} - {{nombre }}</b>
+                </li>-->
+                <li class="mr-5 mt-2" *ngIf="wsLogin.loginView">
+                    <button mat-raised-button class="btn btn-light" [matMenuTriggerFor]="menu" >
+                    <span class="icon-user rounded-circle" >&nbsp;<b>{{idasociado}} - {{nombre | cutinfo:20}}</b>
+                    </span>
+                    </button>
+                    <mat-menu #menu="matMenu" style="width: 280px;">
+                        <button mat-menu-item routerLinkActive="activado2" [routerLink]="['datos-usuario']" (click)=" abrirBarra()" style="text-align: center;"><a style="color: black;">Datos de Usuario</a></button>
+                        <button mat-menu-item routerLinkActive="activado2" [routerLink]="['estado-cuenta']" (click)=" abrirBarra()" style="text-align: center;"><a  style="color: black;">Estado de Cuenta</a></button>
+                        <button mat-menu-item class="btnmenu" routerLinkActive="activado" (click)="cerrarSesion()"><a style="cursor: pointer">Cerrar Sesión</a></button>
+                    </mat-menu>
+
+                </li>
+
+                <!-- <li>
+                    <a href=""><span class="icon-facebook-squared social"></span></a>
+                </li>
+                <li>
+                    <a href=""><span class="icon-youtube-play social"></span></a>
+                </li>
+                <li>
+                    <a href=""><span class="icon-instagram social"></span></a>
+                </li>
+                <li>
+                    <a href=""><span class="icon-twitter social"></span></a>
+                </li> -->
+            </ul>
+
+        </div>
+    </div>
+</header>
+<div >
+    <div *ngIf="wsLogin.loginView">
+
+        <div  class="bar animation bg-light  mt-4 mt-md-5 pt-md-0 fixed-top  shadow sidebar-close " [ngClass]="{'bar-close' : sidebar, 'abrir-sub' : abrirMenu}" >
+    
+            <nav class="nav mt-4" >
+                <ul>
+                    <!--    <li>
+                        <span class="text-light mt-4 d-flex "> MI CUENTA {{info.nombre | cutinfo}} 
+                            <span class="icon-user user h5 " (click)="abrirMenu=!abrirMenu">
+                                <small><span class="icon-right-open origin"
+                                        [ngClass]="{'rotar' : abrirMenu}"></span></small>
+                        </span>
+                        </span>
+                        <ul class="">
+                            <li routerLinkActive="activado">
+                                <a [routerLink]="['datos-usuario']" (click)=" abrirBarra()">Datos de Usuario</a>
+                            </li>
+                            <li routerLinkActive="activado">
+                                <a [routerLink]="['estado-cuenta']" (click)="abrirBarra()">Estado de Cuenta</a>
+                            </li>
+                            <li>
+                                <a (click)="cerrarSesion()" style="cursor: pointer">Cerrar Sesión</a>
+                            </li>
+                        </ul>
+                    </li> -->
+                    <li routerLinkActive="activado">
+                        <a [routerLink]="['inicio']" (click)=" abrirBarra()"><span
+                                class="icon-home-outline">&nbsp;&nbsp;</span>Inicio </a>
+                    </li>
+                    <li routerLinkActive="activado">
+                        <a [routerLink]="['envio']" (click)=" abrirBarra()"><span class="icon-mail">&nbsp;&nbsp;</span>Nuevo
+                            Envio</a>
+                    </li>
+                    <li routerLinkActive="activado">
+                        <a [routerLink]="['historial']" (click)=" abrirBarra()"><span
+                                class="icon-truck">&nbsp;&nbsp;</span>Historial Envios</a>
+                    </li>
+                    <!-- <li routerLinkActive="activado">
+                        <a [routerLink]="['direcciones']" (click)=" abrirBarra()"><span
+                                class="icon-address-book">&nbsp;&nbsp;</span>Direcciones</a>
+                    </li> -->
+                    <li routerLinkActive="activado">
+                        <a [routerLink]="['cotizar']" (click)=" abrirBarra()"><span
+                                class="icon-calculator">&nbsp;&nbsp;</span>Cotizar</a>
+                    </li>
+                    <li routerLinkActive="activado" *ngIf="info?.tienda == 1">
+                        <a [routerLink]="['tienda']" (click)=" abrirBarra()"><span
+                                class="icon-shopping-bag">&nbsp;&nbsp;</span>Tienda</a>
+                    </li>
+                    <li routerLinkActive="activado" *ngIf="info?.tienda == 1">
+                        <a [routerLink]="['pedidos']" (click)=" abrirBarra()"><span
+                                class="icon-clipboard">&nbsp;&nbsp;</span>Pedidos</a>
+                    </li>
+                    <li routerLinkActive="activado">
+                        <a [routerLink]="['formas-pago']" (click)=" abrirBarra()"><span class="icon-credit-card">&nbsp;&nbsp;</span>Formas de Pago</a>
+                    </li>
+                    <li routerLinkActive="activado">
+                        <a [routerLink]="['movimientos']" (click)=" abrirBarra()"><span
+                                class="icon-switch">&nbsp;&nbsp;</span>Movimientos</a>
+                    </li>
+                    <li routerLinkActive="activado">
+                        <a [routerLink]="['cobertura']" (click)=" abrirBarra()"><span class="icon-location-outline">&nbsp;&nbsp;</span>Cobertura</a>
+                    </li>
+                    <li routerLinkActive="activado" *ngIf="info?.multiusuario == 1">
+                        <a [routerLink]="['usuarios-adicionales']" (click)=" abrirBarra()"><span class="icon-user-add-outline">&nbsp;&nbsp;</span>Usuarios Adicionales</a>
+                    </li>
+                    <li routerLinkActive="activado">
+    
+                        <a [routerLink]="['api']" (click)=" abrirBarra()"><span class="icon-code">&nbsp;&nbsp;</span>GlobalPaq API</a>
+                    </li>
+                    <!-- <li routerLinkActive="activado">
+                        <a [routerLink]="['cupones']" (click)=" abrirBarra()"><span class="icon-ticket">&nbsp;&nbsp;</span>Guìas por Cupon</a>
+                    </li> -->
+                    <li routerLinkActive="activado">
+                        <a [routerLink]="['recolecciones']" (click)=" abrirBarra()"><span class="icon-paper-plane-empty">&nbsp;&nbsp;</span>Nueva Recolección</a>
+                    </li>
+                    <!-- <li routerLinkActive="activado">
+                        <a [routerLink]="['aclaraciones']" (click)=" abrirBarra()"><span class="icon-attention-circled">&nbsp;&nbsp;</span>Aclaraciones</a>
+                    </li> -->
+                    <li routerLinkActive="activado">
+                        <a [routerLink]="['ayuda']" (click)=" abrirBarra()"><span class="icon-help-circled">&nbsp;&nbsp;</span>Ayuda</a>
+                    </li>
+                    <li routerLinkActive="activado">
+                        <a [routerLink]="['ver']" (click)=" abrirBarra()"><span class="icon-bell">&nbsp;&nbsp;</span>Mas Opciones</a>
+                    </li>
+                    <li routerLinkActive="activado">
+                        <a [routerLink]="['opinion']" (click)=" abrirBarra()"><span class="icon-star">&nbsp;&nbsp;</span>Deja tu Opinion</a>
+                    </li>
+                    <li >
+                        <a><span>&nbsp;&nbsp;</span></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div >
+        <div class="animation my-5 "  [ngClass]="{'contenido' : (!sidebar && wsLogin.loginView)}">
+            <router-outlet></router-outlet>
+            <app-notificacion *ngIf="wsLogin.loginView"></app-notificacion>
+        </div>
+    </div>
+</div>
+<app-tips *ngIf="wsLogin.loginView"></app-tips>

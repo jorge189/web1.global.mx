@@ -1,0 +1,60 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <div class="contenedor animated fadeIn" *ngIf="carga;else spin">
+        <div class="row justify-content-sm-start align-items-center">
+            <div class="col-sm-2 text-center text-sm-left pr-3">
+                <span class="icon-user-circle-o display-1 text-primary"></span>
+            </div>
+            <div class="col-sm-6 mt-3">
+                <div class="text-center text-sm-left">
+                    <p class="h3">{{usuario.usuario}}</p>
+                    <p class="h5">{{usuario.nombre}}</p>
+                    <p class="h5">
+                        {{usuario.correo}}
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-3 mt-3">
+                <div class="text-center text-sm-left">
+                    <p class="h5">Estatus:
+                        <span [ngClass]="(usuario.activo == 1) ? 'text-success' : 'text-danger'"
+                            [innerHTML]="(usuario.activo == 1) ? 'Activo' : 'Inactivo'"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <hr />
+
+        <h4 class="text-center">Asignación de Guias</h4>
+        <div class="mt-4">
+            <div class="d-flex justify-content-center flex-wrap mt-2 grupo">
+                <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'fedex'}"
+                    (click)="cambiarPaqueteria('fedex')">Fedex</button>
+                <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'dhl'}"
+                    (click)="cambiarPaqueteria('dhl')">DHL</button>
+                <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'estafeta'}"
+                    (click)="cambiarPaqueteria('estafeta')">Estafeta</button>
+                <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'redpack'}"
+                    (click)="cambiarPaqueteria('redpack')">Redpack</button>
+                <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'paquetexpress'}"
+                    (click)="cambiarPaqueteria('paquetexpress')">Paquetexpress</button>
+                <button type="button" class="opciones" [ngClass]="{'active-opc': paqueteria == 'globalpaq'}"
+                    (click)="cambiarPaqueteria('globalpaq')">Globalpaq</button>
+            </div>
+        </div>
+        <div class="mt-5">
+            <app-asignaciones-usuario [paqueteria]="paqueteria" [idusuario]="usuario.idusuario"
+                (cambiosPaq)="cambiarPaqueteriaEmiter()"></app-asignaciones-usuario>
+        </div>
+        <div class="mt-5">
+            <h4 class="text-center">Guias Disponibles {{paqueteria | titlecase}}</h4>
+            <app-disponibles-usuario [paqueteria]="paqueteria" [idusuario]="usuario.idusuario"
+                (cambiosPaq)="cambiarPaqueteriaEmiter()"></app-disponibles-usuario>
+        </div>
+    </div>
+</div>
+
+<ng-template #spin>
+    <div class="text-center h1">
+        <span class="icon-spin3 animate-spin"></span>
+    </div>
+</ng-template>
