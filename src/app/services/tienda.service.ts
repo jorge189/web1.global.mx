@@ -68,9 +68,9 @@ export class TiendaService {
     }));
   }
 
-  getPedidos(cantidad, pagina){
+  getPedidos(cantidad, pagina,finicial,ffinal){
     this.auth.activate();
-    return this.app.getQuery(`public/tienda/pedidos?cantidad=${cantidad}&pagina=${pagina}`, 'GET').pipe(map((data:any) => {
+    return this.app.getQuery(`public/tienda/pedidos?cantidad=${cantidad}&pagina=${pagina}&feini=${finicial}&fefinal=${ffinal}`, 'GET').pipe(map((data:any) => {
       return data;
     }));
   }

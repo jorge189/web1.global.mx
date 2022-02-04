@@ -8,16 +8,34 @@
 
         <div>
             <form class="d-md-flex flex-wrap" [formGroup]="forma" (ngSubmit)="visualizar()">
-                <mat-form-field class="d-block ml-2">
-                    <mat-label>Numero de Registros</mat-label>
-                    <mat-select name="registros" formControlName="registros">
-                        <mat-option value="5">5</mat-option>
-                        <mat-option value="10">10</mat-option>
-                        <mat-option value="25">25</mat-option>
-                        <mat-option value="50">50</mat-option>
-                        <mat-option value="100">100</mat-option>
-                    </mat-select>
-                </mat-form-field>
+                <form formGroupName="numreg">
+                    <mat-form-field class="d-block ml-2">
+                        <mat-label>Numero de Registros</mat-label>
+                        <mat-select name="registros" formControlName="registros">
+                            <mat-option value="5">5</mat-option>
+                            <mat-option value="10">10</mat-option>
+                            <mat-option value="25">25</mat-option>
+                            <mat-option value="50">50</mat-option>
+                            <mat-option value="100">100</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+
+                <form formGroupName="Fechas">
+
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="picker1" placeholder="Fecha inicial" formControlName="inicio">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="picker2" placeholder="Fecha final" formControlName="fin">
+                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+                    </mat-form-field>
+                </form>
+
+
                 <div class="ml-md-3 mt-2">
                     <button type="submit" class="btn btn-primary btn-sm btn-block" [disabled]="!forma.valid"><span
                             class="icon-spin3 animate-spin" *ngIf="disabled"></span> Visualizar</button>
@@ -63,8 +81,7 @@
                             <button class="btn btn-outline-primary btn-sm" (click)="openDialogFactura(pedido.idventa)" *ngIf="pedido.idestatus != 1 && pedido.idestatus != 8">Ver</button>
                         </td>
                         <td data-label="Detalles">
-                            <button class="btn btn-outline-info btn-sm"
-                                (click)="verDetalle(pedido.idventa)">Ver</button>
+                            <button class="btn btn-outline-info btn-sm"(click)="verDetalle(pedido.idventa)">Ver</button>
                         </td>
                     </tr>
                 </tbody>

@@ -7,7 +7,7 @@ import { DialogoPagosComponent } from '../dialogos/dialogo-pagos/dialogo-pagos.c
 import { findIndex } from 'rxjs/operators';
 import { MetodoPagoComponent } from '../dialogos/metodo-pago/metodo-pago.component';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
-
+import * as moment from 'moment';
 
 
 @Component({
@@ -37,7 +37,15 @@ export class PedidosComponent implements OnInit {
   constructor(private wsTienda: TiendaService, public dialog: MatDialog,
     private snack: MatSnackBar) {
     this.forma = new FormGroup({
-      'registros': new FormControl('5', Validators.required)
+      'numreg': new FormGroup({
+        'registros': new FormControl('5', Validators.required),
+
+      }),
+      'Fechas': new FormGroup({
+        'inicio'   : new FormControl((new Date()).toISOString()),
+        'fin'      : new FormControl((new Date()).toISOString())
+      })
+
     });
   }
 
@@ -46,6 +54,18 @@ export class PedidosComponent implements OnInit {
   }
 
   visualizar() {
+    let fechaInicio = moment(this.forma.value.Fechas.inicio).format('YYYY-MM-DD')
+    let fechaFin = moment(this.forma.value.Fechas.fin).format('YYYY-MM-DD')
+    let hoy = moment().format('YYYY-MM-DD');
+    if (hoy < fechaInicio || hoy < fechaFin) {
+      this.snack.open("Las fechas no beben ser mayores al dia de hoy", "cerrar", {
+        duration: 3000, });
+        return
+    }
+    if (fechaInicio > fechaFin) {
+      this.snack.open("La fecha inicial no debe ser mayor a la final", "cerrar", {
+         duration: 3000, }); return
+    }
     this.reiniciar();
     this.getPedidos(1);
     setTimeout(() => {
@@ -68,7 +88,9 @@ export class PedidosComponent implements OnInit {
 
 
   getPedidos(pagina: number) {
-    return this.wsTienda.getPedidos(this.forma.value.registros, pagina).subscribe((data: any) => {
+    let fini = moment(this.forma.value.Fechas.inicio).format('YYYY-MM-DD')
+    let ffin = moment(this.forma.value.Fechas.fin).format('YYYY-MM-DD')
+    return this.wsTienda.getPedidos(this.forma.controls['numreg'].get('registros').value, pagina,fini,ffin).subscribe((data: any) => {
       this.pedidos = data.data;
       this.totalRegistros = data.total;
       this.carga = true;

@@ -16,3 +16,6 @@
     background-color: var(--primary);
     color: var(--white);
 }
+mat-form-field {
+    margin-right: 12px;
+}
